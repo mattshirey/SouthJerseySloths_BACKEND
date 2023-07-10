@@ -74,17 +74,17 @@ const getCurrentLeagues = async (req, res, next) => {
 		)
 	}
 
-	currentLeaguesSorted = currentLeagues.sort((a, b) =>
-		a.leagueName.localeCompare(b.leagueName)
-	)
+	currentLeagues &&
+		(currentLeaguesSorted = currentLeagues.sort((a, b) =>
+			a.leagueName.localeCompare(b.leagueName)
+		))
 
-	let currentLeaguesSortedNoDuplicates = [
-		...new Map(currentLeaguesSorted.map((m) => [m.leagueName, m])).values(),
-	]
+	let currentLeaguesSortedNoDuplicates
 
-	/* console.log(
-		'currentLeaguesSortedNoDuplicates: ' + currentLeaguesSortedNoDuplicates
-	) */
+	currentLeagues &&
+		(currentLeaguesSortedNoDuplicates = [
+			...new Map(currentLeaguesSorted.map((m) => [m.leagueName, m])).values(),
+		])
 
 	res.json({ currentLeagues, currentLeaguesSortedNoDuplicates })
 }
