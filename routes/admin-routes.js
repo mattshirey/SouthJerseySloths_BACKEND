@@ -1,0 +1,326 @@
+const express = require('express')
+const { check } = require('express-validator')
+const adminControllers = require('../controllers/admin-controller')
+const router = express.Router()
+const checkAuth = require('../middleware/check-auth')
+
+//Matt: watch Max's video '180: Backend Route Protection with Auth Middleware.
+//This checkAuth call here should go in between the router calls that are
+//non-admin, and admin.  This way, these calls cant be made by someone that is
+//not authorized.  Once again, watch the video
+//router.use(checkAuth)
+
+router.get('/leagues/current', adminControllers.getCurrentLeagues)
+//
+//
+router.get('/leagues/archive', adminControllers.getArchivedLeagues)
+//
+//
+router.get('/venues', adminControllers.getVenues)
+//
+//
+router.get(
+	'/:leagueName/:session/:year/teams',
+	adminControllers.getTeamsInLeague
+)
+router.get(
+	'/:leagueName/:divisionName/:session/:year/teams',
+	adminControllers.getTeamsInLeagueWithDivision
+)
+//
+//
+router.get(
+	'/allTeams/:leagueName/:leagueId/:session/:year',
+	adminControllers.getTeamsInLeagueByLeagueName
+)
+router.get('/:leagueId/teams', adminControllers.getTeamsInLeagueByLeagueId)
+
+//
+//
+router.get(
+	'/:leagueName/:divisionName/:session/:year/:teamName/players',
+	adminControllers.getPlayersOnTeamWithDivision
+)
+router.get(
+	'/:leagueName/:session/:year/:teamName/players',
+	adminControllers.getPlayersOnTeam
+)
+//
+//
+router.get(
+	'/:gameId/rostersAndPoints',
+	adminControllers.getGameRostersAndPointsPerPeriod
+)
+//
+//
+router.get('/leagues/:leagueId', adminControllers.getLeagueData)
+//
+//
+//
+router.get('/venues/:venueId', adminControllers.getVenueData)
+//
+//
+router.get('/teams/:teamId', adminControllers.getTeamData)
+//
+//
+router.get(
+	'/:leagueName/:session/:year/:teamName/:playerId',
+	adminControllers.getPlayerNumber
+)
+//
+//
+router.get('/players/:playerId', adminControllers.getPlayerData)
+//
+//
+router.get(
+	'/players/rosterPlayer/:rosterPlayerId',
+	adminControllers.getPlayerDataByRosterId
+)
+//
+//
+router.get('/game/:gameId', adminControllers.getGameData)
+//
+//
+router.get('/event/:gameId', adminControllers.getEventData)
+//
+//
+router.get('/getAllRosters', adminControllers.getAllRosters)
+//
+//
+router.get('/getAllPlayers', adminControllers.getAllPlayers)
+//
+//
+router.get('/allGamesAndEvents', adminControllers.allGamesAndEvents)
+//
+//
+router.get('/allGamesAndEventsWeek', adminControllers.allGamesAndEventsWeek)
+//
+//
+router.post(
+	'/league/new',
+	[
+		check('leagueName').not().isEmpty(),
+		check('year').not().isEmpty(),
+		check('session').not().isEmpty(),
+	],
+	adminControllers.createNewLeague
+)
+//
+//
+router.post(
+	'/league/copy/:leagueId',
+	[
+		check('leagueToCopy').not().isEmpty(),
+		check('leagueName').not().isEmpty(),
+		check('year').not().isEmpty(),
+		check('session').not().isEmpty(),
+	],
+	adminControllers.copyLeague
+)
+//
+//
+router.post(
+	'/venue/new',
+	[check('venueName').not().isEmpty(), check('venueAddress').not().isEmpty()],
+	adminControllers.createNewVenue
+)
+//
+//
+//
+//
+//
+router.post(
+	'/newPlayer',
+	[
+		check('firstName1').not().isEmpty(),
+		check('middleInitial1'),
+		check('lastName1').not().isEmpty(),
+	],
+	adminControllers.createNewPlayer
+)
+//
+//
+router.post(
+	'/:leagueName/:session/:year/newTeam',
+	check('teamName1').not().isEmpty(),
+	adminControllers.createNewTeam
+)
+router.post(
+	'/:leagueName/:divisionName/:session/:year/newTeam',
+	check('teamName1').not().isEmpty(),
+	adminControllers.createNewTeamWithDivision
+)
+//
+//
+router.post(
+	'/:leagueName/:session/:year/:teamName/addPlayers',
+	[
+		check('lastName1').not().isEmpty(),
+		check('firstName1').not().isEmpty(),
+		check('playerNumber1').not().isEmpty(),
+	],
+	adminControllers.addPlayerToTeam
+)
+//
+//
+router.post(
+	'/:leagueName/:divisionName/:session/:year/:teamName/addPlayers',
+	[
+		check('lastName1').not().isEmpty(),
+		check('firstName1').not().isEmpty(),
+		check('playerNumber1').not().isEmpty(),
+	],
+	adminControllers.addPlayerToTeamWithDivision
+)
+//
+//
+router.post(
+	'/createGames',
+	[
+		check('leagueName1').not().isEmpty(),
+		check('homeTeam1').not().isEmpty(),
+		check('visitorTeam1').not().isEmpty(),
+		check('venue1').not().isEmpty(),
+	],
+	adminControllers.createGames
+)
+//
+//
+//
+router.post(
+	'/uploadGames',
+	[
+		check('data').not().isEmpty(),
+		check('columnArray').not().isEmpty(),
+		check('values').not().isEmpty(),
+	],
+	adminControllers.uploadGames
+)
+//
+//
+router.patch('/gameStats/:gameId', adminControllers.createGameStats)
+//
+//
+//
+router.patch(
+	'/playoffGameStats/:gameId',
+	adminControllers.createPlayoffGameStats
+)
+//
+//
+//
+router.patch(
+	'/championshipGameStats/:gameId',
+	adminControllers.createChampionshipGameStats
+)
+//
+//
+//
+//
+router.post(
+	'/createEvents',
+	[
+		check('eventName1').not().isEmpty(),
+		check('date1').not().isEmpty(),
+		check('venue1').not().isEmpty(),
+	],
+	adminControllers.createEvents
+)
+//
+//
+router.post(
+	'/login',
+	[
+		check('email').not().isEmpty(),
+		check('email').normalizeEmail().isEmail(),
+		check('password').not().isEmpty(),
+	],
+	adminControllers.login
+)
+//
+//
+//
+router.patch(
+	'/:leagueName/:session/:year/updateTeam/:teamId',
+	check('teamName').not().isEmpty(),
+	adminControllers.editTeamName
+)
+//
+//
+//
+router.patch(
+	'/:leagueName/:session/:year/updateTeamWithDivision/:teamId',
+	check('teamName').not().isEmpty(),
+	adminControllers.editTeamNameWithDivision
+)
+//
+//
+router.patch(
+	'/:leagueName/:session/:year/:teamName/:playerId/changeNumber',
+	check('number').not().isEmpty(),
+	adminControllers.editPlayerNumber
+)
+//
+//
+//
+router.patch(
+	'/updateLeague/:leagueId',
+	[
+		check('leagueName').not().isEmpty(),
+		check('session').not().isEmpty(),
+		check('year').not().isEmpty(),
+	],
+	adminControllers.editLeague
+)
+//
+//
+router.patch(
+	'/:leagueId/archiveCurrentToggleLeague',
+	[check('leagueId').not().isEmpty()],
+	adminControllers.archiveCurrentToggleLeague
+)
+//
+//
+router.patch(
+	'/updateVenue/:venueId',
+	[check('venueName').not().isEmpty(), check('venueAddress').not().isEmpty()],
+	adminControllers.editVenue
+)
+//
+//
+router.patch(
+	'/updatePlayer/:playerId',
+	[check('playerId').not().isEmpty()],
+	adminControllers.editPlayerName
+)
+//
+//
+router.patch(
+	'/editGame/:gameId',
+	[check('gameId').not().isEmpty()],
+	adminControllers.editGame
+)
+//
+//
+router.patch(
+	'/editEvent/:gameId',
+	[check('gameId').not().isEmpty()],
+	adminControllers.editEvent
+)
+//
+//
+router.delete('/:leagueId/removeLeague', adminControllers.removeLeague)
+
+router.delete('/:teamId/removeTeam', adminControllers.removeTeam)
+
+router.delete('/:rosterPlayerId/removePlayer', adminControllers.removePlayer)
+
+router.delete('/:itemId/removeEvent', adminControllers.removeEvent) //deletes a game or event
+
+//For testing purposes (use in PostMan):
+router.delete(
+	'/delete/deleteAllRosterPlayerStatsPerGame',
+	adminControllers.deleteAllRosterPlayerStatsPerGame
+)
+
+module.exports = router

@@ -1,0 +1,82 @@
+const express = require('express')
+const bodyParser = require('body-parser')
+const mongoose = require('mongoose')
+//
+//
+//
+//
+//
+//
+
+const adminRoutes = require('./routes/admin-routes')
+const leagueRoutes = require('./routes/league-routes')
+const playerRoutes = require('./routes/player-routes')
+const registrationRoutes = require('./routes/registration-routes')
+const HttpError = require('./models/http-error')
+
+const app = express()
+
+app.use(bodyParser.json())
+
+//app.use(cors())
+
+app.use((req, res, next) => {
+	res.setHeader('Access-Control-Allow-Origin', '*')
+	res.setHeader(
+		'Access-Control-Allow-Headers',
+		'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+	)
+	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE')
+	next()
+})
+
+//middlewares
+app.use('/api/admin', adminRoutes)
+app.use('/api/league', leagueRoutes)
+app.use('/api/player', playerRoutes)
+app.use('/api/registration', registrationRoutes)
+
+//Here, if we get to this point, that means we haven't found the route, so
+//we'll throw an error and a 404 code
+app.get('/', (req, res) => {
+	res.send('API is running....')
+})
+//
+//
+app.use((req, res, next) => {
+	const error = new HttpError('Could not find this route.', 404)
+	throw error
+})
+
+//if there's four parameters, like below, express knows that this
+//will be an error middleware function, and will only be reached when
+//there is a request that have an error attached to it.
+//Watch video 93: Handling Errors.
+//If we have an error, throw it.  If not, just throw a 500
+app.use((error, req, res, next) => {
+	if (res.headersSent) {
+		return next(error)
+	}
+	res.status(error.code || 500)
+	res.json({
+		message: error.message || 'An unknown error has occurred!',
+	})
+})
+
+mongoose
+	.connect(
+		//
+		//Serverless Server:     USE THIS FOR TEST
+		`mongodb+srv://mattshirey:Daisy24@cluster0.rxkldc8.mongodb.net/?retryWrites=true&w=majority`
+		//
+		//
+		//Shared Server:    USE THIS FOR PRODUCTION
+		//`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@sharedcluster1.rbyn7zh.mongodb.net/?retryWrites=true&w=majority`
+	)
+	.then(() => {
+		//console.log('process.env.PORT: ' + process.env.PORT)
+		app.listen(process.env.PORT || 5000)
+	})
+	.catch((err) => {
+		console.log('ERROR here: ' + err)
+	})
