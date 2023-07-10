@@ -135,7 +135,7 @@ router.post(
 //
 router.post(
 	'/video/new',
-	[check('venueURL').not().isEmpty()],
+	[check('videoURL').not().isEmpty()],
 	adminControllers.createNewVideo
 )
 //
