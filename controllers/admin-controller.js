@@ -20932,7 +20932,7 @@ const editVideo = async (req, res, next) => {
 	video.videoCaption = videoCaption
 
 	try {
-		await venue.save()
+		await video.save()
 	} catch (err) {
 		const error = new HttpError(
 			//'Something went wrong with saving the updated league.',
@@ -20943,7 +20943,7 @@ const editVideo = async (req, res, next) => {
 	}
 
 	//set it to 200 instead of 201 because we're not creating anything new
-	res.status(200).json({ venue: venue.toObject({ getters: true }) })
+	res.status(200).json({ video: video.toObject({ getters: true }) })
 }
 //
 //
