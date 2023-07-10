@@ -19,6 +19,9 @@ router.get('/leagues/archive', adminControllers.getArchivedLeagues)
 router.get('/venues', adminControllers.getVenues)
 //
 //
+router.get('/videos', adminControllers.getVideos)
+//
+//
 router.get(
 	'/:leagueName/:session/:year/teams',
 	adminControllers.getTeamsInLeague
@@ -58,6 +61,9 @@ router.get('/leagues/:leagueId', adminControllers.getLeagueData)
 //
 //
 router.get('/venues/:venueId', adminControllers.getVenueData)
+//
+//
+router.get('/videos/:videoId', adminControllers.getVideoData)
 //
 //
 router.get('/teams/:teamId', adminControllers.getTeamData)
@@ -125,6 +131,13 @@ router.post(
 	adminControllers.createNewVenue
 )
 //
+//
+//
+router.post(
+	'/video/new',
+	[check('venueURL').not().isEmpty()],
+	adminControllers.createNewVideo
+)
 //
 //
 //
@@ -285,6 +298,13 @@ router.patch(
 	'/updateVenue/:venueId',
 	[check('venueName').not().isEmpty(), check('venueAddress').not().isEmpty()],
 	adminControllers.editVenue
+)
+//
+//
+router.patch(
+	'/updateVideo/:videoId',
+	[check('videoURL').not().isEmpty()],
+	adminControllers.editVideo
 )
 //
 //

@@ -14,6 +14,7 @@ const ChampionshipGameStats = require('../models/championshipGameStats')
 const PlayoffGameStats = require('../models/playoffGameStats')
 const RosterPlayerStatsPerGame = require('../models/rosterPlayerStatsPerGame')
 const rosterPlayerStatsPerGame = require('../models/rosterPlayerStatsPerGame')
+const Video = require('../models/video')
 const gameFromCSV = require('../models/gameFromCSV')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
@@ -113,6 +114,24 @@ const getVenues = async (req, res, next) => {
 //
 //****************************************************************************************** */
 //
+// Get all Videos
+//
+//****************************************************************************************** */
+const getVideos = async (req, res, next) => {
+	let allVideos
+	try {
+		const filter = {}
+		allVideos = await Video.find(filter)
+		allVideos.sort((a, b) => a.videoTitle.localeCompare(b.videoTitle))
+		res.json({ allVideos })
+	} catch (err) {
+		const error = new HttpError('Cannot find any videos.  getVideos', 404)
+		return next(error)
+	}
+}
+//
+//****************************************************************************************** */
+//
 // Get league data (leagueName, session, year).
 // I'll use this for when/if I need to edit any of this stuff
 //
@@ -208,6 +227,34 @@ const getVenueData = async (req, res, next) => {
 //
 //
 //
+//
+//****************************************************************************************** */
+//
+// Get video data (videoTitle, videoURL, videoCaption).
+// I'll use this for when/if I need to edit any of this stuff
+//
+//****************************************************************************************** */
+const getVideoData = async (req, res, next) => {
+	const videoId = req.params.videoId
+	let videoTitle
+	let videoURL
+	let videoCaption
+
+	try {
+		foundVideo = await Video.findById(videoId)
+	} catch (err) {
+		const error = new HttpError(
+			'Could not find video to obtain video data.  getVideoData',
+			404
+		)
+		return next(error)
+	}
+	videoTitle = foundVideo.videoTitle
+	videoURL = foundVideo.videoURL
+	videoCaption = foundVideo.videoCaption
+
+	res.json({ video: foundVideo.toObject({ getters: true }) })
+}
 //
 //
 //****************************************************************************************** */
@@ -1868,6 +1915,54 @@ const createNewVenue = async (req, res, next) => {
 	res.status(201).json({ venue: createdVenue })
 }
 //
+//
+//
+//****************************************************************************************** */
+//
+//POST request to create a new Video
+//
+//****************************************************************************************** */
+const createNewVideo = async (req, res, next) => {
+	const errors = validationResult(req)
+	if (!errors.isEmpty()) {
+		throw new HttpError(
+			'Invalid inputs - something is empty.  createNewVideo',
+			422
+		)
+	}
+
+	const { videoTitle, videoURL, videoCaption } = req.body
+
+	//First, let's check to see if the venue already exists...
+	const videoExists = await Venue.findOne({
+		videoTitle: videoTitle.trim(),
+		videoURL: videoURL.trim(),
+	})
+
+	let createdVideo
+	if (videoExists) {
+		console.log('video already exists')
+		const error = new HttpError('Video already exists', 409)
+		return next(error)
+	} else {
+		createdVideo = new Video({
+			id: uuidv4(),
+			videoTitle: videoTitle.trim(),
+			videoURL: videoURL.trim(),
+			videoCaption: videoCaption.trim(),
+		})
+	}
+
+	try {
+		await createdVideo.save()
+	} catch (err) {
+		const error = new HttpError('Could not create new Video', 500)
+		return next(error)
+	}
+
+	//we created something new so conventionally, that'll be a 201
+	res.status(201).json({ video: createdVideo })
+}
 //
 //
 //
@@ -20809,6 +20904,47 @@ const editVenue = async (req, res, next) => {
 }
 //
 //
+//****************************************************************************************** */
+//
+//PATCH request where we can edit the Video Title, URL, or Caption
+//
+//******************************************************************************************* */
+const editVideo = async (req, res, next) => {
+	const errors = validationResult(req)
+	if (!errors.isEmpty()) {
+		throw new HttpError('Invalid inputs - something is empty.   editVideo', 422)
+	}
+
+	const { videoTitle, videoURL, videoCaption } = req.body
+
+	const videoId = req.params.videoId
+
+	let video
+	try {
+		video = await Video.findById(videoId)
+	} catch (err) {
+		const error = new HttpError(err, 500)
+		return next(error)
+	}
+
+	video.videoTitle = videoTitle
+	video.videoURL = videoURL
+	video.videoCaption = videoCaption
+
+	try {
+		await venue.save()
+	} catch (err) {
+		const error = new HttpError(
+			//'Something went wrong with saving the updated league.',
+			err,
+			500
+		)
+		return next(error)
+	}
+
+	//set it to 200 instead of 201 because we're not creating anything new
+	res.status(200).json({ venue: venue.toObject({ getters: true }) })
+}
 //
 //
 //
@@ -22585,8 +22721,10 @@ const login = async (req, res, next) => {
 exports.getArchivedLeagues = getArchivedLeagues
 exports.getCurrentLeagues = getCurrentLeagues
 exports.getVenues = getVenues
+exports.getVideos = getVideos
 exports.getLeagueData = getLeagueData
 exports.getVenueData = getVenueData
+exports.getVideoData = getVideoData
 exports.getTeamData = getTeamData
 exports.getPlayerNumber = getPlayerNumber
 exports.getPlayerData = getPlayerData
@@ -22607,6 +22745,7 @@ exports.allGamesAndEventsWeek = allGamesAndEventsWeek //This is this weeks sched
 exports.createNewLeague = createNewLeague
 exports.copyLeague = copyLeague
 exports.createNewVenue = createNewVenue
+exports.createNewVideo = createNewVideo
 exports.createNewPlayer = createNewPlayer
 exports.createNewTeam = createNewTeam
 exports.createNewTeamWithDivision = createNewTeamWithDivision
@@ -22624,6 +22763,7 @@ exports.editPlayerNumber = editPlayerNumber
 exports.editLeague = editLeague
 exports.archiveCurrentToggleLeague = archiveCurrentToggleLeague
 exports.editVenue = editVenue
+exports.editVideo = editVideo
 exports.editPlayerName = editPlayerName
 exports.editGame = editGame
 exports.editEvent = editEvent
