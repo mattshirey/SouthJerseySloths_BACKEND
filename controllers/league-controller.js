@@ -1169,7 +1169,7 @@ const getPreviousLeagues = async (req, res, next) => {
 		)
 	}
 
-	previousLeagues.reverse()
+	previousLeagues && previousLeagues.reverse()
 
 	res.json({ previousLeagues })
 }
