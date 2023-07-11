@@ -21782,6 +21782,39 @@ const removeLeague = async (req, res, next) => {
 //
 //
 //
+//****************************************************************************************** */
+//
+//  Remove a video
+//
+//
+//****************************************************************************************** */
+const removeVideo = async (req, res, next) => {
+	const deletedVideoId = req.params.deletedVideoId
+	//actually, this is the ROSTERPLAYER id, not the playerId
+
+	//First, we need to get the roster player id from RosterPlayers
+	let videoToDelete
+	try {
+		videoToDelete = await Video.findById(deletedVideoId)
+	} catch (err) {
+		const error = new HttpError('Could not find video to delete it', 404)
+		return next(error)
+	}
+	//
+	//
+	try {
+		await videoToDelete.deleteOne()
+	} catch (err) {
+		const error = new HttpError(err, 404)
+		return next(error)
+	}
+	//
+	res.status(200).json({
+		message: 'Video has been deleted',
+	})
+}
+//
+//
 //
 //****************************************************************************************** */
 //
@@ -22768,6 +22801,7 @@ exports.editPlayerName = editPlayerName
 exports.editGame = editGame
 exports.editEvent = editEvent
 exports.removeLeague = removeLeague
+exports.removeVideo = removeVideo
 exports.removeTeam = removeTeam
 exports.removePlayer = removePlayer
 exports.removeEvent = removeEvent

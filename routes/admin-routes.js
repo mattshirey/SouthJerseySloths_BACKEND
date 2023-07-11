@@ -339,6 +339,8 @@ router.patch(
 //
 router.delete('/:leagueId/removeLeague', adminControllers.removeLeague)
 
+router.delete('/:deletedVideoId/removeVideo', adminControllers.removeVideo)
+
 router.delete('/:teamId/removeTeam', adminControllers.removeTeam)
 
 router.delete('/:rosterPlayerId/removePlayer', adminControllers.removePlayer)
