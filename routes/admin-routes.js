@@ -135,7 +135,11 @@ router.post(
 //
 router.post(
 	'/video/new',
-	[check('videoURL').not().isEmpty()],
+	[
+		check('videoURL').not().isEmpty(),
+		check('videoTitle').not().isEmpty(),
+		check('videoCaption').not().isEmpty(),
+	],
 	adminControllers.createNewVideo
 )
 //
@@ -303,7 +307,11 @@ router.patch(
 //
 router.patch(
 	'/updateVideo/:videoId',
-	[check('videoURL').not().isEmpty()],
+	[
+		check('videoURL').not().isEmpty(),
+		check('videoTitle').not().isEmpty(),
+		check('videoCaption').not().isEmpty(),
+	],
 	adminControllers.editVideo
 )
 //
