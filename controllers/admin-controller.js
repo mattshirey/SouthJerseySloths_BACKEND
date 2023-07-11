@@ -2101,7 +2101,7 @@ const createNewPlayer = async (req, res, next) => {
 		}
 
 		if (player2Exists) {
-			createdPlayer1 && createdPlayer1.remove()
+			createdPlayer1 && createdPlayer1.deleteOne()
 			console.log('player 2 already exists')
 			const error = new HttpError('Player 2 already exists', 409)
 			return next(error)
@@ -2123,7 +2123,7 @@ const createNewPlayer = async (req, res, next) => {
 		try {
 			await createdPlayer2.save()
 		} catch (err) {
-			createdPlayer1 && createdPlayer1.remove()
+			createdPlayer1 && createdPlayer1.deleteOne()
 			const error = new HttpError('Could not create new Player 2', 500)
 			return next(error)
 		}
@@ -2154,8 +2154,8 @@ const createNewPlayer = async (req, res, next) => {
 		}
 
 		if (player3Exists) {
-			createdPlayer1 && createdPlayer1.remove()
-			createdPlayer2 && createdPlayer2.remove()
+			createdPlayer1 && createdPlayer1.deleteOne()
+			createdPlayer2 && createdPlayer2.deleteOne()
 			console.log('player 3 already exists')
 			const error = new HttpError('Player 3 already exists', 409)
 			return next(error)
@@ -2177,8 +2177,8 @@ const createNewPlayer = async (req, res, next) => {
 		try {
 			await createdPlayer3.save()
 		} catch (err) {
-			createdPlayer1 && createdPlayer1.remove()
-			createdPlayer2 && createdPlayer2.remove()
+			createdPlayer1 && createdPlayer1.deleteOne()
+			createdPlayer2 && createdPlayer2.deleteOne()
 			const error = new HttpError('Could not create new Player 3', 500)
 			return next(error)
 		}
@@ -2209,9 +2209,9 @@ const createNewPlayer = async (req, res, next) => {
 		}
 
 		if (player4Exists) {
-			createdPlayer1 && createdPlayer1.remove()
-			createdPlayer2 && createdPlayer2.remove()
-			createdPlayer3 && createdPlayer3.remove()
+			createdPlayer1 && createdPlayer1.deleteOne()
+			createdPlayer2 && createdPlayer2.deleteOne()
+			createdPlayer3 && createdPlayer3.deleteOne()
 			console.log('player 4 already exists')
 			const error = new HttpError('Player 4 already exists', 409)
 			return next(error)
@@ -2233,9 +2233,9 @@ const createNewPlayer = async (req, res, next) => {
 		try {
 			await createdPlayer4.save()
 		} catch (err) {
-			createdPlayer1 && createdPlayer1.remove()
-			createdPlayer2 && createdPlayer2.remove()
-			createdPlayer3 && createdPlayer3.remove()
+			createdPlayer1 && createdPlayer1.deleteOne()
+			createdPlayer2 && createdPlayer2.deleteOne()
+			createdPlayer3 && createdPlayer3.deleteOne()
 			const error = new HttpError('Could not create new Player 4', 500)
 			return next(error)
 		}
@@ -2266,10 +2266,10 @@ const createNewPlayer = async (req, res, next) => {
 		}
 
 		if (player5Exists) {
-			createdPlayer1 && createdPlayer1.remove()
-			createdPlayer2 && createdPlayer2.remove()
-			createdPlayer3 && createdPlayer3.remove()
-			createdPlayer4 && createdPlayer4.remove()
+			createdPlayer1 && createdPlayer1.deleteOne()
+			createdPlayer2 && createdPlayer2.deleteOne()
+			createdPlayer3 && createdPlayer3.deleteOne()
+			createdPlayer4 && createdPlayer4.deleteOne()
 			console.log('player 5 already exists')
 			const error = new HttpError('Player 5 already exists', 409)
 			return next(error)
@@ -2291,10 +2291,10 @@ const createNewPlayer = async (req, res, next) => {
 		try {
 			await createdPlayer5.save()
 		} catch (err) {
-			createdPlayer1 && createdPlayer1.remove()
-			createdPlayer2 && createdPlayer2.remove()
-			createdPlayer3 && createdPlayer3.remove()
-			createdPlayer4 && createdPlayer4.remove()
+			createdPlayer1 && createdPlayer1.deleteOne()
+			createdPlayer2 && createdPlayer2.deleteOne()
+			createdPlayer3 && createdPlayer3.deleteOne()
+			createdPlayer4 && createdPlayer4.deleteOne()
 			const error = new HttpError('Could not create new Player 5', 500)
 			return next(error)
 		}
@@ -2325,11 +2325,11 @@ const createNewPlayer = async (req, res, next) => {
 		}
 
 		if (player6Exists) {
-			createdPlayer1 && createdPlayer1.remove()
-			createdPlayer2 && createdPlayer2.remove()
-			createdPlayer3 && createdPlayer3.remove()
-			createdPlayer4 && createdPlayer4.remove()
-			createdPlayer5 && createdPlayer5.remove()
+			createdPlayer1 && createdPlayer1.deleteOne()
+			createdPlayer2 && createdPlayer2.deleteOne()
+			createdPlayer3 && createdPlayer3.deleteOne()
+			createdPlayer4 && createdPlayer4.deleteOne()
+			createdPlayer5 && createdPlayer5.deleteOne()
 			console.log('player 6 already exists')
 			const error = new HttpError('Player 6 already exists', 409)
 			return next(error)
@@ -2351,11 +2351,11 @@ const createNewPlayer = async (req, res, next) => {
 		try {
 			await createdPlayer6.save()
 		} catch (err) {
-			createdPlayer1 && createdPlayer1.remove()
-			createdPlayer2 && createdPlayer2.remove()
-			createdPlayer3 && createdPlayer3.remove()
-			createdPlayer4 && createdPlayer4.remove()
-			createdPlayer5 && createdPlayer5.remove()
+			createdPlayer1 && createdPlayer1.deleteOne()
+			createdPlayer2 && createdPlayer2.deleteOne()
+			createdPlayer3 && createdPlayer3.deleteOne()
+			createdPlayer4 && createdPlayer4.deleteOne()
+			createdPlayer5 && createdPlayer5.deleteOne()
 			const error = new HttpError('Could not create new Player 6', 500)
 			return next(error)
 		}
@@ -2386,12 +2386,12 @@ const createNewPlayer = async (req, res, next) => {
 		}
 
 		if (player7Exists) {
-			createdPlayer1 && createdPlayer1.remove()
-			createdPlayer2 && createdPlayer2.remove()
-			createdPlayer3 && createdPlayer3.remove()
-			createdPlayer4 && createdPlayer4.remove()
-			createdPlayer5 && createdPlayer5.remove()
-			createdPlayer6 && createdPlayer6.remove()
+			createdPlayer1 && createdPlayer1.deleteOne()
+			createdPlayer2 && createdPlayer2.deleteOne()
+			createdPlayer3 && createdPlayer3.deleteOne()
+			createdPlayer4 && createdPlayer4.deleteOne()
+			createdPlayer5 && createdPlayer5.deleteOne()
+			createdPlayer6 && createdPlayer6.deleteOne()
 			console.log('player 7 already exists')
 			const error = new HttpError('Player 7 already exists', 409)
 			return next(error)
@@ -2413,12 +2413,12 @@ const createNewPlayer = async (req, res, next) => {
 		try {
 			await createdPlayer7.save()
 		} catch (err) {
-			createdPlayer1 && createdPlayer1.remove()
-			createdPlayer2 && createdPlayer2.remove()
-			createdPlayer3 && createdPlayer3.remove()
-			createdPlayer4 && createdPlayer4.remove()
-			createdPlayer5 && createdPlayer5.remove()
-			createdPlayer6 && createdPlayer6.remove()
+			createdPlayer1 && createdPlayer1.deleteOne()
+			createdPlayer2 && createdPlayer2.deleteOne()
+			createdPlayer3 && createdPlayer3.deleteOne()
+			createdPlayer4 && createdPlayer4.deleteOne()
+			createdPlayer5 && createdPlayer5.deleteOne()
+			createdPlayer6 && createdPlayer6.deleteOne()
 			const error = new HttpError('Could not create new Player 7', 500)
 			return next(error)
 		}
@@ -2449,13 +2449,13 @@ const createNewPlayer = async (req, res, next) => {
 		}
 
 		if (player8Exists) {
-			createdPlayer1 && createdPlayer1.remove()
-			createdPlayer2 && createdPlayer2.remove()
-			createdPlayer3 && createdPlayer3.remove()
-			createdPlayer4 && createdPlayer4.remove()
-			createdPlayer5 && createdPlayer5.remove()
-			createdPlayer6 && createdPlayer6.remove()
-			createdPlayer7 && createdPlayer7.remove()
+			createdPlayer1 && createdPlayer1.deleteOne()
+			createdPlayer2 && createdPlayer2.deleteOne()
+			createdPlayer3 && createdPlayer3.deleteOne()
+			createdPlayer4 && createdPlayer4.deleteOne()
+			createdPlayer5 && createdPlayer5.deleteOne()
+			createdPlayer6 && createdPlayer6.deleteOne()
+			createdPlayer7 && createdPlayer7.deleteOne()
 			console.log('player 8 already exists')
 			const error = new HttpError('Player 8 already exists', 409)
 			return next(error)
@@ -2477,13 +2477,13 @@ const createNewPlayer = async (req, res, next) => {
 		try {
 			await createdPlayer8.save()
 		} catch (err) {
-			createdPlayer1 && createdPlayer1.remove()
-			createdPlayer2 && createdPlayer2.remove()
-			createdPlayer3 && createdPlayer3.remove()
-			createdPlayer4 && createdPlayer4.remove()
-			createdPlayer5 && createdPlayer5.remove()
-			createdPlayer6 && createdPlayer6.remove()
-			createdPlayer7 && createdPlayer7.remove()
+			createdPlayer1 && createdPlayer1.deleteOne()
+			createdPlayer2 && createdPlayer2.deleteOne()
+			createdPlayer3 && createdPlayer3.deleteOne()
+			createdPlayer4 && createdPlayer4.deleteOne()
+			createdPlayer5 && createdPlayer5.deleteOne()
+			createdPlayer6 && createdPlayer6.deleteOne()
+			createdPlayer7 && createdPlayer7.deleteOne()
 			const error = new HttpError('Could not create new Player 8', 500)
 			return next(error)
 		}
@@ -2514,14 +2514,14 @@ const createNewPlayer = async (req, res, next) => {
 		}
 
 		if (player9Exists) {
-			createdPlayer1 && createdPlayer1.remove()
-			createdPlayer2 && createdPlayer2.remove()
-			createdPlayer3 && createdPlayer3.remove()
-			createdPlayer4 && createdPlayer4.remove()
-			createdPlayer5 && createdPlayer5.remove()
-			createdPlayer6 && createdPlayer6.remove()
-			createdPlayer7 && createdPlayer7.remove()
-			createdPlayer8 && createdPlayer8.remove()
+			createdPlayer1 && createdPlayer1.deleteOne()
+			createdPlayer2 && createdPlayer2.deleteOne()
+			createdPlayer3 && createdPlayer3.deleteOne()
+			createdPlayer4 && createdPlayer4.deleteOne()
+			createdPlayer5 && createdPlayer5.deleteOne()
+			createdPlayer6 && createdPlayer6.deleteOne()
+			createdPlayer7 && createdPlayer7.deleteOne()
+			createdPlayer8 && createdPlayer8.deleteOne()
 			console.log('player 9 already exists')
 			const error = new HttpError('Player 9 already exists', 409)
 			return next(error)
@@ -2543,14 +2543,14 @@ const createNewPlayer = async (req, res, next) => {
 		try {
 			await createdPlayer9.save()
 		} catch (err) {
-			createdPlayer1 && createdPlayer1.remove()
-			createdPlayer2 && createdPlayer2.remove()
-			createdPlayer3 && createdPlayer3.remove()
-			createdPlayer4 && createdPlayer4.remove()
-			createdPlayer5 && createdPlayer5.remove()
-			createdPlayer6 && createdPlayer6.remove()
-			createdPlayer7 && createdPlayer7.remove()
-			createdPlayer8 && createdPlayer8.remove()
+			createdPlayer1 && createdPlayer1.deleteOne()
+			createdPlayer2 && createdPlayer2.deleteOne()
+			createdPlayer3 && createdPlayer3.deleteOne()
+			createdPlayer4 && createdPlayer4.deleteOne()
+			createdPlayer5 && createdPlayer5.deleteOne()
+			createdPlayer6 && createdPlayer6.deleteOne()
+			createdPlayer7 && createdPlayer7.deleteOne()
+			createdPlayer8 && createdPlayer8.deleteOne()
 			const error = new HttpError('Could not create new Player 9', 500)
 			return next(error)
 		}
@@ -2581,15 +2581,15 @@ const createNewPlayer = async (req, res, next) => {
 		}
 
 		if (player10Exists) {
-			createdPlayer1 && createdPlayer1.remove()
-			createdPlayer2 && createdPlayer2.remove()
-			createdPlayer3 && createdPlayer3.remove()
-			createdPlayer4 && createdPlayer4.remove()
-			createdPlayer5 && createdPlayer5.remove()
-			createdPlayer6 && createdPlayer6.remove()
-			createdPlayer7 && createdPlayer7.remove()
-			createdPlayer8 && createdPlayer8.remove()
-			createdPlayer9 && createdPlayer9.remove()
+			createdPlayer1 && createdPlayer1.deleteOne()
+			createdPlayer2 && createdPlayer2.deleteOne()
+			createdPlayer3 && createdPlayer3.deleteOne()
+			createdPlayer4 && createdPlayer4.deleteOne()
+			createdPlayer5 && createdPlayer5.deleteOne()
+			createdPlayer6 && createdPlayer6.deleteOne()
+			createdPlayer7 && createdPlayer7.deleteOne()
+			createdPlayer8 && createdPlayer8.deleteOne()
+			createdPlayer9 && createdPlayer9.deleteOne()
 			console.log('player 10 already exists')
 			const error = new HttpError('Player 10 already exists', 409)
 			return next(error)
@@ -2611,15 +2611,15 @@ const createNewPlayer = async (req, res, next) => {
 		try {
 			await createdPlayer10.save()
 		} catch (err) {
-			createdPlayer1 && createdPlayer1.remove()
-			createdPlayer2 && createdPlayer2.remove()
-			createdPlayer3 && createdPlayer3.remove()
-			createdPlayer4 && createdPlayer4.remove()
-			createdPlayer5 && createdPlayer5.remove()
-			createdPlayer6 && createdPlayer6.remove()
-			createdPlayer7 && createdPlayer7.remove()
-			createdPlayer8 && createdPlayer8.remove()
-			createdPlayer9 && createdPlayer9.remove()
+			createdPlayer1 && createdPlayer1.deleteOne()
+			createdPlayer2 && createdPlayer2.deleteOne()
+			createdPlayer3 && createdPlayer3.deleteOne()
+			createdPlayer4 && createdPlayer4.deleteOne()
+			createdPlayer5 && createdPlayer5.deleteOne()
+			createdPlayer6 && createdPlayer6.deleteOne()
+			createdPlayer7 && createdPlayer7.deleteOne()
+			createdPlayer8 && createdPlayer8.deleteOne()
+			createdPlayer9 && createdPlayer9.deleteOne()
 			const error = new HttpError('Could not create new Player 10', 500)
 			return next(error)
 		}
@@ -2743,8 +2743,8 @@ const createNewTeam = async (req, res, next) => {
 		})
 
 		if (teamExists2) {
-			createdTeam1.remove()
-			createdRoster1.remove()
+			createdTeam1.deleteOne()
+			createdRoster1.deleteOne()
 			const error = new HttpError(
 				teamName2 + ' already exists in this league',
 				409
@@ -2799,10 +2799,10 @@ const createNewTeam = async (req, res, next) => {
 		})
 
 		if (teamExists3) {
-			createdTeam1.remove()
-			createdRoster1.remove()
-			createdTeam2.remove()
-			createdRoster2.remove()
+			createdTeam1.deleteOne()
+			createdRoster1.deleteOne()
+			createdTeam2.deleteOne()
+			createdRoster2.deleteOne()
 			const error = new HttpError(
 				teamName3 + ' already exists in this league',
 				409
@@ -2857,12 +2857,12 @@ const createNewTeam = async (req, res, next) => {
 		})
 
 		if (teamExists4) {
-			createdTeam1.remove()
-			createdRoster1.remove()
-			createdTeam2.remove()
-			createdRoster2.remove()
-			createdTeam3.remove()
-			createdRoster3.remove()
+			createdTeam1.deleteOne()
+			createdRoster1.deleteOne()
+			createdTeam2.deleteOne()
+			createdRoster2.deleteOne()
+			createdTeam3.deleteOne()
+			createdRoster3.deleteOne()
 			const error = new HttpError(
 				teamName4 + ' already exists in this league',
 				409
@@ -2920,14 +2920,14 @@ const createNewTeam = async (req, res, next) => {
 		//so we'll remove them (and their rosters)
 
 		if (teamExists5) {
-			createdTeam1.remove()
-			createdRoster1.remove()
-			createdTeam2.remove()
-			createdRoster2.remove()
-			createdTeam3.remove()
-			createdRoster3.remove()
-			createdTeam4.remove()
-			createdRoster4.remove()
+			createdTeam1.deleteOne()
+			createdRoster1.deleteOne()
+			createdTeam2.deleteOne()
+			createdRoster2.deleteOne()
+			createdTeam3.deleteOne()
+			createdRoster3.deleteOne()
+			createdTeam4.deleteOne()
+			createdRoster4.deleteOne()
 			const error = new HttpError(
 				teamName5 + ' already exists in this league',
 				409
@@ -3139,8 +3139,8 @@ const createNewTeamWithDivision = async (req, res, next) => {
 		})
 
 		if (teamExists2) {
-			createdTeam1.remove()
-			createdRoster1.remove()
+			createdTeam1.deleteOne()
+			createdRoster1.deleteOne()
 			const error = new HttpError(
 				teamName2 + ' already exists in this league',
 				409
@@ -3198,10 +3198,10 @@ const createNewTeamWithDivision = async (req, res, next) => {
 		})
 
 		if (teamExists3) {
-			createdTeam1.remove()
-			createdRoster1.remove()
-			createdTeam2.remove()
-			createdRoster2.remove()
+			createdTeam1.deleteOne()
+			createdRoster1.deleteOne()
+			createdTeam2.deleteOne()
+			createdRoster2.deleteOne()
 			const error = new HttpError(
 				teamName3 + ' already exists in this league',
 				409
@@ -3259,12 +3259,12 @@ const createNewTeamWithDivision = async (req, res, next) => {
 		})
 
 		if (teamExists4) {
-			createdTeam1.remove()
-			createdRoster1.remove()
-			createdTeam2.remove()
-			createdRoster2.remove()
-			createdTeam3.remove()
-			createdRoster3.remove()
+			createdTeam1.deleteOne()
+			createdRoster1.deleteOne()
+			createdTeam2.deleteOne()
+			createdRoster2.deleteOne()
+			createdTeam3.deleteOne()
+			createdRoster3.deleteOne()
 			const error = new HttpError(
 				teamName4 + ' already exists in this league',
 				409
@@ -3325,14 +3325,14 @@ const createNewTeamWithDivision = async (req, res, next) => {
 		//so we'll remove them (and their rosters)
 
 		if (teamExists5) {
-			createdTeam1.remove()
-			createdRoster1.remove()
-			createdTeam2.remove()
-			createdRoster2.remove()
-			createdTeam3.remove()
-			createdRoster3.remove()
-			createdTeam4.remove()
-			createdRoster4.remove()
+			createdTeam1.deleteOne()
+			createdRoster1.deleteOne()
+			createdTeam2.deleteOne()
+			createdRoster2.deleteOne()
+			createdTeam3.deleteOne()
+			createdRoster3.deleteOne()
+			createdTeam4.deleteOne()
+			createdRoster4.deleteOne()
 			const error = new HttpError(
 				teamName5 + ' already exists in this league',
 				409
@@ -4094,17 +4094,17 @@ const createGames = async (req, res, next) => {
 	//********************************************************************************* */
 	if (leagueName2) {
 		if (!date2) {
-			createdGame1 && createdGame1.remove()
+			createdGame1 && createdGame1.deleteOne()
 			const error = new HttpError('Please enter a DATE for game 2', 422)
 			return next(error)
 		}
 		if (!time2 && !tbd2IsChecked) {
-			createdGame1 && createdGame1.remove()
+			createdGame1 && createdGame1.deleteOne()
 			const error = new HttpError('Please enter a TIME for game 2', 422)
 			return next(error)
 		}
 		if (!venue2) {
-			createdGame1 && createdGame1.remove()
+			createdGame1 && createdGame1.deleteOne()
 			const error = new HttpError('Please enter a VENUE for game 2', 422)
 			return next(error)
 		}
@@ -4117,7 +4117,7 @@ const createGames = async (req, res, next) => {
 				year: year2,
 			}).orFail()
 		} catch (err) {
-			createdGame1 && createdGame1.remove()
+			createdGame1 && createdGame1.deleteOne()
 			const error = new HttpError(
 				'Could not find league to obtain leagueId. createGame 2',
 				500
@@ -4278,7 +4278,7 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame2.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
+					createdGame1 && createdGame1.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -4306,7 +4306,7 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame2.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
+					createdGame1 && createdGame1.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -4334,7 +4334,7 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame2.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
+					createdGame1 && createdGame1.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -4359,7 +4359,7 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame2.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
+					createdGame1 && createdGame1.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -4494,7 +4494,7 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame2.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
+					createdGame1 && createdGame1.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -4522,7 +4522,7 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame2.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
+					createdGame1 && createdGame1.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -4550,7 +4550,7 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame2.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
+					createdGame1 && createdGame1.deleteOne()
 					const error = new HttpError('32: ' + err, 500)
 					return next(error)
 				}
@@ -4575,7 +4575,7 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame2.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
+					createdGame1 && createdGame1.deleteOne()
 					const error = new HttpError('42: ' + err, 500)
 					return next(error)
 				}
@@ -4597,20 +4597,20 @@ const createGames = async (req, res, next) => {
 	//********************************************************************************* */
 	if (leagueName3) {
 		if (!date3) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
 			const error = new HttpError('Please enter a DATE for game 3', 422)
 			return next(error)
 		}
 		if (!time3 && !tbd3IsChecked) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
 			const error = new HttpError('Please enter a TIME for game 3', 422)
 			return next(error)
 		}
 		if (!venue3) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
 			const error = new HttpError('Please enter a VENUE for game 3', 422)
 			return next(error)
 		}
@@ -4623,8 +4623,8 @@ const createGames = async (req, res, next) => {
 				year: year3,
 			}).orFail()
 		} catch (err) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
 			const error = new HttpError(
 				'Could not find league to obtain leagueId. createGame 3',
 				500
@@ -4783,8 +4783,8 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame3.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -4812,8 +4812,8 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame3.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -4841,8 +4841,8 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame3.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -4867,8 +4867,8 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame3.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -5003,8 +5003,8 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame3.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -5032,8 +5032,8 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame3.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -5061,8 +5061,8 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame3.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
 					const error = new HttpError('32: ' + err, 500)
 					return next(error)
 				}
@@ -5087,8 +5087,8 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame3.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
 					const error = new HttpError('43: ' + err, 500)
 					return next(error)
 				}
@@ -5111,23 +5111,23 @@ const createGames = async (req, res, next) => {
 	//********************************************************************************* */
 	if (leagueName4) {
 		if (!date4) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
 			const error = new HttpError('Please enter a DATE for game 4', 422)
 			return next(error)
 		}
 		if (!time4 && !tbd4IsChecked) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
 			const error = new HttpError('Please enter a TIME for game 4', 422)
 			return next(error)
 		}
 		if (!venue4) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
 			const error = new HttpError('Please enter a VENUE for game 4', 422)
 			return next(error)
 		}
@@ -5140,9 +5140,9 @@ const createGames = async (req, res, next) => {
 				year: year4,
 			}).orFail()
 		} catch (err) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
 			const error = new HttpError(
 				'Could not find league to obtain leagueId. createGame 4',
 				500
@@ -5301,9 +5301,9 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame4.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -5331,9 +5331,9 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame4.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -5361,9 +5361,9 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame4.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -5388,9 +5388,9 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame4.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -5525,9 +5525,9 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame4.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -5555,9 +5555,9 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame4.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -5585,9 +5585,9 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame4.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
 					const error = new HttpError('34: ' + err, 500)
 					return next(error)
 				}
@@ -5612,9 +5612,9 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame4.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
 					const error = new HttpError('44: ' + err, 500)
 					return next(error)
 				}
@@ -5637,26 +5637,26 @@ const createGames = async (req, res, next) => {
 	//********************************************************************************* */
 	if (leagueName5) {
 		if (!date5) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
-			createdGame4 && createdGame4.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
 			const error = new HttpError('Please enter a DATE for game 5', 422)
 			return next(error)
 		}
 		if (!time5 && !tbd5IsChecked) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
-			createdGame4 && createdGame4.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
 			const error = new HttpError('Please enter a TIME for game 5', 422)
 			return next(error)
 		}
 		if (!venue5) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
-			createdGame4 && createdGame4.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
 			const error = new HttpError('Please enter a VENUE for game 5', 422)
 			return next(error)
 		}
@@ -5669,10 +5669,10 @@ const createGames = async (req, res, next) => {
 				year: year5,
 			}).orFail()
 		} catch (err) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
-			createdGame4 && createdGame4.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
 			const error = new HttpError(
 				'Could not find league to obtain leagueId. createGame 5',
 				500
@@ -5833,10 +5833,10 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame5.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -5864,10 +5864,10 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame5.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -5895,10 +5895,10 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame5.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -5923,10 +5923,10 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame5.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -6061,10 +6061,10 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame5.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -6092,10 +6092,10 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame5.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -6123,10 +6123,10 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame5.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
 					const error = new HttpError('35: ' + err, 500)
 					return next(error)
 				}
@@ -6151,10 +6151,10 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame5.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
 					const error = new HttpError('45: ' + err, 500)
 					return next(error)
 				}
@@ -6177,29 +6177,29 @@ const createGames = async (req, res, next) => {
 	//********************************************************************************* */
 	if (leagueName6) {
 		if (!date6) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
-			createdGame4 && createdGame4.remove()
-			createdGame5 && createdGame5.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
+			createdGame5 && createdGame5.deleteOne()
 			const error = new HttpError('Please enter a DATE for game 6', 422)
 			return next(error)
 		}
 		if (!time6 && !tbd6IsChecked) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
-			createdGame4 && createdGame4.remove()
-			createdGame5 && createdGame5.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
+			createdGame5 && createdGame5.deleteOne()
 			const error = new HttpError('Please enter a TIME for game 6', 422)
 			return next(error)
 		}
 		if (!venue6) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
-			createdGame4 && createdGame4.remove()
-			createdGame5 && createdGame5.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
+			createdGame5 && createdGame5.deleteOne()
 			const error = new HttpError('Please enter a VENUE for game 6', 422)
 			return next(error)
 		}
@@ -6212,11 +6212,11 @@ const createGames = async (req, res, next) => {
 				year: year6,
 			}).orFail()
 		} catch (err) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
-			createdGame4 && createdGame4.remove()
-			createdGame5 && createdGame5.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
+			createdGame5 && createdGame5.deleteOne()
 			const error = new HttpError(
 				'Could not find league to obtain leagueId. createGame 6',
 				500
@@ -6377,11 +6377,11 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame6.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -6409,11 +6409,11 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame6.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -6441,11 +6441,11 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame6.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -6470,11 +6470,11 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame6.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -6609,11 +6609,11 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame6.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -6641,11 +6641,11 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame6.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -6673,11 +6673,11 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame6.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
 					const error = new HttpError('36: ' + err, 500)
 					return next(error)
 				}
@@ -6702,11 +6702,11 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame6.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
 					const error = new HttpError('46: ' + err, 500)
 					return next(error)
 				}
@@ -6728,32 +6728,32 @@ const createGames = async (req, res, next) => {
 	//********************************************************************************* */
 	if (leagueName7) {
 		if (!date7) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
-			createdGame4 && createdGame4.remove()
-			createdGame5 && createdGame5.remove()
-			createdGame6 && createdGame6.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
+			createdGame5 && createdGame5.deleteOne()
+			createdGame6 && createdGame6.deleteOne()
 			const error = new HttpError('Please enter a DATE for game 7', 422)
 			return next(error)
 		}
 		if (!time7 && !tbd7IsChecked) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
-			createdGame4 && createdGame4.remove()
-			createdGame5 && createdGame5.remove()
-			createdGame6 && createdGame6.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
+			createdGame5 && createdGame5.deleteOne()
+			createdGame6 && createdGame6.deleteOne()
 			const error = new HttpError('Please enter a TIME for game 7', 422)
 			return next(error)
 		}
 		if (!venue7) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
-			createdGame4 && createdGame4.remove()
-			createdGame5 && createdGame5.remove()
-			createdGame6 && createdGame6.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
+			createdGame5 && createdGame5.deleteOne()
+			createdGame6 && createdGame6.deleteOne()
 			const error = new HttpError('Please enter a VENUE for game 7', 422)
 			return next(error)
 		}
@@ -6766,12 +6766,12 @@ const createGames = async (req, res, next) => {
 				year: year7,
 			}).orFail()
 		} catch (err) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
-			createdGame4 && createdGame4.remove()
-			createdGame5 && createdGame5.remove()
-			createdGame6 && createdGame6.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
+			createdGame5 && createdGame5.deleteOne()
+			createdGame6 && createdGame6.deleteOne()
 			const error = new HttpError(
 				'Could not find league to obtain leagueId. createGame 7',
 				500
@@ -6931,12 +6931,12 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame7.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -6964,12 +6964,12 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame7.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -6997,12 +6997,12 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame7.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -7027,12 +7027,12 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame7.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -7167,12 +7167,12 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame7.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -7200,12 +7200,12 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame7.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -7233,12 +7233,12 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame7.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
 					const error = new HttpError('37: ' + err, 500)
 					return next(error)
 				}
@@ -7263,12 +7263,12 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame7.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
 					const error = new HttpError('47: ' + err, 500)
 					return next(error)
 				}
@@ -7290,35 +7290,35 @@ const createGames = async (req, res, next) => {
 	//********************************************************************************* */
 	if (leagueName8) {
 		if (!date8) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
-			createdGame4 && createdGame4.remove()
-			createdGame5 && createdGame5.remove()
-			createdGame6 && createdGame6.remove()
-			createdGame7 && createdGame7.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
+			createdGame5 && createdGame5.deleteOne()
+			createdGame6 && createdGame6.deleteOne()
+			createdGame7 && createdGame7.deleteOne()
 			const error = new HttpError('Please enter a DATE for game 8', 422)
 			return next(error)
 		}
 		if (!time8 && !tbd8IsChecked) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
-			createdGame4 && createdGame4.remove()
-			createdGame5 && createdGame5.remove()
-			createdGame6 && createdGame6.remove()
-			createdGame7 && createdGame7.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
+			createdGame5 && createdGame5.deleteOne()
+			createdGame6 && createdGame6.deleteOne()
+			createdGame7 && createdGame7.deleteOne()
 			const error = new HttpError('Please enter a TIME for game 8', 422)
 			return next(error)
 		}
 		if (!venue8) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
-			createdGame4 && createdGame4.remove()
-			createdGame5 && createdGame5.remove()
-			createdGame6 && createdGame6.remove()
-			createdGame7 && createdGame7.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
+			createdGame5 && createdGame5.deleteOne()
+			createdGame6 && createdGame6.deleteOne()
+			createdGame7 && createdGame7.deleteOne()
 			const error = new HttpError('Please enter a VENUE for game 8', 422)
 			return next(error)
 		}
@@ -7331,13 +7331,13 @@ const createGames = async (req, res, next) => {
 				year: year8,
 			}).orFail()
 		} catch (err) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
-			createdGame4 && createdGame4.remove()
-			createdGame5 && createdGame5.remove()
-			createdGame6 && createdGame6.remove()
-			createdGame7 && createdGame7.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
+			createdGame5 && createdGame5.deleteOne()
+			createdGame6 && createdGame6.deleteOne()
+			createdGame7 && createdGame7.deleteOne()
 			const error = new HttpError(
 				'Could not find league to obtain leagueId. createGame 8',
 				500
@@ -7498,13 +7498,13 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame8.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
-					createdGame7 && createdGame7.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
+					createdGame7 && createdGame7.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -7532,13 +7532,13 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame8.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
-					createdGame7 && createdGame7.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
+					createdGame7 && createdGame7.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -7566,13 +7566,13 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame8.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
-					createdGame7 && createdGame7.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
+					createdGame7 && createdGame7.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -7597,13 +7597,13 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame8.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
-					createdGame7 && createdGame7.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
+					createdGame7 && createdGame7.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -7738,13 +7738,13 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame8.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
-					createdGame7 && createdGame7.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
+					createdGame7 && createdGame7.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -7772,13 +7772,13 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame8.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
-					createdGame7 && createdGame7.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
+					createdGame7 && createdGame7.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -7806,13 +7806,13 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame8.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
-					createdGame7 && createdGame7.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
+					createdGame7 && createdGame7.deleteOne()
 					const error = new HttpError('38: ' + err, 500)
 					return next(error)
 				}
@@ -7837,13 +7837,13 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame8.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
-					createdGame7 && createdGame7.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
+					createdGame7 && createdGame7.deleteOne()
 					const error = new HttpError('48: ' + err, 500)
 					return next(error)
 				}
@@ -7865,38 +7865,38 @@ const createGames = async (req, res, next) => {
 	//********************************************************************************* */
 	if (leagueName9) {
 		if (!date9) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
-			createdGame4 && createdGame4.remove()
-			createdGame5 && createdGame5.remove()
-			createdGame6 && createdGame6.remove()
-			createdGame7 && createdGame7.remove()
-			createdGame8 && createdGame8.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
+			createdGame5 && createdGame5.deleteOne()
+			createdGame6 && createdGame6.deleteOne()
+			createdGame7 && createdGame7.deleteOne()
+			createdGame8 && createdGame8.deleteOne()
 			const error = new HttpError('Please enter a DATE for game 9', 422)
 			return next(error)
 		}
 		if (!time9 && !tbd9IsChecked) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
-			createdGame4 && createdGame4.remove()
-			createdGame5 && createdGame5.remove()
-			createdGame6 && createdGame6.remove()
-			createdGame7 && createdGame7.remove()
-			createdGame8 && createdGame8.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
+			createdGame5 && createdGame5.deleteOne()
+			createdGame6 && createdGame6.deleteOne()
+			createdGame7 && createdGame7.deleteOne()
+			createdGame8 && createdGame8.deleteOne()
 			const error = new HttpError('Please enter a TIME for game 9', 422)
 			return next(error)
 		}
 		if (!venue9) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
-			createdGame4 && createdGame4.remove()
-			createdGame5 && createdGame5.remove()
-			createdGame6 && createdGame6.remove()
-			createdGame7 && createdGame7.remove()
-			createdGame8 && createdGame8.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
+			createdGame5 && createdGame5.deleteOne()
+			createdGame6 && createdGame6.deleteOne()
+			createdGame7 && createdGame7.deleteOne()
+			createdGame8 && createdGame8.deleteOne()
 			const error = new HttpError('Please enter a VENUE for game 9', 422)
 			return next(error)
 		}
@@ -7909,14 +7909,14 @@ const createGames = async (req, res, next) => {
 				year: year9,
 			}).orFail()
 		} catch (err) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
-			createdGame4 && createdGame4.remove()
-			createdGame5 && createdGame5.remove()
-			createdGame6 && createdGame6.remove()
-			createdGame7 && createdGame7.remove()
-			createdGame8 && createdGame8.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
+			createdGame5 && createdGame5.deleteOne()
+			createdGame6 && createdGame6.deleteOne()
+			createdGame7 && createdGame7.deleteOne()
+			createdGame8 && createdGame8.deleteOne()
 			const error = new HttpError(
 				'Could not find league to obtain leagueId. createGame 9',
 				500
@@ -8077,14 +8077,14 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame9.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
-					createdGame7 && createdGame7.remove()
-					createdGame8 && createdGame8.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
+					createdGame7 && createdGame7.deleteOne()
+					createdGame8 && createdGame8.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -8112,14 +8112,14 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame9.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
-					createdGame7 && createdGame7.remove()
-					createdGame8 && createdGame8.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
+					createdGame7 && createdGame7.deleteOne()
+					createdGame8 && createdGame8.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -8147,14 +8147,14 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame9.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
-					createdGame7 && createdGame7.remove()
-					createdGame8 && createdGame8.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
+					createdGame7 && createdGame7.deleteOne()
+					createdGame8 && createdGame8.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -8179,14 +8179,14 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame9.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
-					createdGame7 && createdGame7.remove()
-					createdGame8 && createdGame8.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
+					createdGame7 && createdGame7.deleteOne()
+					createdGame8 && createdGame8.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -8321,14 +8321,14 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame9.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
-					createdGame7 && createdGame7.remove()
-					createdGame8 && createdGame8.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
+					createdGame7 && createdGame7.deleteOne()
+					createdGame8 && createdGame8.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -8356,14 +8356,14 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame9.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
-					createdGame7 && createdGame7.remove()
-					createdGame8 && createdGame8.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
+					createdGame7 && createdGame7.deleteOne()
+					createdGame8 && createdGame8.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -8391,14 +8391,14 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame9.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
-					createdGame7 && createdGame7.remove()
-					createdGame8 && createdGame8.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
+					createdGame7 && createdGame7.deleteOne()
+					createdGame8 && createdGame8.deleteOne()
 					const error = new HttpError('39: ' + err, 500)
 					return next(error)
 				}
@@ -8423,14 +8423,14 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame9.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
-					createdGame7 && createdGame7.remove()
-					createdGame8 && createdGame8.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
+					createdGame7 && createdGame7.deleteOne()
+					createdGame8 && createdGame8.deleteOne()
 					const error = new HttpError('49: ' + err, 500)
 					return next(error)
 				}
@@ -8452,41 +8452,41 @@ const createGames = async (req, res, next) => {
 	//********************************************************************************* */
 	if (leagueName10) {
 		if (!date10) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
-			createdGame4 && createdGame4.remove()
-			createdGame5 && createdGame5.remove()
-			createdGame6 && createdGame6.remove()
-			createdGame7 && createdGame7.remove()
-			createdGame8 && createdGame8.remove()
-			createdGame9 && createdGame9.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
+			createdGame5 && createdGame5.deleteOne()
+			createdGame6 && createdGame6.deleteOne()
+			createdGame7 && createdGame7.deleteOne()
+			createdGame8 && createdGame8.deleteOne()
+			createdGame9 && createdGame9.deleteOne()
 			const error = new HttpError('Please enter a DATE for game 10', 422)
 			return next(error)
 		}
 		if (!time10 && !tbd10IsChecked) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
-			createdGame4 && createdGame4.remove()
-			createdGame5 && createdGame5.remove()
-			createdGame6 && createdGame6.remove()
-			createdGame7 && createdGame7.remove()
-			createdGame8 && createdGame8.remove()
-			createdGame9 && createdGame9.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
+			createdGame5 && createdGame5.deleteOne()
+			createdGame6 && createdGame6.deleteOne()
+			createdGame7 && createdGame7.deleteOne()
+			createdGame8 && createdGame8.deleteOne()
+			createdGame9 && createdGame9.deleteOne()
 			const error = new HttpError('Please enter a TIME for game 10', 422)
 			return next(error)
 		}
 		if (!venue10) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
-			createdGame4 && createdGame4.remove()
-			createdGame5 && createdGame5.remove()
-			createdGame6 && createdGame6.remove()
-			createdGame7 && createdGame7.remove()
-			createdGame8 && createdGame8.remove()
-			createdGame9 && createdGame9.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
+			createdGame5 && createdGame5.deleteOne()
+			createdGame6 && createdGame6.deleteOne()
+			createdGame7 && createdGame7.deleteOne()
+			createdGame8 && createdGame8.deleteOne()
+			createdGame9 && createdGame9.deleteOne()
 			const error = new HttpError('Please enter a VENUE for game 10', 422)
 			return next(error)
 		}
@@ -8499,15 +8499,15 @@ const createGames = async (req, res, next) => {
 				year: year10,
 			}).orFail()
 		} catch (err) {
-			createdGame1 && createdGame1.remove()
-			createdGame2 && createdGame2.remove()
-			createdGame3 && createdGame3.remove()
-			createdGame4 && createdGame4.remove()
-			createdGame5 && createdGame5.remove()
-			createdGame6 && createdGame6.remove()
-			createdGame7 && createdGame7.remove()
-			createdGame8 && createdGame8.remove()
-			createdGame9 && createdGame9.remove()
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
+			createdGame5 && createdGame5.deleteOne()
+			createdGame6 && createdGame6.deleteOne()
+			createdGame7 && createdGame7.deleteOne()
+			createdGame8 && createdGame8.deleteOne()
+			createdGame9 && createdGame9.deleteOne()
 			const error = new HttpError(
 				'Could not find league to obtain leagueId. createGame 10',
 				500
@@ -8667,15 +8667,15 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame10.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
-					createdGame7 && createdGame7.remove()
-					createdGame8 && createdGame8.remove()
-					createdGame9 && createdGame9.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
+					createdGame7 && createdGame7.deleteOne()
+					createdGame8 && createdGame8.deleteOne()
+					createdGame9 && createdGame9.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -8703,15 +8703,15 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame10.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
-					createdGame7 && createdGame7.remove()
-					createdGame8 && createdGame8.remove()
-					createdGame9 && createdGame9.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
+					createdGame7 && createdGame7.deleteOne()
+					createdGame8 && createdGame8.deleteOne()
+					createdGame9 && createdGame9.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -8739,15 +8739,15 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame10.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
-					createdGame7 && createdGame7.remove()
-					createdGame8 && createdGame8.remove()
-					createdGame9 && createdGame9.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
+					createdGame7 && createdGame7.deleteOne()
+					createdGame8 && createdGame8.deleteOne()
+					createdGame9 && createdGame9.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -8772,15 +8772,15 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame10.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
-					createdGame7 && createdGame7.remove()
-					createdGame8 && createdGame8.remove()
-					createdGame9 && createdGame9.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
+					createdGame7 && createdGame7.deleteOne()
+					createdGame8 && createdGame8.deleteOne()
+					createdGame9 && createdGame9.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -8915,15 +8915,15 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame10.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
-					createdGame7 && createdGame7.remove()
-					createdGame8 && createdGame8.remove()
-					createdGame9 && createdGame9.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
+					createdGame7 && createdGame7.deleteOne()
+					createdGame8 && createdGame8.deleteOne()
+					createdGame9 && createdGame9.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -8951,15 +8951,15 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame10.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
-					createdGame7 && createdGame7.remove()
-					createdGame8 && createdGame8.remove()
-					createdGame9 && createdGame9.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
+					createdGame7 && createdGame7.deleteOne()
+					createdGame8 && createdGame8.deleteOne()
+					createdGame9 && createdGame9.deleteOne()
 					const error = new HttpError(err, 500)
 					return next(error)
 				}
@@ -8987,15 +8987,15 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame10.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
-					createdGame7 && createdGame7.remove()
-					createdGame8 && createdGame8.remove()
-					createdGame9 && createdGame9.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
+					createdGame7 && createdGame7.deleteOne()
+					createdGame8 && createdGame8.deleteOne()
+					createdGame9 && createdGame9.deleteOne()
 					const error = new HttpError('310: ' + err, 500)
 					return next(error)
 				}
@@ -9020,15 +9020,15 @@ const createGames = async (req, res, next) => {
 				try {
 					await createdGame10.save()
 				} catch (err) {
-					createdGame1 && createdGame1.remove()
-					createdGame2 && createdGame2.remove()
-					createdGame3 && createdGame3.remove()
-					createdGame4 && createdGame4.remove()
-					createdGame5 && createdGame5.remove()
-					createdGame6 && createdGame6.remove()
-					createdGame7 && createdGame7.remove()
-					createdGame8 && createdGame8.remove()
-					createdGame9 && createdGame9.remove()
+					createdGame1 && createdGame1.deleteOne()
+					createdGame2 && createdGame2.deleteOne()
+					createdGame3 && createdGame3.deleteOne()
+					createdGame4 && createdGame4.deleteOne()
+					createdGame5 && createdGame5.deleteOne()
+					createdGame6 && createdGame6.deleteOne()
+					createdGame7 && createdGame7.deleteOne()
+					createdGame8 && createdGame8.deleteOne()
+					createdGame9 && createdGame9.deleteOne()
 					const error = new HttpError('49: ' + err, 500)
 					return next(error)
 				}
@@ -11913,7 +11913,7 @@ const createGameStats = async (req, res, next) => {
 					//
 					try {
 						console.log('deleting game stats 100...')
-						await gameStats.remove()
+						await gameStats.deleteOne()
 					} catch (err) {
 						const error = new HttpError(
 							'Could not delete game stats: ' + err,
@@ -12109,7 +12109,7 @@ const createGameStats = async (req, res, next) => {
 					//
 					try {
 						console.log('deleting game stats 101...')
-						await gameStats.remove()
+						await gameStats.deleteOne()
 					} catch (err) {
 						const error = new HttpError(
 							'Could not delete game stats: ' + err,
@@ -12234,7 +12234,7 @@ const createGameStats = async (req, res, next) => {
 					//
 					try {
 						console.log('deleting game stats 102...')
-						await gameStats.remove()
+						await gameStats.deleteOne()
 					} catch (err) {
 						const error = new HttpError(
 							'Could not delete game stats: ' + err,
@@ -12397,7 +12397,7 @@ const createGameStats = async (req, res, next) => {
 			if (rosterPlayerStatsPerGameExists) {
 				previousGoals = rosterPlayerStatsPerGameExists.goals
 				previousAssists = rosterPlayerStatsPerGameExists.assists
-				rosterPlayerStatsPerGameExists.remove()
+				rosterPlayerStatsPerGameExists.deleteOne()
 			}
 			//
 			//
@@ -12510,7 +12510,7 @@ const createGameStats = async (req, res, next) => {
 				)
 				//Writing to GAME tally.  This is what will appear when we reload the form
 				if (rosterPlayerGameStatsToDelete) {
-					rosterPlayerGameStatsToDelete.remove()
+					rosterPlayerGameStatsToDelete.deleteOne()
 				}
 			}
 		}
@@ -12564,7 +12564,7 @@ const createGameStats = async (req, res, next) => {
 			if (rosterPlayerStatsPerGameExists) {
 				previousGoals = rosterPlayerStatsPerGameExists.goals
 				previousAssists = rosterPlayerStatsPerGameExists.assists
-				rosterPlayerStatsPerGameExists.remove()
+				rosterPlayerStatsPerGameExists.deleteOne()
 			}
 			//
 			//
@@ -12678,7 +12678,7 @@ const createGameStats = async (req, res, next) => {
 				}
 				//Writing to GAME tally.  This is what will appear when we reload the form
 				if (rosterPlayerGameStatsToDelete) {
-					rosterPlayerGameStatsToDelete.remove()
+					rosterPlayerGameStatsToDelete.deleteOne()
 				}
 			}
 		}
@@ -12752,7 +12752,7 @@ const createPlayoffGameStats = async (req, res, next) => {
 	if (foundStats) {
 		console.log('foundStats: ' + foundStats)
 		foundStats.forEach((stat) => {
-			stat.remove()
+			stat.deleteOne()
 		})
 	}
 
@@ -12854,7 +12854,7 @@ const createChampionshipGameStats = async (req, res, next) => {
 	if (foundStats) {
 		//console.log('foundStats: ' + foundStats)
 		foundStats.forEach((stat) => {
-			stat.remove()
+			stat.deleteOne()
 		})
 	}
 
@@ -13173,33 +13173,33 @@ const createEvents = async (req, res, next) => {
 	//**************************************************************************************** */
 	if (eventName2) {
 		if (!date2) {
-			createdEvent1 && createdEvent1.remove()
+			createdEvent1 && createdEvent1.deleteOne()
 			if (recurring1) {
 				console.log('NO DATE GIVEN: we need to delete recurring events')
 				recurringEvent1Collection.forEach((event) => {
-					event.remove()
+					event.deleteOne()
 				})
 			}
 			const error = new HttpError('Please enter a DATE for event 2', 422)
 			return next(error)
 		}
 		if (!time2 && !tbd2IsChecked) {
-			createdEvent1 && createdEvent1.remove()
+			createdEvent1 && createdEvent1.deleteOne()
 			if (recurring1) {
 				console.log('NO TIME GIVEN: we need to delete recurring events')
 				recurringEvent1Collection.forEach((event) => {
-					event.remove()
+					event.deleteOne()
 				})
 			}
 			const error = new HttpError('Please enter a TIME for event 2', 422)
 			return next(error)
 		}
 		if (!venue2) {
-			createdEvent1 && createdEvent1.remove()
+			createdEvent1 && createdEvent1.deleteOne()
 			if (recurring1) {
 				console.log('NO TIME GIVEN: we need to delete recurring events')
 				recurringEvent1Collection.forEach((event) => {
-					event.remove()
+					event.deleteOne()
 				})
 			}
 			const error = new HttpError('Please enter a VENUE for event 2', 422)
@@ -13383,11 +13383,11 @@ const createEvents = async (req, res, next) => {
 			try {
 				await createdEvent2.save()
 			} catch (err) {
-				createdEvent1 && createdEvent1.remove()
+				createdEvent1 && createdEvent1.deleteOne()
 				if (recurring1) {
 					console.log('NO TIME GIVEN: we need to delete recurring events')
 					recurringEvent1Collection.forEach((event) => {
-						event.remove()
+						event.deleteOne()
 					})
 				}
 				const error = new HttpError(err, 500)
@@ -13404,51 +13404,51 @@ const createEvents = async (req, res, next) => {
 	//**************************************************************************************** */
 	if (eventName3) {
 		if (!date3) {
-			createdEvent1 && createdEvent1.remove()
+			createdEvent1 && createdEvent1.deleteOne()
 			if (recurring1) {
 				recurringEvent1Collection.forEach((event) => {
-					event.remove()
+					event.deleteOne()
 				})
 			}
-			createdEvent2 && createdEvent2.remove()
+			createdEvent2 && createdEvent2.deleteOne()
 			if (recurring2) {
 				console.log('NO DATE GIVEN: we need to delete recurring events')
 				recurringEvent2Collection.forEach((event) => {
-					event.remove()
+					event.deleteOne()
 				})
 			}
 			const error = new HttpError('Please enter a DATE for event 3', 422)
 			return next(error)
 		}
 		if (!time3 && !tbd3IsChecked) {
-			createdEvent1 && createdEvent1.remove()
+			createdEvent1 && createdEvent1.deleteOne()
 			if (recurring1) {
 				recurringEvent1Collection.forEach((event) => {
-					event.remove()
+					event.deleteOne()
 				})
 			}
-			createdEvent2 && createdEvent2.remove()
+			createdEvent2 && createdEvent2.deleteOne()
 			if (recurring2) {
 				console.log('NO DATE GIVEN: we need to delete recurring events')
 				recurringEvent2Collection.forEach((event) => {
-					event.remove()
+					event.deleteOne()
 				})
 			}
 			const error = new HttpError('Please enter a TIME for event 3', 422)
 			return next(error)
 		}
 		if (!venue3) {
-			createdEvent1 && createdEvent1.remove()
+			createdEvent1 && createdEvent1.deleteOne()
 			if (recurring1) {
 				recurringEvent1Collection.forEach((event) => {
-					event.remove()
+					event.deleteOne()
 				})
 			}
-			createdEvent2 && createdEvent2.remove()
+			createdEvent2 && createdEvent2.deleteOne()
 			if (recurring2) {
 				console.log('NO DATE GIVEN: we need to delete recurring events')
 				recurringEvent2Collection.forEach((event) => {
-					event.remove()
+					event.deleteOne()
 				})
 			}
 			const error = new HttpError('Please enter a VENUE for event 3', 422)
@@ -13634,17 +13634,17 @@ const createEvents = async (req, res, next) => {
 			try {
 				await createdEvent3.save()
 			} catch (err) {
-				createdEvent1 && createdEvent1.remove()
+				createdEvent1 && createdEvent1.deleteOne()
 				if (recurring1) {
 					recurringEvent1Collection.forEach((event) => {
-						event.remove()
+						event.deleteOne()
 					})
 				}
-				createdEvent2 && createdEvent2.remove()
+				createdEvent2 && createdEvent2.deleteOne()
 				if (recurring2) {
 					console.log('NO DATE GIVEN: we need to delete recurring events')
 					recurringEvent1Collection.forEach((event) => {
-						event.remove()
+						event.deleteOne()
 					})
 				}
 				const error = new HttpError(err, 500)
@@ -13661,50 +13661,50 @@ const createEvents = async (req, res, next) => {
 	//**************************************************************************************** */
 	if (eventName4) {
 		if (!date4) {
-			createdEvent1 && createdEvent1.remove()
+			createdEvent1 && createdEvent1.deleteOne()
 			if (recurring1) {
 				recurringEvent1Collection.forEach((event) => {
-					event.remove()
+					event.deleteOne()
 				})
 			}
 
-			createdEvent3 && createdEvent3.remove()
+			createdEvent3 && createdEvent3.deleteOne()
 			const error = new HttpError('Please enter a DATE for event 4', 422)
 			return next(error)
 		}
 		if (!time4 && !tbd4IsChecked) {
-			createdEvent1 && createdEvent1.remove()
+			createdEvent1 && createdEvent1.deleteOne()
 			if (recurring1) {
 				recurringEvent1Collection.forEach((event) => {
-					event.remove()
+					event.deleteOne()
 				})
 			}
-			createdEvent2 && createdEvent2.remove()
+			createdEvent2 && createdEvent2.deleteOne()
 			if (recurring2) {
 				console.log('NO DATE GIVEN: we need to delete recurring events')
 				recurringEvent1Collection.forEach((event) => {
-					event.remove()
+					event.deleteOne()
 				})
 			}
-			createdEvent3 && createdEvent3.remove()
+			createdEvent3 && createdEvent3.deleteOne()
 			const error = new HttpError('Please enter a TIME for event 4', 422)
 			return next(error)
 		}
 		if (!venue4) {
-			createdEvent1 && createdEvent1.remove()
+			createdEvent1 && createdEvent1.deleteOne()
 			if (recurring1) {
 				recurringEvent1Collection.forEach((event) => {
-					event.remove()
+					event.deleteOne()
 				})
 			}
-			createdEvent2 && createdEvent2.remove()
+			createdEvent2 && createdEvent2.deleteOne()
 			if (recurring2) {
 				console.log('NO DATE GIVEN: we need to delete recurring events')
 				recurringEvent1Collection.forEach((event) => {
-					event.remove()
+					event.deleteOne()
 				})
 			}
-			createdEvent3 && createdEvent3.remove()
+			createdEvent3 && createdEvent3.deleteOne()
 			const error = new HttpError('Please enter a VENUE for event 4', 422)
 			return next(error)
 		}
@@ -13888,20 +13888,20 @@ const createEvents = async (req, res, next) => {
 			try {
 				await createdEvent4.save()
 			} catch (err) {
-				createdEvent1 && createdEvent1.remove()
+				createdEvent1 && createdEvent1.deleteOne()
 				if (recurring1) {
 					recurringEvent1Collection.forEach((event) => {
-						event.remove()
+						event.deleteOne()
 					})
 				}
-				createdEvent2 && createdEvent2.remove()
+				createdEvent2 && createdEvent2.deleteOne()
 				if (recurring2) {
 					console.log('NO DATE GIVEN: we need to delete recurring events')
 					recurringEvent1Collection.forEach((event) => {
-						event.remove()
+						event.deleteOne()
 					})
 				}
-				createdEvent3 && createdEvent3.remove()
+				createdEvent3 && createdEvent3.deleteOne()
 				const error = new HttpError(err, 500)
 				return next(error)
 			}
@@ -13915,59 +13915,59 @@ const createEvents = async (req, res, next) => {
 	//**************************************************************************************** */
 	if (eventName5) {
 		if (!date5) {
-			createdEvent1 && createdEvent1.remove()
+			createdEvent1 && createdEvent1.deleteOne()
 			if (recurring1) {
 				recurringEvent1Collection.forEach((event) => {
-					event.remove()
+					event.deleteOne()
 				})
 			}
-			createdEvent2 && createdEvent2.remove()
+			createdEvent2 && createdEvent2.deleteOne()
 			if (recurring2) {
 				console.log('NO DATE GIVEN: we need to delete recurring events')
 				recurringEvent1Collection.forEach((event) => {
-					event.remove()
+					event.deleteOne()
 				})
 			}
-			createdEvent3 && createdEvent3.remove()
-			createdEvent4 && createdEvent4.remove()
+			createdEvent3 && createdEvent3.deleteOne()
+			createdEvent4 && createdEvent4.deleteOne()
 			const error = new HttpError('Please enter a DATE for event 5', 422)
 			return next(error)
 		}
 		if (!time5 && !tbd5IsChecked) {
-			createdEvent1 && createdEvent1.remove()
+			createdEvent1 && createdEvent1.deleteOne()
 			if (recurring1) {
 				recurringEvent1Collection.forEach((event) => {
-					event.remove()
+					event.deleteOne()
 				})
 			}
-			createdEvent2 && createdEvent2.remove()
+			createdEvent2 && createdEvent2.deleteOne()
 			if (recurring2) {
 				console.log('NO DATE GIVEN: we need to delete recurring events')
 				recurringEvent1Collection.forEach((event) => {
-					event.remove()
+					event.deleteOne()
 				})
 			}
-			createdEvent3 && createdEvent3.remove()
-			createdEvent4 && createdEvent4.remove()
+			createdEvent3 && createdEvent3.deleteOne()
+			createdEvent4 && createdEvent4.deleteOne()
 			const error = new HttpError('Please enter a TIME for event 5', 422)
 			return next(error)
 		}
 		if (!venue5) {
-			createdEvent1 && createdEvent1.remove()
+			createdEvent1 && createdEvent1.deleteOne()
 			if (recurring1) {
 				recurringEvent1Collection.forEach((event) => {
-					event.remove()
+					event.deleteOne()
 				})
 			}
-			createdEvent2 && createdEvent2.remove()
+			createdEvent2 && createdEvent2.deleteOne()
 			if (recurring2) {
 				console.log('NO DATE GIVEN: we need to delete recurring events')
 				recurringEvent1Collection.forEach((event) => {
-					event.remove()
+					event.deleteOne()
 				})
 			}
-			createdEvent3 && createdEvent3.remove()
-			createdEvent4 && createdEvent4.remove()
+			createdEvent3 && createdEvent3.deleteOne()
+			createdEvent4 && createdEvent4.deleteOne()
 			const error = new HttpError('Please enter a VENUE for event 5', 422)
 			return next(error)
 		}
@@ -14151,21 +14151,21 @@ const createEvents = async (req, res, next) => {
 			try {
 				await createdEvent5.save()
 			} catch (err) {
-				createdEvent1 && createdEvent1.remove()
+				createdEvent1 && createdEvent1.deleteOne()
 				if (recurring1) {
 					recurringEvent1Collection.forEach((event) => {
-						event.remove()
+						event.deleteOne()
 					})
 				}
-				createdEvent2 && createdEvent2.remove()
+				createdEvent2 && createdEvent2.deleteOne()
 				if (recurring2) {
 					console.log('NO DATE GIVEN: we need to delete recurring events')
 					recurringEvent1Collection.forEach((event) => {
-						event.remove()
+						event.deleteOne()
 					})
 				}
-				createdEvent3 && createdEvent3.remove()
-				createdEvent4 && createdEvent4.remove()
+				createdEvent3 && createdEvent3.deleteOne()
+				createdEvent4 && createdEvent4.deleteOne()
 				const error = new HttpError(err, 500)
 				return next(error)
 			}
@@ -14179,29 +14179,29 @@ const createEvents = async (req, res, next) => {
 	//**************************************************************************************** */
 	/* if (eventName6) {
 		if (!date6) {
-			createdEvent1.remove()
-			createdEvent2 && createdEvent2.remove()
-			createdEvent3 && createdEvent3.remove()
-			createdEvent4 && createdEvent4.remove()
-			createdEvent5 && createdEvent5.remove()
+			createdEvent1.deleteOne()
+			createdEvent2 && createdEvent2.deleteOne()
+			createdEvent3 && createdEvent3.deleteOne()
+			createdEvent4 && createdEvent4.deleteOne()
+			createdEvent5 && createdEvent5.deleteOne()
 			const error = new HttpError('Please enter a DATE for event 6', 422)
 			return next(error)
 		}
 		if (!time6 && !tbd6IsChecked) {
-			createdEvent1.remove()
-			createdEvent2 && createdEvent2.remove()
-			createdEvent3 && createdEvent3.remove()
-			createdEvent4 && createdEvent4.remove()
-			createdEvent5 && createdEvent5.remove()
+			createdEvent1.deleteOne()
+			createdEvent2 && createdEvent2.deleteOne()
+			createdEvent3 && createdEvent3.deleteOne()
+			createdEvent4 && createdEvent4.deleteOne()
+			createdEvent5 && createdEvent5.deleteOne()
 			const error = new HttpError('Please enter a TIME for event 6', 422)
 			return next(error)
 		}
 		if (!venue6) {
-			createdEvent1.remove()
-			createdEvent2 && createdEvent2.remove()
-			createdEvent3 && createdEvent3.remove()
-			createdEvent4 && createdEvent4.remove()
-			createdEvent5 && createdEvent5.remove()
+			createdEvent1.deleteOne()
+			createdEvent2 && createdEvent2.deleteOne()
+			createdEvent3 && createdEvent3.deleteOne()
+			createdEvent4 && createdEvent4.deleteOne()
+			createdEvent5 && createdEvent5.deleteOne()
 			const error = new HttpError('Please enter a VENUE for event 6', 422)
 			return next(error)
 		}
@@ -14229,11 +14229,11 @@ const createEvents = async (req, res, next) => {
 		try {
 			await createdEvent6.save()
 		} catch (err) {
-			createdEvent1.remove()
-			createdEvent2 && createdEvent2.remove()
-			createdEvent3 && createdEvent3.remove()
-			createdEvent4 && createdEvent4.remove()
-			createdEvent5 && createdEvent5.remove()
+			createdEvent1.deleteOne()
+			createdEvent2 && createdEvent2.deleteOne()
+			createdEvent3 && createdEvent3.deleteOne()
+			createdEvent4 && createdEvent4.deleteOne()
+			createdEvent5 && createdEvent5.deleteOne()
 			const error = new HttpError(err, 500)
 			return next(error)
 		}
@@ -14246,32 +14246,32 @@ const createEvents = async (req, res, next) => {
 	//**************************************************************************************** */
 	/* if (eventName7) {
 		if (!date7) {
-			createdEvent1.remove()
-			createdEvent2 && createdEvent2.remove()
-			createdEvent3 && createdEvent3.remove()
-			createdEvent4 && createdEvent4.remove()
-			createdEvent5 && createdEvent5.remove()
-			createdEvent6 && createdEvent6.remove()
+			createdEvent1.deleteOne()
+			createdEvent2 && createdEvent2.deleteOne()
+			createdEvent3 && createdEvent3.deleteOne()
+			createdEvent4 && createdEvent4.deleteOne()
+			createdEvent5 && createdEvent5.deleteOne()
+			createdEvent6 && createdEvent6.deleteOne()
 			const error = new HttpError('Please enter a DATE for event 7', 422)
 			return next(error)
 		}
 		if (!time7 && !tbd7IsChecked) {
-			createdEvent1.remove()
-			createdEvent2 && createdEvent2.remove()
-			createdEvent3 && createdEvent3.remove()
-			createdEvent4 && createdEvent4.remove()
-			createdEvent5 && createdEvent5.remove()
-			createdEvent6 && createdEvent6.remove()
+			createdEvent1.deleteOne()
+			createdEvent2 && createdEvent2.deleteOne()
+			createdEvent3 && createdEvent3.deleteOne()
+			createdEvent4 && createdEvent4.deleteOne()
+			createdEvent5 && createdEvent5.deleteOne()
+			createdEvent6 && createdEvent6.deleteOne()
 			const error = new HttpError('Please enter a TIME for event 7', 422)
 			return next(error)
 		}
 		if (!venue7) {
-			createdEvent1.remove()
-			createdEvent2 && createdEvent2.remove()
-			createdEvent3 && createdEvent3.remove()
-			createdEvent4 && createdEvent4.remove()
-			createdEvent5 && createdEvent5.remove()
-			createdEvent6 && createdEvent6.remove()
+			createdEvent1.deleteOne()
+			createdEvent2 && createdEvent2.deleteOne()
+			createdEvent3 && createdEvent3.deleteOne()
+			createdEvent4 && createdEvent4.deleteOne()
+			createdEvent5 && createdEvent5.deleteOne()
+			createdEvent6 && createdEvent6.deleteOne()
 			const error = new HttpError('Please enter a VENUE for event 7', 422)
 			return next(error)
 		}
@@ -14299,12 +14299,12 @@ const createEvents = async (req, res, next) => {
 		try {
 			await createdEvent7.save()
 		} catch (err) {
-			createdEvent1.remove()
-			createdEvent2 && createdEvent2.remove()
-			createdEvent3 && createdEvent3.remove()
-			createdEvent4 && createdEvent4.remove()
-			createdEvent5 && createdEvent5.remove()
-			createdEvent6 && createdEvent6.remove()
+			createdEvent1.deleteOne()
+			createdEvent2 && createdEvent2.deleteOne()
+			createdEvent3 && createdEvent3.deleteOne()
+			createdEvent4 && createdEvent4.deleteOne()
+			createdEvent5 && createdEvent5.deleteOne()
+			createdEvent6 && createdEvent6.deleteOne()
 			const error = new HttpError(err, 500)
 			return next(error)
 		}
@@ -14317,35 +14317,35 @@ const createEvents = async (req, res, next) => {
 	//**************************************************************************************** */
 	/* if (eventName8) {
 		if (!date8) {
-			createdEvent1.remove()
-			createdEvent2 && createdEvent2.remove()
-			createdEvent3 && createdEvent3.remove()
-			createdEvent4 && createdEvent4.remove()
-			createdEvent5 && createdEvent5.remove()
-			createdEvent6 && createdEvent6.remove()
-			createdEvent7 && createdEvent7.remove()
+			createdEvent1.deleteOne()
+			createdEvent2 && createdEvent2.deleteOne()
+			createdEvent3 && createdEvent3.deleteOne()
+			createdEvent4 && createdEvent4.deleteOne()
+			createdEvent5 && createdEvent5.deleteOne()
+			createdEvent6 && createdEvent6.deleteOne()
+			createdEvent7 && createdEvent7.deleteOne()
 			const error = new HttpError('Please enter a DATE for event 8', 422)
 			return next(error)
 		}
 		if (!time8 && !tbd8IsChecked) {
-			createdEvent1.remove()
-			createdEvent2 && createdEvent2.remove()
-			createdEvent3 && createdEvent3.remove()
-			createdEvent4 && createdEvent4.remove()
-			createdEvent5 && createdEvent5.remove()
-			createdEvent6 && createdEvent6.remove()
-			createdEvent7 && createdEvent7.remove()
+			createdEvent1.deleteOne()
+			createdEvent2 && createdEvent2.deleteOne()
+			createdEvent3 && createdEvent3.deleteOne()
+			createdEvent4 && createdEvent4.deleteOne()
+			createdEvent5 && createdEvent5.deleteOne()
+			createdEvent6 && createdEvent6.deleteOne()
+			createdEvent7 && createdEvent7.deleteOne()
 			const error = new HttpError('Please enter a TIME for event 8', 422)
 			return next(error)
 		}
 		if (!venue8) {
-			createdEvent1.remove()
-			createdEvent2 && createdEvent2.remove()
-			createdEvent3 && createdEvent3.remove()
-			createdEvent4 && createdEvent4.remove()
-			createdEvent5 && createdEvent5.remove()
-			createdEvent6 && createdEvent6.remove()
-			createdEvent7 && createdEvent7.remove()
+			createdEvent1.deleteOne()
+			createdEvent2 && createdEvent2.deleteOne()
+			createdEvent3 && createdEvent3.deleteOne()
+			createdEvent4 && createdEvent4.deleteOne()
+			createdEvent5 && createdEvent5.deleteOne()
+			createdEvent6 && createdEvent6.deleteOne()
+			createdEvent7 && createdEvent7.deleteOne()
 			const error = new HttpError('Please enter a VENUE for event 8', 422)
 			return next(error)
 		}
@@ -14373,13 +14373,13 @@ const createEvents = async (req, res, next) => {
 		try {
 			await createdEvent8.save()
 		} catch (err) {
-			createdEvent1.remove()
-			createdEvent2 && createdEvent2.remove()
-			createdEvent3 && createdEvent3.remove()
-			createdEvent4 && createdEvent4.remove()
-			createdEvent5 && createdEvent5.remove()
-			createdEvent6 && createdEvent6.remove()
-			createdEvent7 && createdEvent7.remove()
+			createdEvent1.deleteOne()
+			createdEvent2 && createdEvent2.deleteOne()
+			createdEvent3 && createdEvent3.deleteOne()
+			createdEvent4 && createdEvent4.deleteOne()
+			createdEvent5 && createdEvent5.deleteOne()
+			createdEvent6 && createdEvent6.deleteOne()
+			createdEvent7 && createdEvent7.deleteOne()
 			const error = new HttpError(err, 500)
 			return next(error)
 		}
@@ -14392,38 +14392,38 @@ const createEvents = async (req, res, next) => {
 	//**************************************************************************************** */
 	/* if (eventName9) {
 		if (!date9) {
-			createdEvent1.remove()
-			createdEvent2 && createdEvent2.remove()
-			createdEvent3 && createdEvent3.remove()
-			createdEvent4 && createdEvent4.remove()
-			createdEvent5 && createdEvent5.remove()
-			createdEvent6 && createdEvent6.remove()
-			createdEvent7 && createdEvent7.remove()
-			createdEvent8 && createdEvent8.remove()
+			createdEvent1.deleteOne()
+			createdEvent2 && createdEvent2.deleteOne()
+			createdEvent3 && createdEvent3.deleteOne()
+			createdEvent4 && createdEvent4.deleteOne()
+			createdEvent5 && createdEvent5.deleteOne()
+			createdEvent6 && createdEvent6.deleteOne()
+			createdEvent7 && createdEvent7.deleteOne()
+			createdEvent8 && createdEvent8.deleteOne()
 			const error = new HttpError('Please enter a DATE for event 9', 422)
 			return next(error)
 		}
 		if (!time9 && !tbd9IsChecked) {
-			createdEvent1.remove()
-			createdEvent2 && createdEvent2.remove()
-			createdEvent3 && createdEvent3.remove()
-			createdEvent4 && createdEvent4.remove()
-			createdEvent5 && createdEvent5.remove()
-			createdEvent6 && createdEvent6.remove()
-			createdEvent7 && createdEvent7.remove()
-			createdEvent8 && createdEvent8.remove()
+			createdEvent1.deleteOne()
+			createdEvent2 && createdEvent2.deleteOne()
+			createdEvent3 && createdEvent3.deleteOne()
+			createdEvent4 && createdEvent4.deleteOne()
+			createdEvent5 && createdEvent5.deleteOne()
+			createdEvent6 && createdEvent6.deleteOne()
+			createdEvent7 && createdEvent7.deleteOne()
+			createdEvent8 && createdEvent8.deleteOne()
 			const error = new HttpError('Please enter a TIME for event 9', 422)
 			return next(error)
 		}
 		if (!venue9) {
-			createdEvent1.remove()
-			createdEvent2 && createdEvent2.remove()
-			createdEvent3 && createdEvent3.remove()
-			createdEvent4 && createdEvent4.remove()
-			createdEvent5 && createdEvent5.remove()
-			createdEvent6 && createdEvent6.remove()
-			createdEvent7 && createdEvent7.remove()
-			createdEvent8 && createdEvent8.remove()
+			createdEvent1.deleteOne()
+			createdEvent2 && createdEvent2.deleteOne()
+			createdEvent3 && createdEvent3.deleteOne()
+			createdEvent4 && createdEvent4.deleteOne()
+			createdEvent5 && createdEvent5.deleteOne()
+			createdEvent6 && createdEvent6.deleteOne()
+			createdEvent7 && createdEvent7.deleteOne()
+			createdEvent8 && createdEvent8.deleteOne()
 			const error = new HttpError('Please enter a VENUE for event 9', 422)
 			return next(error)
 		}
@@ -14451,14 +14451,14 @@ const createEvents = async (req, res, next) => {
 		try {
 			await createdEvent9.save()
 		} catch (err) {
-			createdEvent1.remove()
-			createdEvent2 && createdEvent2.remove()
-			createdEvent3 && createdEvent3.remove()
-			createdEvent4 && createdEvent4.remove()
-			createdEvent5 && createdEvent5.remove()
-			createdEvent6 && createdEvent6.remove()
-			createdEvent7 && createdEvent7.remove()
-			createdEvent8 && createdEvent8.remove()
+			createdEvent1.deleteOne()
+			createdEvent2 && createdEvent2.deleteOne()
+			createdEvent3 && createdEvent3.deleteOne()
+			createdEvent4 && createdEvent4.deleteOne()
+			createdEvent5 && createdEvent5.deleteOne()
+			createdEvent6 && createdEvent6.deleteOne()
+			createdEvent7 && createdEvent7.deleteOne()
+			createdEvent8 && createdEvent8.deleteOne()
 			const error = new HttpError(err, 500)
 			return next(error)
 		}
@@ -14471,41 +14471,41 @@ const createEvents = async (req, res, next) => {
 	//**************************************************************************************** */
 	/* if (eventName10) {
 		if (!date10) {
-			createdEvent1.remove()
-			createdEvent2 && createdEvent2.remove()
-			createdEvent3 && createdEvent3.remove()
-			createdEvent4 && createdEvent4.remove()
-			createdEvent5 && createdEvent5.remove()
-			createdEvent6 && createdEvent6.remove()
-			createdEvent7 && createdEvent7.remove()
-			createdEvent8 && createdEvent8.remove()
-			createdEvent9 && createdEvent9.remove()
+			createdEvent1.deleteOne()
+			createdEvent2 && createdEvent2.deleteOne()
+			createdEvent3 && createdEvent3.deleteOne()
+			createdEvent4 && createdEvent4.deleteOne()
+			createdEvent5 && createdEvent5.deleteOne()
+			createdEvent6 && createdEvent6.deleteOne()
+			createdEvent7 && createdEvent7.deleteOne()
+			createdEvent8 && createdEvent8.deleteOne()
+			createdEvent9 && createdEvent9.deleteOne()
 			const error = new HttpError('Please enter a DATE for event 10', 422)
 			return next(error)
 		}
 		if (!time10 && !tbd10IsChecked) {
-			createdEvent1.remove()
-			createdEvent2 && createdEvent2.remove()
-			createdEvent3 && createdEvent3.remove()
-			createdEvent4 && createdEvent4.remove()
-			createdEvent5 && createdEvent5.remove()
-			createdEvent6 && createdEvent6.remove()
-			createdEvent7 && createdEvent7.remove()
-			createdEvent8 && createdEvent8.remove()
-			createdEvent9 && createdEvent9.remove()
+			createdEvent1.deleteOne()
+			createdEvent2 && createdEvent2.deleteOne()
+			createdEvent3 && createdEvent3.deleteOne()
+			createdEvent4 && createdEvent4.deleteOne()
+			createdEvent5 && createdEvent5.deleteOne()
+			createdEvent6 && createdEvent6.deleteOne()
+			createdEvent7 && createdEvent7.deleteOne()
+			createdEvent8 && createdEvent8.deleteOne()
+			createdEvent9 && createdEvent9.deleteOne()
 			const error = new HttpError('Please enter a TIME for event 10', 422)
 			return next(error)
 		}
 		if (!venue10) {
-			createdEvent1.remove()
-			createdEvent2 && createdEvent2.remove()
-			createdEvent3 && createdEvent3.remove()
-			createdEvent4 && createdEvent4.remove()
-			createdEvent5 && createdEvent5.remove()
-			createdEvent6 && createdEvent6.remove()
-			createdEvent7 && createdEvent7.remove()
-			createdEvent8 && createdEvent8.remove()
-			createdEvent9 && createdEvent9.remove()
+			createdEvent1.deleteOne()
+			createdEvent2 && createdEvent2.deleteOne()
+			createdEvent3 && createdEvent3.deleteOne()
+			createdEvent4 && createdEvent4.deleteOne()
+			createdEvent5 && createdEvent5.deleteOne()
+			createdEvent6 && createdEvent6.deleteOne()
+			createdEvent7 && createdEvent7.deleteOne()
+			createdEvent8 && createdEvent8.deleteOne()
+			createdEvent9 && createdEvent9.deleteOne()
 			const error = new HttpError('Please enter a VENUE for event 10', 422)
 			return next(error)
 		}
@@ -14533,15 +14533,15 @@ const createEvents = async (req, res, next) => {
 		try {
 			await createdEvent10.save()
 		} catch (err) {
-			createdEvent1.remove()
-			createdEvent2 && createdEvent2.remove()
-			createdEvent3 && createdEvent3.remove()
-			createdEvent4 && createdEvent4.remove()
-			createdEvent5 && createdEvent5.remove()
-			createdEvent6 && createdEvent6.remove()
-			createdEvent7 && createdEvent7.remove()
-			createdEvent8 && createdEvent8.remove()
-			createdEvent9 && createdEvent9.remove()
+			createdEvent1.deleteOne()
+			createdEvent2 && createdEvent2.deleteOne()
+			createdEvent3 && createdEvent3.deleteOne()
+			createdEvent4 && createdEvent4.deleteOne()
+			createdEvent5 && createdEvent5.deleteOne()
+			createdEvent6 && createdEvent6.deleteOne()
+			createdEvent7 && createdEvent7.deleteOne()
+			createdEvent8 && createdEvent8.deleteOne()
+			createdEvent9 && createdEvent9.deleteOne()
 			const error = new HttpError(err, 500)
 			return next(error)
 		}
@@ -14904,7 +14904,7 @@ const addPlayerToTeam = async (req, res, next) => {
 		if (!middleInitial2) {
 			if (playerExists2) {
 				console.log('Player already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
 				const error = new HttpError(
 					existingPlayerName2 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -14914,7 +14914,7 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else if (firstName2 && !playerNumber2) {
 				console.log('Player 2 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 2',
 					409
@@ -14949,7 +14949,7 @@ const addPlayerToTeam = async (req, res, next) => {
 		if (middleInitial2) {
 			if (playerExists2) {
 				console.log('Player already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
 				const error = new HttpError(
 					existingPlayerName2 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -14959,7 +14959,7 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else if (firstName2 && !playerNumber2) {
 				console.log('Player 2 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 2',
 					409
@@ -14985,7 +14985,7 @@ const addPlayerToTeam = async (req, res, next) => {
 			try {
 				await createdRosterPlayer2.save()
 			} catch (err) {
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
 				const error = new HttpError('Could not add player2 to team.', 500)
 				//const error = new HttpError(err, 500)
 				return next(error)
@@ -15053,8 +15053,8 @@ const addPlayerToTeam = async (req, res, next) => {
 		if (!middleInitial3) {
 			if (playerExists3) {
 				console.log('Player 3 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
 				const error = new HttpError(
 					existingPlayerName3 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -15064,8 +15064,8 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else if (firstName3 && !playerNumber3) {
 				console.log('Player 3 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 3',
 					409
@@ -15100,8 +15100,8 @@ const addPlayerToTeam = async (req, res, next) => {
 		if (middleInitial3) {
 			if (playerExists3) {
 				console.log('Player3 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
 				const error = new HttpError(
 					existingPlayerName3 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -15111,8 +15111,8 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else if (firstName3 && !playerNumber3) {
 				console.log('Player 3 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 3',
 					409
@@ -15138,8 +15138,8 @@ const addPlayerToTeam = async (req, res, next) => {
 			try {
 				await createdRosterPlayer3.save()
 			} catch (err) {
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
 				const error = new HttpError('Could not add player3 to team.', 500)
 				//const error = new HttpError(err, 500)
 				return next(error)
@@ -15206,9 +15206,9 @@ const addPlayerToTeam = async (req, res, next) => {
 		if (!middleInitial4) {
 			if (playerExists4) {
 				console.log('Player 4 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
 				const error = new HttpError(
 					existingPlayerName4 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -15218,9 +15218,9 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else if (firstName4 && !playerNumber4) {
 				console.log('Player 4 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 4',
 					409
@@ -15258,9 +15258,9 @@ const addPlayerToTeam = async (req, res, next) => {
 		if (middleInitial4) {
 			if (playerExists4) {
 				console.log('Player4 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
 				const error = new HttpError(
 					existingPlayerName4 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -15270,9 +15270,9 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else if (firstName4 && !playerNumber4) {
 				console.log('Player 4 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 4',
 					409
@@ -15298,9 +15298,9 @@ const addPlayerToTeam = async (req, res, next) => {
 			try {
 				await createdRosterPlayer4.save()
 			} catch (err) {
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
 				const error = new HttpError(
 					'Could not add player4 to team.  Maybe a missing Number?',
 					500
@@ -15370,10 +15370,10 @@ const addPlayerToTeam = async (req, res, next) => {
 		if (!middleInitial5) {
 			if (playerExists5) {
 				console.log('Player 5 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
 				const error = new HttpError(
 					existingPlayerName5 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -15383,10 +15383,10 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else if (firstName5 && !playerNumber5) {
 				console.log('Player 5 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 5',
 					409
@@ -15424,10 +15424,10 @@ const addPlayerToTeam = async (req, res, next) => {
 		if (middleInitial5) {
 			if (playerExists5) {
 				console.log('Player5 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
 				const error = new HttpError(
 					existingPlayerName5 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -15437,10 +15437,10 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else if (firstName5 && !playerNumber5) {
 				console.log('Player 5 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 5',
 					409
@@ -15466,10 +15466,10 @@ const addPlayerToTeam = async (req, res, next) => {
 			try {
 				await createdRosterPlayer5.save()
 			} catch (err) {
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
 				const error = new HttpError(
 					'Could not add player5 to team.  Maybe a missing Number?',
 					500
@@ -15539,11 +15539,11 @@ const addPlayerToTeam = async (req, res, next) => {
 		if (!middleInitial6) {
 			if (playerExists6) {
 				console.log('Player 6 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
 				const error = new HttpError(
 					existingPlayerName6 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -15553,11 +15553,11 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else if (firstName6 && !playerNumber6) {
 				console.log('Player 6 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 6',
 					409
@@ -15595,11 +15595,11 @@ const addPlayerToTeam = async (req, res, next) => {
 		if (middleInitial6) {
 			if (playerExists6) {
 				console.log('Player6 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
 				const error = new HttpError(
 					existingPlayerName6 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -15609,11 +15609,11 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else if (firstName6 && !playerNumber6) {
 				console.log('Player 6 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 6',
 					409
@@ -15639,11 +15639,11 @@ const addPlayerToTeam = async (req, res, next) => {
 			try {
 				await createdRosterPlayer6.save()
 			} catch (err) {
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
 				const error = new HttpError(
 					'Could not add player6 to team.  Maybe a missing Number?',
 					500
@@ -15712,12 +15712,12 @@ const addPlayerToTeam = async (req, res, next) => {
 		if (!middleInitial7) {
 			if (playerExists7) {
 				console.log('Player 7 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
 				const error = new HttpError(
 					existingPlayerName7 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -15727,12 +15727,12 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else if (firstName7 && !playerNumber7) {
 				console.log('Player 7 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 7',
 					409
@@ -15770,12 +15770,12 @@ const addPlayerToTeam = async (req, res, next) => {
 		if (middleInitial7) {
 			if (playerExists7) {
 				console.log('Player7 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
 				const error = new HttpError(
 					existingPlayerName7 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -15785,12 +15785,12 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else if (firstName7 && !playerNumber7) {
 				console.log('Player 7 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 7',
 					409
@@ -15816,12 +15816,12 @@ const addPlayerToTeam = async (req, res, next) => {
 			try {
 				await createdRosterPlayer7.save()
 			} catch (err) {
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
 				const error = new HttpError(
 					'Could not add player7 to team.  Maybe a missing Number?',
 					500
@@ -15891,13 +15891,13 @@ const addPlayerToTeam = async (req, res, next) => {
 		if (!middleInitial8) {
 			if (playerExists8) {
 				console.log('Player 8 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
 				const error = new HttpError(
 					existingPlayerName8 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -15907,13 +15907,13 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else if (firstName8 && !playerNumber8) {
 				console.log('Player 8 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 8',
 					409
@@ -15951,13 +15951,13 @@ const addPlayerToTeam = async (req, res, next) => {
 		if (middleInitial8) {
 			if (playerExists8) {
 				console.log('Player8 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
 				const error = new HttpError(
 					existingPlayerName8 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -15967,13 +15967,13 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else if (firstName8 && !playerNumber8) {
 				console.log('Player 8 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 8',
 					409
@@ -15999,13 +15999,13 @@ const addPlayerToTeam = async (req, res, next) => {
 			try {
 				await createdRosterPlayer8.save()
 			} catch (err) {
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
 				const error = new HttpError(
 					'Could not add player8 to team.  Maybe a missing Number?',
 					500
@@ -16075,14 +16075,14 @@ const addPlayerToTeam = async (req, res, next) => {
 		if (!middleInitial9) {
 			if (playerExists9) {
 				console.log('Player 9 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
 				const error = new HttpError(
 					existingPlayerName9 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -16092,14 +16092,14 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else if (firstName9 && !playerNumber9) {
 				console.log('Player 9 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 9',
 					409
@@ -16137,14 +16137,14 @@ const addPlayerToTeam = async (req, res, next) => {
 		if (middleInitial9) {
 			if (playerExists9) {
 				console.log('Player9 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
 				const error = new HttpError(
 					existingPlayerName9 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -16154,14 +16154,14 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else if (firstName9 && !playerNumber9) {
 				console.log('Player 9 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 9',
 					409
@@ -16187,14 +16187,14 @@ const addPlayerToTeam = async (req, res, next) => {
 			try {
 				await createdRosterPlayer9.save()
 			} catch (err) {
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
 				const error = new HttpError(
 					'Could not add player9 to team.  Maybe a missing Number?',
 					500
@@ -16265,15 +16265,15 @@ const addPlayerToTeam = async (req, res, next) => {
 		if (!middleInitial10) {
 			if (playerExists10) {
 				console.log('Player 10 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
 				const error = new HttpError(
 					existingPlayerName10 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -16283,15 +16283,15 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else if (firstName10 && !playerNumber10) {
 				console.log('Player 10 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 10',
 					409
@@ -16329,15 +16329,15 @@ const addPlayerToTeam = async (req, res, next) => {
 		if (middleInitial10) {
 			if (playerExists10) {
 				console.log('Player10 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
 				const error = new HttpError(
 					existingPlayerName10 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -16347,15 +16347,15 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else if (firstName10 && !playerNumber10) {
 				console.log('Player 10 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 10',
 					409
@@ -16381,15 +16381,15 @@ const addPlayerToTeam = async (req, res, next) => {
 			try {
 				await createdRosterPlayer10.save()
 			} catch (err) {
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
 				const error = new HttpError(
 					'Could not add player10 to team.  Maybe a missing Number?',
 					500
@@ -16460,16 +16460,16 @@ const addPlayerToTeam = async (req, res, next) => {
 		if (!middleInitial11) {
 			if (playerExists11) {
 				console.log('Player 11 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
 				const error = new HttpError(
 					existingPlayerName11 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -16479,16 +16479,16 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else if (firstName11 && !playerNumber11) {
 				console.log('Player 11 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 11',
 					409
@@ -16526,16 +16526,16 @@ const addPlayerToTeam = async (req, res, next) => {
 		if (middleInitial11) {
 			if (playerExists11) {
 				console.log('Player11 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
 				const error = new HttpError(
 					existingPlayerName11 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -16545,16 +16545,16 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else if (firstName11 && !playerNumber11) {
 				console.log('Player 11 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 11',
 					409
@@ -16580,16 +16580,16 @@ const addPlayerToTeam = async (req, res, next) => {
 			try {
 				await createdRosterPlayer11.save()
 			} catch (err) {
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
 				const error = new HttpError(
 					'Could not add player11 to team.  Maybe a missing Number?',
 					500
@@ -16660,17 +16660,17 @@ const addPlayerToTeam = async (req, res, next) => {
 		if (!middleInitial12) {
 			if (playerExists12) {
 				console.log('Player 12 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
-				createdRosterPlayer11 && createdRosterPlayer11.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
+				createdRosterPlayer11 && createdRosterPlayer11.deleteOne()
 				const error = new HttpError(
 					existingPlayerName12 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -16680,17 +16680,17 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else if (firstName12 && !playerNumber12) {
 				console.log('Player 12 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
-				createdRosterPlayer11 && createdRosterPlayer11.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
+				createdRosterPlayer11 && createdRosterPlayer11.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 12',
 					409
@@ -16728,17 +16728,17 @@ const addPlayerToTeam = async (req, res, next) => {
 		if (middleInitial12) {
 			if (playerExists12) {
 				console.log('Player12 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
-				createdRosterPlayer11 && createdRosterPlayer11.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
+				createdRosterPlayer11 && createdRosterPlayer11.deleteOne()
 				const error = new HttpError(
 					existingPlayerName12 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -16748,17 +16748,17 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else if (firstName12 && !playerNumber12) {
 				console.log('Player 12 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
-				createdRosterPlayer11 && createdRosterPlayer11.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
+				createdRosterPlayer11 && createdRosterPlayer11.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 12',
 					409
@@ -16784,17 +16784,17 @@ const addPlayerToTeam = async (req, res, next) => {
 			try {
 				await createdRosterPlayer12.save()
 			} catch (err) {
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
-				createdRosterPlayer11 && createdRosterPlayer11.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
+				createdRosterPlayer11 && createdRosterPlayer11.deleteOne()
 				const error = new HttpError(
 					'Could not add player12 to team.  Maybe a missing Number?',
 					500
@@ -16865,18 +16865,18 @@ const addPlayerToTeam = async (req, res, next) => {
 		if (!middleInitial13) {
 			if (playerExists13) {
 				console.log('Player 13 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
-				createdRosterPlayer11 && createdRosterPlayer11.remove()
-				createdRosterPlayer12 && createdRosterPlayer12.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
+				createdRosterPlayer11 && createdRosterPlayer11.deleteOne()
+				createdRosterPlayer12 && createdRosterPlayer12.deleteOne()
 				const error = new HttpError(
 					existingPlayerName13 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -16886,18 +16886,18 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else if (firstName13 && !playerNumber13) {
 				console.log('Player 13 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
-				createdRosterPlayer11 && createdRosterPlayer11.remove()
-				createdRosterPlayer12 && createdRosterPlayer12.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
+				createdRosterPlayer11 && createdRosterPlayer11.deleteOne()
+				createdRosterPlayer12 && createdRosterPlayer12.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 13',
 					409
@@ -16935,18 +16935,18 @@ const addPlayerToTeam = async (req, res, next) => {
 		if (middleInitial13) {
 			if (playerExists13) {
 				console.log('Player13 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
-				createdRosterPlayer11 && createdRosterPlayer11.remove()
-				createdRosterPlayer12 && createdRosterPlayer12.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
+				createdRosterPlayer11 && createdRosterPlayer11.deleteOne()
+				createdRosterPlayer12 && createdRosterPlayer12.deleteOne()
 				const error = new HttpError(
 					existingPlayerName13 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -16956,18 +16956,18 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else if (firstName13 && !playerNumber13) {
 				console.log('Player 13 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
-				createdRosterPlayer11 && createdRosterPlayer11.remove()
-				createdRosterPlayer12 && createdRosterPlayer12.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
+				createdRosterPlayer11 && createdRosterPlayer11.deleteOne()
+				createdRosterPlayer12 && createdRosterPlayer12.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 13',
 					409
@@ -16993,18 +16993,18 @@ const addPlayerToTeam = async (req, res, next) => {
 			try {
 				await createdRosterPlayer13.save()
 			} catch (err) {
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
-				createdRosterPlayer11 && createdRosterPlayer11.remove()
-				createdRosterPlayer12 && createdRosterPlayer12.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
+				createdRosterPlayer11 && createdRosterPlayer11.deleteOne()
+				createdRosterPlayer12 && createdRosterPlayer12.deleteOne()
 				const error = new HttpError(
 					'Could not add player13 to team.  Maybe a missing Number?',
 					500
@@ -17508,7 +17508,7 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 		if (!middleInitial2) {
 			if (playerExists2) {
 				console.log('Player already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
 				const error = new HttpError(
 					existingPlayerName2 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -17518,7 +17518,7 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 				return next(error)
 			} else if (firstName2 && !playerNumber2) {
 				console.log('Player 2 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 2',
 					409
@@ -17554,7 +17554,7 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 		if (middleInitial2) {
 			if (playerExists2) {
 				console.log('Player already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
 				const error = new HttpError(
 					existingPlayerName2 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -17564,7 +17564,7 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 				return next(error)
 			} else if (firstName2 && !playerNumber2) {
 				console.log('Player 2 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 2',
 					409
@@ -17591,7 +17591,7 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 			try {
 				await createdRosterPlayer2.save()
 			} catch (err) {
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
 				const error = new HttpError('Could not add player2 to team.', 500)
 				//const error = new HttpError(err, 500)
 				return next(error)
@@ -17659,8 +17659,8 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 		if (!middleInitial3) {
 			if (playerExists3) {
 				console.log('Player 3 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
 				const error = new HttpError(
 					existingPlayerName3 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -17670,8 +17670,8 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 				return next(error)
 			} else if (firstName3 && !playerNumber3) {
 				console.log('Player 3 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 3',
 					409
@@ -17707,8 +17707,8 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 		if (middleInitial3) {
 			if (playerExists3) {
 				console.log('Player3 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
 				const error = new HttpError(
 					existingPlayerName3 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -17718,8 +17718,8 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 				return next(error)
 			} else if (firstName3 && !playerNumber3) {
 				console.log('Player 3 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 3',
 					409
@@ -17746,8 +17746,8 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 			try {
 				await createdRosterPlayer3.save()
 			} catch (err) {
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
 				const error = new HttpError('Could not add player3 to team.', 500)
 				//const error = new HttpError(err, 500)
 				return next(error)
@@ -17814,9 +17814,9 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 		if (!middleInitial4) {
 			if (playerExists4) {
 				console.log('Player 4 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
 				const error = new HttpError(
 					existingPlayerName4 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -17826,9 +17826,9 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 				return next(error)
 			} else if (firstName4 && !playerNumber4) {
 				console.log('Player 4 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 4',
 					409
@@ -17867,9 +17867,9 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 		if (middleInitial4) {
 			if (playerExists4) {
 				console.log('Player4 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
 				const error = new HttpError(
 					existingPlayerName4 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -17879,9 +17879,9 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 				return next(error)
 			} else if (firstName4 && !playerNumber4) {
 				console.log('Player 4 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 4',
 					409
@@ -17908,9 +17908,9 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 			try {
 				await createdRosterPlayer4.save()
 			} catch (err) {
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
 				const error = new HttpError(
 					'Could not add player4 to team.  Maybe a missing Number?',
 					500
@@ -17980,10 +17980,10 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 		if (!middleInitial5) {
 			if (playerExists5) {
 				console.log('Player 5 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
 				const error = new HttpError(
 					existingPlayerName5 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -17993,10 +17993,10 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 				return next(error)
 			} else if (firstName5 && !playerNumber5) {
 				console.log('Player 5 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 5',
 					409
@@ -18035,10 +18035,10 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 		if (middleInitial5) {
 			if (playerExists5) {
 				console.log('Player5 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
 				const error = new HttpError(
 					existingPlayerName5 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -18048,10 +18048,10 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 				return next(error)
 			} else if (firstName5 && !playerNumber5) {
 				console.log('Player 5 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 5',
 					409
@@ -18078,10 +18078,10 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 			try {
 				await createdRosterPlayer5.save()
 			} catch (err) {
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
 				const error = new HttpError(
 					'Could not add player5 to team.  Maybe a missing Number?',
 					500
@@ -18151,11 +18151,11 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 		if (!middleInitial6) {
 			if (playerExists6) {
 				console.log('Player 6 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
 				const error = new HttpError(
 					existingPlayerName6 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -18165,11 +18165,11 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 				return next(error)
 			} else if (firstName6 && !playerNumber6) {
 				console.log('Player 6 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 6',
 					409
@@ -18208,11 +18208,11 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 		if (middleInitial6) {
 			if (playerExists6) {
 				console.log('Player6 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
 				const error = new HttpError(
 					existingPlayerName6 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -18222,11 +18222,11 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 				return next(error)
 			} else if (firstName6 && !playerNumber6) {
 				console.log('Player 6 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 6',
 					409
@@ -18253,11 +18253,11 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 			try {
 				await createdRosterPlayer6.save()
 			} catch (err) {
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
 				const error = new HttpError(
 					'Could not add player6 to team.  Maybe a missing Number?',
 					500
@@ -18326,12 +18326,12 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 		if (!middleInitial7) {
 			if (playerExists7) {
 				console.log('Player 7 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
 				const error = new HttpError(
 					existingPlayerName7 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -18341,12 +18341,12 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 				return next(error)
 			} else if (firstName7 && !playerNumber7) {
 				console.log('Player 7 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 7',
 					409
@@ -18385,12 +18385,12 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 		if (middleInitial7) {
 			if (playerExists7) {
 				console.log('Player7 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
 				const error = new HttpError(
 					existingPlayerName7 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -18400,12 +18400,12 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 				return next(error)
 			} else if (firstName7 && !playerNumber7) {
 				console.log('Player 7 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 7',
 					409
@@ -18432,12 +18432,12 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 			try {
 				await createdRosterPlayer7.save()
 			} catch (err) {
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
 				const error = new HttpError(
 					'Could not add player7 to team.  Maybe a missing Number?',
 					500
@@ -18507,13 +18507,13 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 		if (!middleInitial8) {
 			if (playerExists8) {
 				console.log('Player 8 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
 				const error = new HttpError(
 					existingPlayerName8 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -18523,13 +18523,13 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 				return next(error)
 			} else if (firstName8 && !playerNumber8) {
 				console.log('Player 8 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 8',
 					409
@@ -18568,13 +18568,13 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 		if (middleInitial8) {
 			if (playerExists8) {
 				console.log('Player8 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
 				const error = new HttpError(
 					existingPlayerName8 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -18584,13 +18584,13 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 				return next(error)
 			} else if (firstName8 && !playerNumber8) {
 				console.log('Player 8 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 8',
 					409
@@ -18617,13 +18617,13 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 			try {
 				await createdRosterPlayer8.save()
 			} catch (err) {
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
 				const error = new HttpError(
 					'Could not add player8 to team.  Maybe a missing Number?',
 					500
@@ -18693,14 +18693,14 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 		if (!middleInitial9) {
 			if (playerExists9) {
 				console.log('Player 9 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
 				const error = new HttpError(
 					existingPlayerName9 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -18710,14 +18710,14 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 				return next(error)
 			} else if (firstName9 && !playerNumber9) {
 				console.log('Player 9 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 9',
 					409
@@ -18756,14 +18756,14 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 		if (middleInitial9) {
 			if (playerExists9) {
 				console.log('Player9 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
 				const error = new HttpError(
 					existingPlayerName9 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -18773,14 +18773,14 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 				return next(error)
 			} else if (firstName9 && !playerNumber9) {
 				console.log('Player 9 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 9',
 					409
@@ -18807,14 +18807,14 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 			try {
 				await createdRosterPlayer9.save()
 			} catch (err) {
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
 				const error = new HttpError(
 					'Could not add player9 to team.  Maybe a missing Number?',
 					500
@@ -18885,15 +18885,15 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 		if (!middleInitial10) {
 			if (playerExists10) {
 				console.log('Player 10 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
 				const error = new HttpError(
 					existingPlayerName10 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -18903,15 +18903,15 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 				return next(error)
 			} else if (firstName10 && !playerNumber10) {
 				console.log('Player 10 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 10',
 					409
@@ -18950,15 +18950,15 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 		if (middleInitial10) {
 			if (playerExists10) {
 				console.log('Player10 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
 				const error = new HttpError(
 					existingPlayerName10 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -18968,15 +18968,15 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 				return next(error)
 			} else if (firstName10 && !playerNumber10) {
 				console.log('Player 10 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 10',
 					409
@@ -19003,15 +19003,15 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 			try {
 				await createdRosterPlayer10.save()
 			} catch (err) {
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
 				const error = new HttpError(
 					'Could not add player10 to team.  Maybe a missing Number?',
 					500
@@ -19082,16 +19082,16 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 		if (!middleInitial11) {
 			if (playerExists11) {
 				console.log('Player 11 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
 				const error = new HttpError(
 					existingPlayerName11 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -19101,16 +19101,16 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 				return next(error)
 			} else if (firstName11 && !playerNumber11) {
 				console.log('Player 11 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 11',
 					409
@@ -19149,16 +19149,16 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 		if (middleInitial11) {
 			if (playerExists11) {
 				console.log('Player11 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
 				const error = new HttpError(
 					existingPlayerName11 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -19168,16 +19168,16 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 				return next(error)
 			} else if (firstName11 && !playerNumber11) {
 				console.log('Player 11 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 11',
 					409
@@ -19204,16 +19204,16 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 			try {
 				await createdRosterPlayer11.save()
 			} catch (err) {
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
 				const error = new HttpError(
 					'Could not add player11 to team.  Maybe a missing Number?',
 					500
@@ -19284,17 +19284,17 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 		if (!middleInitial12) {
 			if (playerExists12) {
 				console.log('Player 12 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
-				createdRosterPlayer11 && createdRosterPlayer11.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
+				createdRosterPlayer11 && createdRosterPlayer11.deleteOne()
 				const error = new HttpError(
 					existingPlayerName12 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -19304,17 +19304,17 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 				return next(error)
 			} else if (firstName12 && !playerNumber12) {
 				console.log('Player 12 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
-				createdRosterPlayer11 && createdRosterPlayer11.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
+				createdRosterPlayer11 && createdRosterPlayer11.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 12',
 					409
@@ -19353,17 +19353,17 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 		if (middleInitial12) {
 			if (playerExists12) {
 				console.log('Player12 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
-				createdRosterPlayer11 && createdRosterPlayer11.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
+				createdRosterPlayer11 && createdRosterPlayer11.deleteOne()
 				const error = new HttpError(
 					existingPlayerName12 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -19373,17 +19373,17 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 				return next(error)
 			} else if (firstName12 && !playerNumber12) {
 				console.log('Player 12 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
-				createdRosterPlayer11 && createdRosterPlayer11.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
+				createdRosterPlayer11 && createdRosterPlayer11.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 12',
 					409
@@ -19410,17 +19410,17 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 			try {
 				await createdRosterPlayer12.save()
 			} catch (err) {
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
-				createdRosterPlayer11 && createdRosterPlayer11.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
+				createdRosterPlayer11 && createdRosterPlayer11.deleteOne()
 				const error = new HttpError(
 					'Could not add player12 to team.  Maybe a missing Number?',
 					500
@@ -19491,18 +19491,18 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 		if (!middleInitial13) {
 			if (playerExists13) {
 				console.log('Player 13 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
-				createdRosterPlayer11 && createdRosterPlayer11.remove()
-				createdRosterPlayer12 && createdRosterPlayer12.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
+				createdRosterPlayer11 && createdRosterPlayer11.deleteOne()
+				createdRosterPlayer12 && createdRosterPlayer12.deleteOne()
 				const error = new HttpError(
 					existingPlayerName13 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -19512,18 +19512,18 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 				return next(error)
 			} else if (firstName13 && !playerNumber13) {
 				console.log('Player 13 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
-				createdRosterPlayer11 && createdRosterPlayer11.remove()
-				createdRosterPlayer12 && createdRosterPlayer12.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
+				createdRosterPlayer11 && createdRosterPlayer11.deleteOne()
+				createdRosterPlayer12 && createdRosterPlayer12.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 13',
 					409
@@ -19562,18 +19562,18 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 		if (middleInitial13) {
 			if (playerExists13) {
 				console.log('Player13 already exists!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
-				createdRosterPlayer11 && createdRosterPlayer11.remove()
-				createdRosterPlayer12 && createdRosterPlayer12.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
+				createdRosterPlayer11 && createdRosterPlayer11.deleteOne()
+				createdRosterPlayer12 && createdRosterPlayer12.deleteOne()
 				const error = new HttpError(
 					existingPlayerName13 +
 						' already exists on this team. Start the form over, but do not include ' +
@@ -19583,18 +19583,18 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 				return next(error)
 			} else if (firstName13 && !playerNumber13) {
 				console.log('Player 13 is missing a number!')
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
-				createdRosterPlayer11 && createdRosterPlayer11.remove()
-				createdRosterPlayer12 && createdRosterPlayer12.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
+				createdRosterPlayer11 && createdRosterPlayer11.deleteOne()
+				createdRosterPlayer12 && createdRosterPlayer12.deleteOne()
 				const error = new HttpError(
 					'Please enter a jersey number for player 13',
 					409
@@ -19621,18 +19621,18 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 			try {
 				await createdRosterPlayer13.save()
 			} catch (err) {
-				createdRosterPlayer1 && createdRosterPlayer1.remove()
-				createdRosterPlayer2 && createdRosterPlayer2.remove()
-				createdRosterPlayer3 && createdRosterPlayer3.remove()
-				createdRosterPlayer4 && createdRosterPlayer4.remove()
-				createdRosterPlayer5 && createdRosterPlayer5.remove()
-				createdRosterPlayer6 && createdRosterPlayer6.remove()
-				createdRosterPlayer7 && createdRosterPlayer7.remove()
-				createdRosterPlayer8 && createdRosterPlayer8.remove()
-				createdRosterPlayer9 && createdRosterPlayer9.remove()
-				createdRosterPlayer10 && createdRosterPlayer10.remove()
-				createdRosterPlayer11 && createdRosterPlayer11.remove()
-				createdRosterPlayer12 && createdRosterPlayer12.remove()
+				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
+				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
+				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
+				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
+				createdRosterPlayer5 && createdRosterPlayer5.deleteOne()
+				createdRosterPlayer6 && createdRosterPlayer6.deleteOne()
+				createdRosterPlayer7 && createdRosterPlayer7.deleteOne()
+				createdRosterPlayer8 && createdRosterPlayer8.deleteOne()
+				createdRosterPlayer9 && createdRosterPlayer9.deleteOne()
+				createdRosterPlayer10 && createdRosterPlayer10.deleteOne()
+				createdRosterPlayer11 && createdRosterPlayer11.deleteOne()
+				createdRosterPlayer12 && createdRosterPlayer12.deleteOne()
 				const error = new HttpError(
 					'Could not add player13 to team.  Maybe a missing Number?',
 					500
@@ -21512,7 +21512,7 @@ const removeLeague = async (req, res, next) => {
 		//We found them all, so let's delete them all...
 		teams.forEach(async (team) => {
 			try {
-				await team.remove()
+				await team.deleteOne()
 			} catch (err) {
 				const error = new HttpError(err, 500)
 				return next(error)
@@ -21539,7 +21539,7 @@ const removeLeague = async (req, res, next) => {
 		//We found all the rosters, so let's delete them all...
 		rosters.forEach(async (roster) => {
 			try {
-				await roster.remove()
+				await roster.deleteOne()
 			} catch (err) {
 				const error = new HttpError(err, 500)
 				return next(error)
@@ -21565,7 +21565,7 @@ const removeLeague = async (req, res, next) => {
 		//We found all the rostered players, so let's delete them all...
 		rosterPlayers.forEach(async (player) => {
 			try {
-				await player.remove()
+				await player.deleteOne()
 			} catch (err) {
 				const error = new HttpError(err, 500)
 				return next(error)
@@ -21631,7 +21631,7 @@ const removeLeague = async (req, res, next) => {
 
 		leagueGames.forEach(async (game) => {
 			try {
-				await game.remove()
+				await game.deleteOne()
 			} catch (err) {
 				const error = new HttpError(err, 500)
 				return next(error)
@@ -21639,7 +21639,7 @@ const removeLeague = async (req, res, next) => {
 		})
 		//
 		try {
-			await league.remove()
+			await league.deleteOne()
 		} catch (err) {
 			const error = new HttpError(
 				'Cant find league to delete it (2).  removeLeague',
@@ -21662,7 +21662,7 @@ const removeLeague = async (req, res, next) => {
 		//
 		//
 		try {
-			await league.remove()
+			await league.deleteOne()
 		} catch (err) {
 			const error = new HttpError(
 				'Cant find league to delete it (2).  removeLeague',
@@ -21689,7 +21689,7 @@ const removeLeague = async (req, res, next) => {
 		//We found them all, so let's delete them all...
 		teams.forEach(async (team) => {
 			try {
-				await team.remove()
+				await team.deleteOne()
 			} catch (err) {
 				const error = new HttpError(err, 500)
 				return next(error)
@@ -21715,7 +21715,7 @@ const removeLeague = async (req, res, next) => {
 		//We found all the rosters, so let's delete them all...
 		rosters.forEach(async (roster) => {
 			try {
-				await roster.remove()
+				await roster.deleteOne()
 			} catch (err) {
 				const error = new HttpError(err, 500)
 				return next(error)
@@ -21740,7 +21740,7 @@ const removeLeague = async (req, res, next) => {
 		//We found all the rostered players, so let's delete them all...
 		rosterPlayers.forEach(async (player) => {
 			try {
-				await player.remove()
+				await player.deleteOne()
 			} catch (err) {
 				const error = new HttpError(err, 500)
 				return next(error)
@@ -21768,7 +21768,7 @@ const removeLeague = async (req, res, next) => {
 
 		leagueGames.forEach(async (game) => {
 			try {
-				await game.remove()
+				await game.deleteOne()
 			} catch (err) {
 				const error = new HttpError(err, 500)
 				return next(error)
@@ -21807,7 +21807,7 @@ const removeTeam = async (req, res, next) => {
 	leagueId = foundTeam.leagueId
 
 	try {
-		await foundTeam.remove()
+		await foundTeam.deleteOne()
 	} catch (err) {
 		const error = new HttpError('Cant find team to delete it.  removeTeam', 404)
 		return next(error)
@@ -21828,7 +21828,7 @@ const removeTeam = async (req, res, next) => {
 	}
 	rosterId = roster._id
 	try {
-		await roster.remove()
+		await roster.deleteOne()
 	} catch (err) {
 		const error = new HttpError(err, 404)
 		return next(error)
@@ -21850,7 +21850,7 @@ const removeTeam = async (req, res, next) => {
 	//We found all the rostered players, so let's delete them all...
 	rosterPlayers.forEach(async (player) => {
 		try {
-			await player.remove()
+			await player.deleteOne()
 		} catch (err) {
 			const error = new HttpError(err, 500)
 			return next(error)
@@ -21913,7 +21913,7 @@ const removeTeam = async (req, res, next) => {
 	if (allGames.length !== 0) {
 		try {
 			await allGames.forEach((game) => {
-				game.remove()
+				game.deleteOne()
 			})
 		} catch (err) {
 			const error = new HttpError(err, 404)
@@ -21957,7 +21957,7 @@ const removePlayer = async (req, res, next) => {
 	//
 	//
 	try {
-		await rosterPlayer.remove()
+		await rosterPlayer.deleteOne()
 	} catch (err) {
 		const error = new HttpError(err, 404)
 		return next(error)
@@ -22074,7 +22074,7 @@ const removeEvent = async (req, res, next) => {
 		if (playoffStats) {
 			console.log('playoffGameStats: ' + playoffStats)
 			playoffStats.forEach((stat) => {
-				stat.remove()
+				stat.deleteOne()
 			})
 		}
 		//
@@ -22088,7 +22088,7 @@ const removeEvent = async (req, res, next) => {
 		if (championshipStats) {
 			console.log('championshipStats: ' + championshipStats)
 			championshipStats.forEach((stat) => {
-				stat.remove()
+				stat.deleteOne()
 			})
 		}
 		//
@@ -22276,7 +22276,7 @@ const removeEvent = async (req, res, next) => {
 				//
 				try {
 					console.log('deleting game stats 1...')
-					await gameStats.remove()
+					await gameStats.deleteOne()
 				} catch (err) {
 					const error = new HttpError(
 						'Could not delete game stats: ' + err,
@@ -22289,8 +22289,8 @@ const removeEvent = async (req, res, next) => {
 				//
 				try {
 					console.log('deleting game...')
-					//await gameOrEvent.remove()
-					await game.remove()
+					//await gameOrEvent.deleteOne()
+					await game.deleteOne()
 				} catch (err) {
 					const error = new HttpError(err, 404)
 					return next(error)
@@ -22454,7 +22454,7 @@ const removeEvent = async (req, res, next) => {
 				//
 				try {
 					console.log('deleting game stats 2...')
-					await gameStats.remove()
+					await gameStats.deleteOne()
 				} catch (err) {
 					const error = new HttpError(
 						'Could not delete game stats: ' + err,
@@ -22466,8 +22466,8 @@ const removeEvent = async (req, res, next) => {
 				//
 				try {
 					console.log('deleting game 2...')
-					//await gameOrEvent.remove()
-					await game.remove()
+					//await gameOrEvent.deleteOne()
+					await game.deleteOne()
 				} catch (err) {
 					const error = new HttpError(err, 404)
 					return next(error)
@@ -22539,7 +22539,7 @@ const removeEvent = async (req, res, next) => {
 				//
 				try {
 					console.log('deleting game stats...')
-					await gameStats.remove()
+					await gameStats.deleteOne()
 				} catch (err) {
 					const error = new HttpError(
 						'Could not delete game stats: ' + err,
@@ -22551,8 +22551,8 @@ const removeEvent = async (req, res, next) => {
 				//
 				try {
 					console.log('deleting game...')
-					//await gameOrEvent.remove()
-					await game.remove()
+					//await gameOrEvent.deleteOne()
+					await game.deleteOne()
 				} catch (err) {
 					const error = new HttpError(err, 404)
 					return next(error)
@@ -22564,8 +22564,8 @@ const removeEvent = async (req, res, next) => {
 		//we still want it to delete
 		try {
 			console.log('deleting game...')
-			//await gameOrEvent.remove()
-			await game.remove()
+			//await gameOrEvent.deleteOne()
+			await game.deleteOne()
 		} catch (err) {
 			const error = new HttpError(err, 404)
 			return next(error)
@@ -22574,7 +22574,7 @@ const removeEvent = async (req, res, next) => {
 		/* if (event) {
 		try {
 			console.log('deleting event...')
-			await event.remove()
+			await event.deleteOne()
 		} catch (err) {
 			const error = new HttpError(err, 404)
 			return next(error)
@@ -22631,7 +22631,7 @@ const removeEvent = async (req, res, next) => {
 	if (event) {
 		try {
 			console.log('deleting event...')
-			await event.remove()
+			await event.deleteOne()
 		} catch (err) {
 			const error = new HttpError(err, 404)
 			return next(error)
@@ -22660,7 +22660,7 @@ const deleteAllRosterPlayerStatsPerGame = async (req, res, next) => {
 
 	allRosterPlayerStatsPerGame.forEach(async (rpspg) => {
 		try {
-			await rpspg.remove()
+			await rpspg.deleteOne()
 		} catch (err) {
 			const error = new HttpError(err, 500)
 			return next(error)
