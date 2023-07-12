@@ -27,15 +27,16 @@ const playerRegistration = async (req, res, next) => {
 		city,
 		state,
 		zip,
-		country,
-		gender,
 		email,
+		email2,
 		dateOfBirth,
-		teeShirtSize,
 		parentName,
-		goalie,
-		jerseyNumber,
-		position,
+		//country,
+		//gender,
+		//teeShirtSize,
+		//goalie,
+		//jerseyNumber,
+		//position,
 	} = req.body
 
 	const firstNameTrimmed = firstName.trim().replace(/\s+/g, '-')
@@ -51,15 +52,15 @@ const playerRegistration = async (req, res, next) => {
 	console.log(city)
 	console.log(state)
 	console.log(zip)
-	console.log(country)
-	console.log(gender)
 	console.log(email)
 	console.log(dateOfBirth)
-	console.log(teeShirtSize)
 	console.log(parentName)
-	console.log(goalie)
-	console.log(jerseyNumber)
-	console.log(position)
+	//console.log(goalie)
+	//console.log(jerseyNumber)
+	//console.log(position)
+	//console.log(country)
+	//console.log(gender)
+	//console.log(teeShirtSize)
 	//
 	//
 	//
@@ -80,15 +81,16 @@ const playerRegistration = async (req, res, next) => {
 		city: city,
 		state: state,
 		zip: zip,
-		country: country,
-		gender: gender,
 		email: email,
+		email2: email2,
 		dateOfBirth: dateOfBirth,
-		teeShirtSize: teeShirtSize,
 		parentName: parentName,
-		goalie: goalie,
-		jerseyNumber: jerseyNumber,
-		position: position,
+		//country: country,
+		//gender: gender,
+		//teeShirtSize: teeShirtSize,
+		//goalie: goalie,
+		//jerseyNumber: jerseyNumber,
+		//position: position,
 	})
 	//}
 
