@@ -22718,12 +22718,12 @@ const login = async (req, res, next) => {
 
 	const { email, password } = req.body
 
-	if (email !== 'jdesmond@murrysvillesportzone.com') {
+	if (email !== 'ahigareda@onmail.com') {
 		const error = new HttpError('invalid EMAIL', 401)
 		return next(error)
 	}
 
-	if (password !== 'Dekburn2!') {
+	if (password !== 'admin1234') {
 		const error = new HttpError('invalid PASSWORD', 401)
 		return next(error)
 	}
