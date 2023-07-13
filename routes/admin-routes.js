@@ -72,10 +72,7 @@ router.get('/videos/:videoId', adminControllers.getVideoData)
 //router.get('/teams/:teamId', adminControllers.getTeamData)
 //
 //
-router.get(
-	'/:leagueName/:session/:year/:teamName/:playerId',
-	adminControllers.getPlayerNumber
-)
+router.get('/:teamName/:year/:playerId', adminControllers.getPlayerNumber)
 //
 //
 router.get('/players/:playerId', adminControllers.getPlayerData)

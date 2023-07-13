@@ -333,7 +333,7 @@ const getVideoData = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const getPlayerNumber = async (req, res, next) => {
-	const session = req.params.session
+	//const session = req.params.session
 	const year = req.params.year
 	const teamName = req.params.teamName
 	const playerId = req.params.playerId
@@ -344,7 +344,7 @@ const getPlayerNumber = async (req, res, next) => {
 	let foundRosterPlayer, firstName, lastName, playerName
 	try {
 		foundRosterPlayer = await RosterPlayer.findOne({
-			session: session,
+			//session: session,
 			year: year,
 			teamName: teamName,
 			playerId: playerId,
