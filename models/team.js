@@ -5,8 +5,9 @@ const Schema = mongoose.Schema
 const teamSchema = new Schema({
 	//id: { type: String, required: true },
 	teamName: { type: String, required: true },
-	leagueId: { type: String, required: true },
-	divisionName: { type: String, required: false },
+	year: { type: Number, required: true },
+	//leagueId: { type: String, required: true },
+	//divisionName: { type: String, required: false },
 	wins: { type: Number },
 	losses: { type: Number },
 	ties: { type: Number },
@@ -17,6 +18,7 @@ const teamSchema = new Schema({
 	points: { type: Number },
 	assignedPlayers: { type: Number },
 	seed: { type: Number },
+	isCurrent: { type: Boolean },
 })
 
 module.exports = mongoose.model('Team', teamSchema)

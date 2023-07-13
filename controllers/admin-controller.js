@@ -1532,20 +1532,20 @@ const allGamesAndEventsWeek = async (req, res, next) => {
 //
 //****************************************************************************************** */
 //
-//POST request to create a new league
+//POST request to create a new sloths team for the year
 //
 //****************************************************************************************** */
-const createNewLeague = async (req, res, next) => {
+const createNewTeam = async (req, res, next) => {
 	const errors = validationResult(req)
 	if (!errors.isEmpty()) {
 		throw new HttpError('Invalid inputs - something is empty', 422)
 	}
 
-	const { leagueName, divisionName, year, session } = req.body
+	const { teamName, year } = req.body
 
-	//First, let's check to see if the league already exists...
-	let leagueExists
-	if (divisionName) {
+	//First, let's check to see if the team already exists...
+	let teamExists
+	/* if (divisionName) {
 		leagueExists = await League.findOne({
 			leagueName: leagueName,
 			year: year,
@@ -1553,40 +1553,48 @@ const createNewLeague = async (req, res, next) => {
 			session: session,
 		})
 	}
-	if (!divisionName) {
-		leagueExists = await League.findOne({
-			leagueName: leagueName,
-			year: year,
-			session: session,
-		})
-	}
+	if (!divisionName) { */
+	teamExists = await Team.findOne({
+		teamName: teamName,
+		year: year,
+		//session: session,
+	})
+	//}
 
-	let createdLeague
-	if (leagueExists) {
-		console.log('league already exists')
-		const error = new HttpError('League already exists', 409)
+	let createdTeam
+	if (teamExists) {
+		console.log('team already exists')
+		const error = new HttpError('Team already exists', 409)
 		return next(error)
 	} else {
-		createdLeague = new League({
-			id: uuidv4(),
-			leagueName: leagueName.trim(),
-			divisionName: divisionName,
+		createdTeam = new Team({
+			//id: uuidv4(),
+			teamName: teamName.trim(),
+			wins: 0,
+			losses: 0,
+			ties: 0,
+			overtimeLosses: 0,
+			shootoutLosses: 0,
+			goalsFor: 0,
+			goalsAgainst: 0,
+			assignedPlayers: 0,
+			//divisionName: divisionName,
 			year: year,
-			session: session.trim(),
+			//session: session.trim(),
 			isCurrent: true,
-			numberOfTeams: 0,
+			//numberOfTeams: 0,
 		})
 	}
 
 	try {
-		await createdLeague.save()
+		await createdTeam.save()
 	} catch (err) {
-		const error = new HttpError('Could not create new League', 500)
+		const error = new HttpError('Could not create new Team', 500)
 		return next(error)
 	}
 
 	//we created something new so conventionally, that'll be a 201
-	res.status(201).json({ league: createdLeague })
+	res.status(201).json({ team: createdTeam })
 }
 //
 //
@@ -2648,7 +2656,7 @@ const createNewPlayer = async (req, res, next) => {
 //This call will need to be made multiple times possibly, for each new team request.
 //
 //****************************************************************************************** */
-const createNewTeam = async (req, res, next) => {
+/* const createNewTeam = async (req, res, next) => {
 	const errors = validationResult(req)
 	if (!errors.isEmpty()) {
 		throw new HttpError(JSON.stringify(errors), 422)
@@ -3026,7 +3034,7 @@ const createNewTeam = async (req, res, next) => {
 		team4: createdTeam4,
 		team5: createdTeam5,
 	})
-}
+} */
 //****************************************************************************************** */
 //
 //Create a new team(s) for a given league.  WITH A DIVISION
@@ -22775,12 +22783,12 @@ exports.getAllRosters = getAllRosters
 exports.getAllPlayers = getAllPlayers
 exports.allGamesAndEvents = allGamesAndEvents //This is the full schedule
 exports.allGamesAndEventsWeek = allGamesAndEventsWeek //This is this weeks schedule
-exports.createNewLeague = createNewLeague
+exports.createNewTeam = createNewTeam
 exports.copyLeague = copyLeague
 exports.createNewVenue = createNewVenue
 exports.createNewVideo = createNewVideo
 exports.createNewPlayer = createNewPlayer
-exports.createNewTeam = createNewTeam
+//exports.createNewTeam = createNewTeam
 exports.createNewTeamWithDivision = createNewTeamWithDivision
 exports.createGames = createGames
 exports.uploadGames = uploadGames
