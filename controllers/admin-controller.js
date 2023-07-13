@@ -20811,21 +20811,22 @@ const archiveCurrentToggleTeam = async (req, res, next) => {
 			year: year,
 		}).orFail()
 	} catch (err) {
-		const error = new HttoError('No games found for this team', 500)
+		const error = new HttpError('No games found for this team', 500)
 		return next(error)
 	}
 
-	console.log('games: ' + games)
+	games && console.log('games: ' + games)
 
-	games.forEach(async (game) => {
-		game.isCurrent ? (game.isCurrent = false) : (game.isCurrent = true)
-		try {
-			await game.save()
-		} catch (err) {
-			const error = new HttpError(err, 500)
-			return next(error)
-		}
-	})
+	games &&
+		games.forEach(async (game) => {
+			game.isCurrent ? (game.isCurrent = false) : (game.isCurrent = true)
+			try {
+				await game.save()
+			} catch (err) {
+				const error = new HttpError(err, 500)
+				return next(error)
+			}
+		})
 
 	//Here's where we toggle.  If team was current, let's archive it.  If team
 	//was in archives, let's make it current
