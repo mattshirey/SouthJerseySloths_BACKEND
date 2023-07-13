@@ -3037,13 +3037,27 @@ const newPlayerOnTeam = async (req, res, next) => {
 			year: year,
 		}).orFail()
 	} catch (err) {
-		const error = new HttpError(
-			'Finding team failed.  createNewPlayerOnTeam',
-			500
-		)
+		const error = new HttpError('Finding team failed.  newPlayerOnTeam', 500)
 		return next(error)
 	}
 	teamId = foundTeam.id
+	//
+	//
+	//Next, lets find the rosterId for this team
+	let rosterId
+	let foundRoster
+	try {
+		foundRoster = await Roster.findOne({
+			teamId: teamId,
+			//divisionName: divisionName,
+			//session: session,
+			//year: year,
+		}).orFail()
+	} catch (err) {
+		const error = new HttpError('Finding roster failed.  newPlayerOnTeam', 500)
+		return next(error)
+	}
+	rosterId = foundRoster.id
 	//
 	//We get the teamName via the request (from the user input),
 	//then create our new team for the league
