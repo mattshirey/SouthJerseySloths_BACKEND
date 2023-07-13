@@ -14812,15 +14812,15 @@ const addPlayerToTeam = async (req, res, next) => {
 			return next(error)
 		} else {
 			createdRosterPlayer1 = new RosterPlayer({
-				leagueId,
+				teamId,
 				playerId: playerId1,
 				firstName: firstName1,
 				middleInitial: ' ',
 				lastName: lastName1,
 				rosterId,
 				teamName,
-				leagueName,
-				session,
+				//leagueName,
+				//session,
 				year,
 				number: playerNumber1,
 				goals: 0,
@@ -14849,15 +14849,15 @@ const addPlayerToTeam = async (req, res, next) => {
 			return next(error)
 		} else {
 			createdRosterPlayer1 = new RosterPlayer({
-				leagueId,
+				teamId,
 				playerId: playerId1,
 				firstName: firstName1,
-				middleInitial: middleInitial1,
+				middleInitial: ' ',
 				lastName: lastName1,
 				rosterId,
 				teamName,
-				leagueName,
-				session,
+				//leagueName,
+				//session,
 				year,
 				number: playerNumber1,
 				goals: 0,
@@ -14951,17 +14951,17 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else {
 				createdRosterPlayer2 = new RosterPlayer({
-					leagueId,
-					playerId: playerId2,
-					firstName: firstName2,
+					teamId,
+					playerId: playerId1,
+					firstName: firstName1,
 					middleInitial: ' ',
-					lastName: lastName2,
+					lastName: lastName1,
 					rosterId,
 					teamName,
-					leagueName,
-					session,
+					//leagueName,
+					//session,
 					year,
-					number: playerNumber2,
+					number: playerNumber1,
 					goals: 0,
 					assists: 0,
 				})
@@ -14996,17 +14996,17 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else {
 				createdRosterPlayer2 = new RosterPlayer({
-					leagueId,
-					playerId: playerId2,
-					firstName: firstName2,
-					middleInitial: middleInitial2,
-					lastName: lastName2,
+					teamId,
+					playerId: playerId1,
+					firstName: firstName1,
+					middleInitial: ' ',
+					lastName: lastName1,
 					rosterId,
 					teamName,
-					leagueName,
-					session,
+					//leagueName,
+					//session,
 					year,
-					number: playerNumber2,
+					number: playerNumber1,
 					goals: 0,
 					assists: 0,
 				})
@@ -15102,17 +15102,17 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else {
 				createdRosterPlayer3 = new RosterPlayer({
-					leagueId,
-					playerId: playerId3,
-					firstName: firstName3,
+					teamId,
+					playerId: playerId1,
+					firstName: firstName1,
 					middleInitial: ' ',
-					lastName: lastName3,
+					lastName: lastName1,
 					rosterId,
 					teamName,
-					leagueName,
-					session,
+					//leagueName,
+					//session,
 					year,
-					number: playerNumber3,
+					number: playerNumber1,
 					goals: 0,
 					assists: 0,
 				})
@@ -15149,17 +15149,17 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else {
 				createdRosterPlayer3 = new RosterPlayer({
-					leagueId,
-					playerId: playerId3,
-					firstName: firstName3,
-					middleInitial: middleInitial3,
-					lastName: lastName3,
+					teamId,
+					playerId: playerId1,
+					firstName: firstName1,
+					middleInitial: ' ',
+					lastName: lastName1,
 					rosterId,
 					teamName,
-					leagueName,
-					session,
+					//leagueName,
+					//session,
 					year,
-					number: playerNumber3,
+					number: playerNumber1,
 					goals: 0,
 					assists: 0,
 				})
