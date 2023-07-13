@@ -288,7 +288,7 @@ router.patch(
 //
 //
 router.patch(
-	'/:leagueId/archiveCurrentToggleTeam',
+	'/:teamId/archiveCurrentToggleTeam',
 	[check('teamId').not().isEmpty()],
 	adminControllers.archiveCurrentToggleTeam
 )
