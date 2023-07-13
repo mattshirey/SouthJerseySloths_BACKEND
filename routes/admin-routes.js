@@ -154,11 +154,14 @@ router.post(
 )
 //
 //
-router.post(
+/* router.post(
 	'/:leagueName/:session/:year/newTeam',
 	check('teamName1').not().isEmpty(),
 	adminControllers.createNewTeam
-)
+) */
+//
+//
+//
 router.post(
 	'/:leagueName/:divisionName/:session/:year/newTeam',
 	check('teamName1').not().isEmpty(),
