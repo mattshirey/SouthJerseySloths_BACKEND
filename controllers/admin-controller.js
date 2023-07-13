@@ -20810,7 +20810,7 @@ const archiveCurrentToggleTeam = async (req, res, next) => {
 			teamName: teamName,
 			//session: session,
 			year: year,
-		}).orFail()
+		})
 	} catch (err) {
 		const error = new HttpError('No games found for this team', 500)
 		return next(error)
