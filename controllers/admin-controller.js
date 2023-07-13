@@ -637,7 +637,7 @@ const getPlayersOnTeam = async (req, res, next) => {
 	console.log(teamName + ' ' + year)
 	try {
 		foundTeam = await Team.findOne({
-			teammName: teamName,
+			teamName: teamName,
 			//session: session,
 			year: year,
 		}).orFail()
