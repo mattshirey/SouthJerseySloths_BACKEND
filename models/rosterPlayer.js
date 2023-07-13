@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 
 const rosterPlayerSchema = new Schema({
 	//id: { type: String, required: true },
-	leagueId: { type: String, required: true },
+	//leagueId: { type: String, required: true },
 	teamId: { type: String, required: true },
 	playerId: { type: String, required: true },
 	firstName: { type: String, required: true },

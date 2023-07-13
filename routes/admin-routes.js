@@ -165,10 +165,15 @@ router.post(
 //
 //
 //
-router.post(
+/* router.post(
 	'/:leagueName/:divisionName/:session/:year/newTeam',
 	check('teamName1').not().isEmpty(),
 	adminControllers.createNewTeamWithDivision
+) */
+router.post(
+	'/:teamName/:year/newPlayer',
+	check('playerName1').not().isEmpty(),
+	adminControllers.createNewPlayerOnTeam
 )
 //
 //
@@ -336,13 +341,15 @@ router.patch(
 )
 //
 //
-router.delete('/:teamId/removeTeam', adminControllers.removeTeam)
+//router.delete('/:teamId/removeTeam', adminControllers.removeTeam)
+
+router.delete('/:playerId/removePlayer', adminControllers.removePlayer)
 
 router.delete('/:deletedVideoId/removeVideo', adminControllers.removeVideo)
 
 //router.delete('/:teamId/removeTeam', adminControllers.removeTeam)
 
-router.delete('/:rosterPlayerId/removePlayer', adminControllers.removePlayer)
+//router.delete('/:rosterPlayerId/removePlayer', adminControllers.removePlayer)
 
 router.delete('/:itemId/removeEvent', adminControllers.removeEvent) //deletes a game or event
 

@@ -1554,6 +1554,19 @@ const createNewTeam = async (req, res, next) => {
 		return next(error)
 	}
 
+	const createdRoster1 = new Roster({
+		id: uuidv4(),
+		//leagueId,
+		teamId: createdTeam.id,
+	})
+
+	try {
+		await createdRoster1.save()
+	} catch (err) {
+		const error = new HttpError(err, 500)
+		return next(error)
+	}
+
 	//we created something new so conventionally, that'll be a 201
 	res.status(201).json({ team: createdTeam })
 }
@@ -2998,100 +3011,131 @@ const createNewPlayer = async (req, res, next) => {
 } */
 //****************************************************************************************** */
 //
-//Create a new team(s) for a given league.  WITH A DIVISION
-//We get the leagueName, session, and year in our params, so we need to
-//find the leagueId.
-//This call will need to be made multiple times possibly, for each new team request.
+//Create a new players(s) for a given team.
+//
 //
 //****************************************************************************************** */
-const createNewTeamWithDivision = async (req, res, next) => {
+const createNewPlayerOnTeam = async (req, res, next) => {
 	const errors = validationResult(req)
 	if (!errors.isEmpty()) {
 		throw new HttpError(JSON.stringify(errors), 422)
 	}
 
-	const leagueName = req.params.leagueName
-	const divisionName = req.params.divisionName
-	const session = req.params.session
+	const teamName = req.params.teamName
+	//const divisionName = req.params.divisionName
+	//const session = req.params.session
 	const year = req.params.year
 
-	//First, let's find the leagueId:
-	let leagueId
-	let foundLeague
+	//First, let's find the teamId:
+	let teamId
+	let foundTeam
 	try {
-		foundLeague = await League.findOne({
-			leagueName: leagueName,
-			divisionName: divisionName,
-			session: session,
+		foundTeam = await Team.findOne({
+			teamName: teamName,
+			//divisionName: divisionName,
+			//session: session,
 			year: year,
 		}).orFail()
 	} catch (err) {
 		const error = new HttpError(
-			'Finding league failed.  createNewTeamWithDivision',
+			'Finding team failed.  createNewPlayerOnTeam',
 			500
 		)
 		return next(error)
 	}
-	leagueId = foundLeague.id
+	teamId = foundTeam.id
 	//
 	//We get the teamName via the request (from the user input),
 	//then create our new team for the league
 	//const { teamName1, teamName2, teamName3, teamName4, teamName5 } = req.body
-	const { teamName1, teamName2, teamName3, teamName4, teamName5 } = req.body
+	const {
+		playerFirstName1,
+		playerLastName1,
+		playerNumber1,
+		playerFirstName2,
+		playerLastName2,
+		playerNumber2,
+		playerFirstName3,
+		playerLastName3,
+		playerNumber3,
+		playerFirstName4,
+		playerLastName4,
+		playerNumber4,
+		playerFirstName5,
+		playerLastName5,
+		playerNumber5,
+		playerFirstName6,
+		playerLastName6,
+		playerNumber6,
+		playerFirstName7,
+		playerLastName7,
+		playerNumber7,
+		playerFirstName8,
+		playerLastName8,
+		playerNumber8,
+		playerFirstName9,
+		playerLastName9,
+		playerNumber9,
+		playerFirstName10,
+		playerLastName10,
+		playerNumber10,
+	} = req.body
 
-	//Now, let's find out if this team already exists...
+	//Now, let's find out if this player already exists...
 	console.log('you are here 4')
-	const teamExists1 = await Team.findOne({
-		teamName: teamName1,
-		leagueId: leagueId,
-		divisionName: divisionName,
-		session: session,
+	const playerExists1 = await RosterPlayer.findOne({
+		firstName: playerFirstName1,
+		lastName: playerLastName1,
+		teamId: teamId,
+		/* divisionName: divisionName,
+		session: session, */
 		year: year,
 	})
 
-	let createdTeam1
-	if (teamExists1) {
+	let createdPlayer1
+	if (playerExists1) {
 		const error = new HttpError(
-			teamName1 + ' already exists in this league',
+			playerFirstName1 + ' ' + playerLastName1 + ' already exists on this team',
 			409
 		)
 		return next(error)
 	} else {
-		createdTeam1 = new Team({
-			teamName: teamName1.trim(),
-			leagueId,
-			divisionName: divisionName,
-			wins: 0,
-			losses: 0,
-			ties: 0,
-			overtimeLosses: 0,
-			shootoutLosses: 0,
-			goalsFor: 0,
-			goalsAgainst: 0,
-			points: 0,
-			assignedPlayers: 0,
-			seed: 0,
+		createdPlayer1 = new RosterPlayer({
+			//leagueId,
+			teamId: teamId,
+			playerId: playerId1,
+			firstName: playerFirstName1.trim(),
+			middleInitial: ' ',
+			lastName: playerLastName1.trim(),
+			rosterId,
+			teamName,
+			leagueName,
+			session,
+			year,
+			number: playerNumber1,
+			goals: 0,
+			assists: 0,
 		})
 	}
 	try {
-		await createdTeam1.save()
+		await createdPlayer1.save()
 	} catch (err) {
-		const error = new HttpError('Could not create new Team1', 500)
+		const error = new HttpError('Could not create new Player1', 500)
 		return next(error)
 	}
-	const createdRoster1 = new Roster({
+	/* const createdRoster1 = new Roster({
 		id: uuidv4(),
 		leagueId,
 		divisionName: divisionName,
 		teamId: createdTeam1.id,
-	})
+	}) */
 
-	try {
+	/* try {
 		await createdRoster1.save()
 	} catch (err) {
 		const error = new HttpError(err, 500)
 		return next(error)
-	}
+	} */
 	//
 	//
 	//
@@ -21774,37 +21818,40 @@ const removeVideo = async (req, res, next) => {
 //
 //****************************************************************************************** */
 //
-//Here, we want to remove a team from a league.  So obviously we want to remove them
+//Here, we want to remove a player from a sloth team.  So obviously we want to remove them
 //from the TEAMS database table, but we ALSO want to remove the teams roster object and all
 //the rosteredPlayers on the team
 //
 //****************************************************************************************** */
-/* const removeTeam = async (req, res, next) => {
-	const teamId = req.params.teamId
+const removePlayer = async (req, res, next) => {
+	const playerId = req.params.playerId
 
-	//Before we go deleting, we need to obtain the leagueId (so we can delete roster and rosterPlayers)
+	//Before we go deleting, we need to obtain the teamId (so we can delete roster and rosterPlayers)
 	//So first, we need to find the team...
-	let leagueId
-	let foundTeam
+	let teamId
+	let foundPlayer
 	try {
-		foundTeam = await Team.findById(teamId)
+		foundPlayer = await RosterPlayer.findById(playerId)
 	} catch (err) {
-		const error = new HttpError('Could not find team.  removeTeam', 500)
+		const error = new HttpError('Could not find team.  removePlayer', 500)
 		return next(error)
 	}
 
-	leagueId = foundTeam.leagueId
+	teamId = foundPlayer.teamId
 
 	try {
-		await foundTeam.deleteOne()
+		await foundPlayer.deleteOne()
 	} catch (err) {
-		const error = new HttpError('Cant find team to delete it.  removeTeam', 404)
+		const error = new HttpError(
+			'Cant find player to delete them.  removePlayer',
+			404
+		)
 		return next(error)
 	}
 
 	//We have the leagueId, now let's delete the roster for this team.  We can look for both
 	//leagueId AND teamId when deleting this.
-	let roster
+	/* let roster
 	let rosterId
 	try {
 		roster = await Roster.findOne({
@@ -21821,9 +21868,9 @@ const removeVideo = async (req, res, next) => {
 	} catch (err) {
 		const error = new HttpError(err, 404)
 		return next(error)
-	}
+	} */
 	//Next, we need to find all rosteredPlayers for this league and delete them
-	let rosterPlayers
+	/* let rosterPlayers
 	try {
 		rosterPlayers = await RosterPlayer.find({
 			rosterId: rosterId,
@@ -21834,32 +21881,32 @@ const removeVideo = async (req, res, next) => {
 			404
 		)
 		return next(error)
-	}
+	} */
 
 	//We found all the rostered players, so let's delete them all...
-	rosterPlayers.forEach(async (player) => {
+	/* rosterPlayers.forEach(async (player) => {
 		try {
 			await player.deleteOne()
 		} catch (err) {
 			const error = new HttpError(err, 500)
 			return next(error)
 		}
-	})
+	}) */
 
 	//Let's find the league, so that in the next step we can decrement numberOfTeams
-	let foundLeague
+	let foundTeam
 	try {
-		foundLeague = await League.findById(leagueId)
+		foundTeam = await Team.findById(teamId)
 	} catch (err) {
 		const error = new HttpError(err, 500)
 		return next(error)
 	}
 
 	//Here's where, if we found the league, we decrement the numberOfTeams by 1
-	if (foundLeague) {
-		foundLeague.numberOfTeams--
+	if (foundTeam) {
+		foundTeam.assignedPlayers--
 		try {
-			await foundLeague.save()
+			await foundTeam.save()
 		} catch (err) {
 			const error = new HttpError(err, 500)
 			return next(error)
@@ -21867,7 +21914,7 @@ const removeVideo = async (req, res, next) => {
 	}
 
 	//Finally, we want to find any games that this team is involved in and delete them
-	let homeGames, visitorGames
+	/* let homeGames, visitorGames
 	let allGames = []
 	try {
 		homeGames = await Game.find({
@@ -21878,13 +21925,13 @@ const removeVideo = async (req, res, next) => {
 			'Could not find games where this is the hometeam',
 			404
 		)
-	}
+	} */
 
-	for (let i = 0; i < homeGames.length; i++) {
+	/* for (let i = 0; i < homeGames.length; i++) {
 		allGames.push(homeGames[i])
-	}
+	} */
 
-	try {
+	/* try {
 		visitorGames = await Game.find({
 			visitorTeamId: teamId,
 		})
@@ -21897,9 +21944,9 @@ const removeVideo = async (req, res, next) => {
 
 	for (let i = 0; i < visitorGames.length; i++) {
 		allGames.push(visitorGames[i])
-	}
+	} */
 
-	if (allGames.length !== 0) {
+	/* if (allGames.length !== 0) {
 		try {
 			await allGames.forEach((game) => {
 				game.deleteOne()
@@ -21908,13 +21955,12 @@ const removeVideo = async (req, res, next) => {
 			const error = new HttpError(err, 404)
 			return next(error)
 		}
-	}
+	} */
 
 	res.status(200).json({
-		message:
-			'Deleted the team from TEAMS database and roster from ROSTER database and ROSTERPLAYERS',
+		message: 'Deleted the player',
 	})
-} */
+}
 //
 //
 //
@@ -21928,7 +21974,7 @@ const removeVideo = async (req, res, next) => {
 //to remove the player from THIS team.
 //
 //****************************************************************************************** */
-const removePlayer = async (req, res, next) => {
+/* const removePlayer = async (req, res, next) => {
 	const rosterPlayerId = req.params.rosterPlayerId
 	//actually, this is the ROSTERPLAYER id, not the playerId
 
@@ -21983,7 +22029,7 @@ const removePlayer = async (req, res, next) => {
 	res.status(200).json({
 		message: 'Deleted the player from this team',
 	})
-}
+} */
 //
 //
 //
@@ -22738,7 +22784,8 @@ exports.createNewVenue = createNewVenue
 exports.createNewVideo = createNewVideo
 exports.createNewPlayer = createNewPlayer
 //exports.createNewTeam = createNewTeam
-exports.createNewTeamWithDivision = createNewTeamWithDivision
+//exports.createNewTeamWithDivision = createNewTeamWithDivision
+exports.createNewPlayerOnTeam
 exports.createGames = createGames
 exports.uploadGames = uploadGames
 exports.createGameStats = createGameStats
