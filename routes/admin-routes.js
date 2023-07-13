@@ -47,10 +47,10 @@ router.get(
 	'/:leagueName/:divisionName/:session/:year/:teamName/players',
 	adminControllers.getPlayersOnTeamWithDivision
 )
-router.get(
+/* router.get(
 	'/:leagueName/:session/:year/:teamName/players',
 	adminControllers.getPlayersOnTeam
-)
+) */
 //
 //
 router.get(
