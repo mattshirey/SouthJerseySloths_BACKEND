@@ -20787,7 +20787,7 @@ const archiveCurrentToggleTeam = async (req, res, next) => {
 	if (!errors.isEmpty()) {
 		throw new HttpError('Invalid inputs - something is empty', 422)
 	}
-
+	console.log('you are here 1')
 	const teamId = req.params.teamId
 
 	let team, teamName, year, games
@@ -20804,6 +20804,7 @@ const archiveCurrentToggleTeam = async (req, res, next) => {
 	//Next, we want to find all the games that are schedule for this team, and
 	//we will toggle the isCurrent for each of them too
 
+	console.log('you are here 2')
 	try {
 		games = await Game.find({
 			teamName: teamName,
@@ -20814,7 +20815,7 @@ const archiveCurrentToggleTeam = async (req, res, next) => {
 		const error = new HttpError('No games found for this team', 500)
 		return next(error)
 	}
-
+	console.log('you are here 3')
 	games && console.log('games: ' + games)
 
 	games &&
@@ -20827,7 +20828,7 @@ const archiveCurrentToggleTeam = async (req, res, next) => {
 				return next(error)
 			}
 		})
-
+	console.log('you are here 4')
 	//Here's where we toggle.  If team was current, let's archive it.  If team
 	//was in archives, let's make it current
 	console.log('team status BEFORE: ' + team.isCurrent)
