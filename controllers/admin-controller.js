@@ -634,6 +634,7 @@ const getPlayersOnTeam = async (req, res, next) => {
 	let teamId
 	let foundTeam
 	let isCurrent
+	console.log(teamName + ' ' + year)
 	try {
 		foundTeam = await Team.findOne({
 			teammName: teamName,
