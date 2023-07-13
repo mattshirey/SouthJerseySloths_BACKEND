@@ -22,10 +22,13 @@ router.get('/venues', adminControllers.getVenues)
 router.get('/videos', adminControllers.getVideos)
 //
 //
-router.get(
+/* router.get(
 	'/:leagueName/:session/:year/teams',
 	adminControllers.getTeamsInLeague
-)
+) */
+router.get('/:teamName/:year/roster', adminControllers.getPlayersOnTeam)
+//
+//
 router.get(
 	'/:leagueName/:divisionName/:session/:year/teams',
 	adminControllers.getTeamsInLeagueWithDivision

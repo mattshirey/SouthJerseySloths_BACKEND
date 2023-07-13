@@ -620,35 +620,35 @@ const getEventData = async (req, res, next) => {
 }
 //****************************************************************************************** */
 //
-//  Get all teams in a league
+//  Get all players on a sloth team
 //
 //****************************************************************************************** */
-const getTeamsInLeague = async (req, res, next) => {
-	const leagueName = req.params.leagueName
-	const session = req.params.session
+const getPlayersOnTeam = async (req, res, next) => {
+	const teamName = req.params.teamName
+	//const session = req.params.session
 	const year = req.params.year
 	//Here, once we tapped into the params, we'll match the leagueName, session, and year
 	//against the LeagueDatabasTable and get the league id.
 	//We also want to know if the league is current so that, if so, we can edit a team name
 	//We don't really need to edit the team name of an archived team
-	let leagueId
-	let foundLeague
+	let teamId
+	let foundTeam
 	let isCurrent
 	try {
-		foundLeague = await League.findOne({
-			leagueName: leagueName,
-			session: session,
+		foundTeam = await Team.findOne({
+			teammName: teamName,
+			//session: session,
 			year: year,
 		}).orFail()
 	} catch (err) {
 		const error = new HttpError(
-			'Could not find league to obtain leagueId.  getTeamsInLeague',
+			'Could not find team to obtain teamId.  getPlayersOnTeam',
 			404
 		)
 		return next(error)
 	}
-	leagueId = foundLeague.id
-	isCurrent = foundLeague.isCurrent
+	teamId = foundTeam.id
+	isCurrent = foundTeam.isCurrent
 	//console.log('leagueId: ' + leagueId)
 	//
 	//
@@ -656,16 +656,16 @@ const getTeamsInLeague = async (req, res, next) => {
 	//teams with that leagueId
 	//I put an empty catch bracket here, because I don't want to throw an error if
 	//there are no teams.
-	let listOfTeams
+	let listOfPlayers
 	try {
-		listOfTeams = await Team.find({
-			leagueId: leagueId,
+		listOfPlayers = await RosterPlayer.find({
+			teamId: teamId,
 		}).orFail()
 	} catch {}
 
 	res.json({
 		isCurrent: isCurrent,
-		listOfTeams,
+		listOfPlayers,
 	})
 }
 //
@@ -888,21 +888,13 @@ const getTeamsInLeagueByLeagueName = async (req, res, next) => {
 //
 //
 //****************************************************************************************** */
-const getPlayersOnTeam = async (req, res, next) => {
+/* const getPlayersOnTeam = async (req, res, next) => {
 	const leagueName = req.params.leagueName
 	const session = req.params.session
 	const year = req.params.year
 	const teamName = req.params.teamName
 
-	//console.log('divisionName: ' + divisionName)
 
-	//GET THE LEAGUE ID
-	//to get the players, I need to find the leagueId.  Figure that out based
-	//off what we get in useParams()
-	//Here, once we tapped into the params, we'll match the leaguename, session, and year
-	//against the LeagueDatabasTable and get the league id.
-	//We want to know if the team is current so that if so, we can remove a player
-	//from the team.  We don't want to be able to remove a player from an archived
 	let leagueId
 	let foundLeague
 	let isCurrent
@@ -921,11 +913,7 @@ const getPlayersOnTeam = async (req, res, next) => {
 	}
 	leagueId = foundLeague.id
 	isCurrent = foundLeague.isCurrent
-	//
-	//
-	//GET THE TEAM ID
-	//We have the leagueId, and we have the teams name from the params.
-	//So lets get the teamId
+
 	let teamId
 	let foundTeam
 
@@ -943,10 +931,7 @@ const getPlayersOnTeam = async (req, res, next) => {
 	}
 
 	teamId = foundTeam.id
-	//
-	//
-	//Now let's get the rosterId for that team.  We'll need it to find all the rosterPlayers
-	//that have that rosterId
+
 	let rosterId
 	let foundRoster
 	try {
@@ -962,11 +947,7 @@ const getPlayersOnTeam = async (req, res, next) => {
 		return next(error)
 	}
 	rosterId = foundRoster.id
-	//
-	//
-	//
-	//
-	//Get all players in that roster.  This is where player id's and jersey numbers will be
+	
 	let rosteredPlayers
 	try {
 		rosteredPlayers = await RosterPlayer.find({
@@ -976,19 +957,9 @@ const getPlayersOnTeam = async (req, res, next) => {
 		const error = new HttpError('Trouble finding players for this team', 404)
 		return next(error)
 	}
-	//I don't think I want an error if there's no players.
-	/* if (rosteredPlayers.length === 0) {
-		return next(
-			new HttpError('Could not find any players for the provided teamId', 404)
-		)
-	} */
-
-	/* rosteredPlayers.sort((a, b) =>
-		a.goals + a.assists < b.goals + b.assists ? 1 : -1
-	) */
 
 	res.json({ isCurrent: isCurrent, rosteredPlayers })
-}
+} */
 //
 //
 //
@@ -22749,7 +22720,8 @@ exports.getPlayerData = getPlayerData
 exports.getPlayerDataByRosterId = getPlayerDataByRosterId //< - - - used for testing
 exports.getGameData = getGameData
 exports.getEventData = getEventData
-exports.getTeamsInLeague = getTeamsInLeague
+//exports.getTeamsInLeague = getTeamsInLeague
+exports.getPlayersOnTeam = getPlayersOnTeam
 exports.getTeamsInLeagueWithDivision = getTeamsInLeagueWithDivision
 exports.getTeamsInLeagueByLeagueId = getTeamsInLeagueByLeagueId
 exports.getTeamsInLeagueByLeagueName = getTeamsInLeagueByLeagueName
