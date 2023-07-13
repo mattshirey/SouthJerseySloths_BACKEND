@@ -172,8 +172,8 @@ router.post(
 ) */
 router.post(
 	'/:teamName/:year/newPlayer',
-	check('playerName1').not().isEmpty(),
-	adminControllers.createNewPlayerOnTeam
+	check('playerFirstName1').not().isEmpty(),
+	adminControllers.newPlayerOnTeam
 )
 //
 //

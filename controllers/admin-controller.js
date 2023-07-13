@@ -3015,7 +3015,7 @@ const createNewPlayer = async (req, res, next) => {
 //
 //
 //****************************************************************************************** */
-const createNewPlayerOnTeam = async (req, res, next) => {
+const newPlayerOnTeam = async (req, res, next) => {
 	const errors = validationResult(req)
 	if (!errors.isEmpty()) {
 		throw new HttpError(JSON.stringify(errors), 422)
@@ -3440,11 +3440,11 @@ const createNewPlayerOnTeam = async (req, res, next) => {
 	}
 
 	res.status(201).json({
-		team1: createdTeam1,
-		team2: createdTeam2,
-		team3: createdTeam3,
-		team4: createdTeam4,
-		team5: createdTeam5,
+		player1: createdPlayer1,
+		player2: createdPlayer2,
+		player3: createdPlayer3,
+		player4: createdPlayer4,
+		player5: createdPlayer5,
 	})
 }
 //
@@ -22783,9 +22783,9 @@ exports.copyLeague = copyLeague
 exports.createNewVenue = createNewVenue
 exports.createNewVideo = createNewVideo
 exports.createNewPlayer = createNewPlayer
+exports.newPlayerOnTeam = newPlayerOnTeam
 //exports.createNewTeam = createNewTeam
 //exports.createNewTeamWithDivision = createNewTeamWithDivision
-exports.createNewPlayerOnTeam
 exports.createGames = createGames
 exports.uploadGames = uploadGames
 exports.createGameStats = createGameStats
