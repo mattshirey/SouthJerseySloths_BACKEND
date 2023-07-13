@@ -20778,40 +20778,40 @@ const editTeam = async (req, res, next) => {
 //
 //****************************************************************************************** */
 //
-//PATCH request where we can move a current league to the archives
-//   or move an archived league to current
+//PATCH request where we can move a current team to the archives
+//   or move an archived team to current
 //
 //******************************************************************************************* */
-const archiveCurrentToggleLeague = async (req, res, next) => {
+const archiveCurrentToggleTeam = async (req, res, next) => {
 	const errors = validationResult(req)
 	if (!errors.isEmpty()) {
 		throw new HttpError('Invalid inputs - something is empty', 422)
 	}
 
-	const leagueId = req.params.leagueId
+	const teamId = req.params.teamId
 
-	let league, leagueName, session, year, games
+	let team, teamName, year, games
 	try {
-		league = await League.findById(leagueId)
+		team = await Team.findById(teamId)
 	} catch (err) {
-		const error = new HttpError('League not found.  archiveLeague', 500)
+		const error = new HttpError('Team not found.  archiveTeam', 500)
 		return next(error)
 	}
-	leagueName = league.leagueName
-	session = league.session
-	year = league.year
+	teamName = team.teamName
+	//session = league.session
+	year = team.year
 
-	//Next, we want to find all the games that are schedule for this league, and
+	//Next, we want to find all the games that are schedule for this team, and
 	//we will toggle the isCurrent for each of them too
 
 	try {
 		games = await Game.find({
-			leagueName: leagueName,
-			session: session,
+			teamName: teamName,
+			//session: session,
 			year: year,
 		}).orFail()
 	} catch (err) {
-		const error = new HttoError('No games found for this league', 500)
+		const error = new HttoError('No games found for this team', 500)
 		return next(error)
 	}
 
@@ -20827,25 +20827,25 @@ const archiveCurrentToggleLeague = async (req, res, next) => {
 		}
 	})
 
-	//Here's where we toggle.  If league was current, let's archive it.  If league
+	//Here's where we toggle.  If team was current, let's archive it.  If team
 	//was in archives, let's make it current
-	console.log('league status BEFORE: ' + league.isCurrent)
+	console.log('team status BEFORE: ' + team.isCurrent)
 
-	league.isCurrent ? (league.isCurrent = false) : (league.isCurrent = true)
+	team.isCurrent ? (team.isCurrent = false) : (team.isCurrent = true)
 	//
 	//
 	//
-	console.log('changing to ' + league.isCurrent)
+	console.log('changing to ' + team.isCurrent)
 	try {
-		await league.save()
+		await team.save()
 	} catch (err) {
 		const error = new HttpError(err, 500)
 		return next(error)
 	}
 
-	console.log('league status AFTER: ' + league.isCurrent)
+	console.log('team status AFTER: ' + team.isCurrent)
 
-	res.status(200).json({ league: league.toObject({ getters: true }) })
+	res.status(200).json({ team: team.toObject({ getters: true }) })
 }
 //****************************************************************************************** */
 //
@@ -21436,37 +21436,37 @@ const editEvent = async (req, res, next) => {
 //
 //****************************************************************************************** */
 //
-//  Remove a current league.
-//  We also want to delete any teams that are in the league, as well as it's roster,
+//  Remove a current sloth team.
+//  We also want to delete it's roster,
 //  rostered players, and games.
 //
 //****************************************************************************************** */
-const removeLeague = async (req, res, next) => {
-	const leagueId = req.params.leagueId
+const removeTeam = async (req, res, next) => {
+	const teamId = req.params.teamId
 
-	let league
+	let team
 	try {
-		league = await League.findById(leagueId)
+		team = await Team.findById(teamId)
 	} catch (err) {
 		const error = new HttpError(
-			'Cant find league to delete it (1).  removeLeague',
+			'Cant find league to delete it (1).  removeTeam',
 			500
 		)
 		return next(error)
 	}
-	const leagueName = league.leagueName
-	const session = league.session
-	const year = league.year
-	const division = league.divisionName
+	const teamName = team.teamName
+	//const session = league.session
+	const year = team.year
+	//const division = league.divisionName
 
-	if (division) {
+	/* if (division) {
 		console.log('division: ' + division.length)
-	}
+	} */
 	//
 	//
 	//  League with DIVISIONS:
 	//
-	if (division && division.length > 0) {
+	/* 	if (division && division.length > 0) {
 		console.log('we have a division here')
 
 		//Now we need to find any teams that are in this league and delete them
@@ -21633,11 +21633,11 @@ const removeLeague = async (req, res, next) => {
 			return next(error)
 		}
 		//
-	} else {
+	} else  */ {
 		//
 		//
 		//
-		console.log('No divisions here!!')
+		//console.log('No divisions here!!')
 		//
 		//
 		//
@@ -21647,17 +21647,17 @@ const removeLeague = async (req, res, next) => {
 		//
 		//
 		try {
-			await league.deleteOne()
+			await team.deleteOne()
 		} catch (err) {
 			const error = new HttpError(
-				'Cant find league to delete it (2).  removeLeague',
+				'Cant find team to delete it (2).  removeTeam',
 				500
 			)
 			return next(error)
 		}
 
 		//Now we need to find any teams that are in this league and delete them
-		let teams
+		/* let teams
 		try {
 			teams = await Team.find({
 				leagueId: leagueId,
@@ -21679,18 +21679,18 @@ const removeLeague = async (req, res, next) => {
 				const error = new HttpError(err, 500)
 				return next(error)
 			}
-		})
+		}) */
 
 		//Next, we need to delete the rosters for the teams that were deleted
 		//We can also do this using the leagueId
 		let rosters
 		try {
 			rosters = await Roster.find({
-				leagueId: leagueId,
+				teamId: teamId,
 			})
 		} catch (err) {
 			const error = new HttpError(
-				'Could not find any rosters for this league',
+				'Could not find any rosters for this team',
 				404
 			)
 			return next(error)
@@ -21707,15 +21707,15 @@ const removeLeague = async (req, res, next) => {
 			}
 		})
 
-		//Next, we need to find all rosteredPlayers for this league and delete them
+		//Next, we need to find all rosteredPlayers for this team and delete them
 		let rosterPlayers
 		try {
 			rosterPlayers = await RosterPlayer.find({
-				leagueId: leagueId,
+				teamId: teamId,
 			})
 		} catch (err) {
 			const error = new HttpError(
-				'Could not find any rostered players for this league',
+				'Could not find any rostered players for this team',
 				404
 			)
 			return next(error)
@@ -21734,24 +21734,22 @@ const removeLeague = async (req, res, next) => {
 
 		//Finally, we need to find any and all scheduled games for this league and
 		//delete them as well
-		let leagueGames
+		let teamGames
 		try {
-			leagueGames = await Game.find({
-				leagueName: leagueName,
-				session: session,
+			teamGames = await Game.find({
+				teamName: teamName,
+				//session: session,
 				year: year,
 			})
 		} catch (err) {
 			const error = new HttpError(
-				'Could not find any scheduled games for this league',
+				'Could not find any scheduled games for this team',
 				404
 			)
 			return next(error)
 		}
 
-		console.log('leagueGames WITHOUT divisions: ' + leagueGames)
-
-		leagueGames.forEach(async (game) => {
+		teamGames.forEach(async (game) => {
 			try {
 				await game.deleteOne()
 			} catch (err) {
@@ -21761,7 +21759,7 @@ const removeLeague = async (req, res, next) => {
 		})
 	}
 
-	res.status(200).json({ message: 'Deleted the league' })
+	res.status(200).json({ message: 'Deleted the team' })
 }
 //
 //
@@ -21808,7 +21806,7 @@ const removeVideo = async (req, res, next) => {
 //the rosteredPlayers on the team
 //
 //****************************************************************************************** */
-const removeTeam = async (req, res, next) => {
+/* const removeTeam = async (req, res, next) => {
 	const teamId = req.params.teamId
 
 	//Before we go deleting, we need to obtain the leagueId (so we can delete roster and rosterPlayers)
@@ -21943,7 +21941,7 @@ const removeTeam = async (req, res, next) => {
 		message:
 			'Deleted the team from TEAMS database and roster from ROSTER database and ROSTERPLAYERS',
 	})
-}
+} */
 //
 //
 //
@@ -22779,15 +22777,15 @@ exports.editTeamName = editTeamName
 exports.editTeamNameWithDivision = editTeamNameWithDivision
 exports.editPlayerNumber = editPlayerNumber
 exports.editTeam = editTeam
-exports.archiveCurrentToggleLeague = archiveCurrentToggleLeague
+exports.archiveCurrentToggleTeam = archiveCurrentToggleTeam
 exports.editVenue = editVenue
 exports.editVideo = editVideo
 exports.editPlayerName = editPlayerName
 exports.editGame = editGame
 exports.editEvent = editEvent
-exports.removeLeague = removeLeague
-exports.removeVideo = removeVideo
 exports.removeTeam = removeTeam
+exports.removeVideo = removeVideo
+//exports.removeTeam = removeTeam
 exports.removePlayer = removePlayer
 exports.removeEvent = removeEvent
 exports.deleteAllRosterPlayerStatsPerGame = deleteAllRosterPlayerStatsPerGame

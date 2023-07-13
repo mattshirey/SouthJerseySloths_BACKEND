@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 
 const gameSchema = new Schema({
 	//id: { type: String, required: true },
-	//leagueName: { type: String, required: true },
+	teamName: { type: String, required: true },
 	//session: { type: String, required: true },
 	year: { type: Number, required: true },
 	dayOfWeek: { type: String },

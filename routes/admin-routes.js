@@ -288,9 +288,9 @@ router.patch(
 //
 //
 router.patch(
-	'/:leagueId/archiveCurrentToggleLeague',
-	[check('leagueId').not().isEmpty()],
-	adminControllers.archiveCurrentToggleLeague
+	'/:leagueId/archiveCurrentToggleTeam',
+	[check('teamId').not().isEmpty()],
+	adminControllers.archiveCurrentToggleTeam
 )
 //
 //
@@ -333,11 +333,11 @@ router.patch(
 )
 //
 //
-router.delete('/:leagueId/removeLeague', adminControllers.removeLeague)
+router.delete('/:teamId/removeTeam', adminControllers.removeTeam)
 
 router.delete('/:deletedVideoId/removeVideo', adminControllers.removeVideo)
 
-router.delete('/:teamId/removeTeam', adminControllers.removeTeam)
+//router.delete('/:teamId/removeTeam', adminControllers.removeTeam)
 
 router.delete('/:rosterPlayerId/removePlayer', adminControllers.removePlayer)
 
