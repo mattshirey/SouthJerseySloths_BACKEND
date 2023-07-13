@@ -178,7 +178,7 @@ router.post(
 //
 //
 router.post(
-	'/:leagueName/:session/:year/:teamName/addPlayers',
+	'/:teamName/:year/addPlayers',
 	[
 		check('lastName1').not().isEmpty(),
 		check('firstName1').not().isEmpty(),

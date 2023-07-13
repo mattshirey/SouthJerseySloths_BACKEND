@@ -14611,13 +14611,13 @@ const addPlayerToTeam = async (req, res, next) => {
 		)
 	}
 
-	const leagueName = req.params.leagueName
-	const session = req.params.session
+	/* const leagueName = req.params.leagueName
+	const session = req.params.session */
 	const year = req.params.year
 	const teamName = req.params.teamName
 
 	//First, let's find the leagueId:
-	let leagueId
+	/* let leagueId
 	let foundLeague
 	try {
 		foundLeague = await League.findOne({
@@ -14632,16 +14632,17 @@ const addPlayerToTeam = async (req, res, next) => {
 		)
 		return next(error)
 	}
-	leagueId = foundLeague.id
+	leagueId = foundLeague.id */
 	//
 	//
-	//Next, let's find the teamId:
+	//First, let's find the teamId:
 	let teamId
 	let foundTeam
 	try {
 		foundTeam = await Team.findOne({
-			leagueId: leagueId,
+			//leagueId: leagueId,
 			teamName: teamName,
+			year: year,
 		}).orFail()
 	} catch (err) {
 		const error = new HttpError(
@@ -14658,7 +14659,7 @@ const addPlayerToTeam = async (req, res, next) => {
 	let foundRoster
 	try {
 		foundRoster = await Roster.findOne({
-			leagueId: leagueId,
+			//leagueId: leagueId,
 			teamId: teamId,
 		}).orFail()
 	} catch (err) {
