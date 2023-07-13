@@ -13,7 +13,7 @@ const checkAuth = require('../middleware/check-auth')
 router.get('/team/current', adminControllers.getCurrentTeam)
 //
 //
-router.get('/leagues/archive', adminControllers.getArchivedLeagues)
+router.get('/teams/archive', adminControllers.getArchivedTeams)
 //
 //
 router.get('/venues', adminControllers.getVenues)

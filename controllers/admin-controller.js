@@ -24,25 +24,25 @@ const league = require('../models/league')
 //
 //****************************************************************************************** */
 //
-//  Get all archived leagues
+//  Get all archived sloth teams
 //
 //****************************************************************************************** */
-const getArchivedLeagues = async (req, res, next) => {
-	let archivedLeagues
+const getArchivedTeams = async (req, res, next) => {
+	let archivedTeams
 	try {
-		archivedLeagues = await League.find({
+		archivedTeams = await Team.find({
 			isCurrent: false,
 		}).orFail()
 	} catch (err) {
 		const error = new HttpError(
-			'Cannot find any archived leagues.  getArchivedLeagues',
+			'Cannot find any archived teams.  getArchivedTeams',
 			404
 		)
 	}
 
-	archivedLeagues && archivedLeagues.reverse()
+	archivedTeams && archivedTeams.reverse()
 
-	res.json({ archivedLeagues })
+	res.json({ archivedTeams })
 }
 //
 //
@@ -22736,7 +22736,7 @@ const login = async (req, res, next) => {
 //
 //
 //
-exports.getArchivedLeagues = getArchivedLeagues
+exports.getArchivedTeams = getArchivedTeams
 exports.getCurrentTeam = getCurrentTeam
 exports.getVenues = getVenues
 exports.getVideos = getVideos
