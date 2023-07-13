@@ -105,7 +105,7 @@ router.get('/allGamesAndEventsWeek', adminControllers.allGamesAndEventsWeek)
 //changed this from league/new to team/new for Sloths
 router.post(
 	'/team/new',
-	[check('teamName').not().isEmpty(), check('year').not().isEmpty(), ,],
+	[check('teamName').not().isEmpty(), check('year').not().isEmpty()],
 	adminControllers.createNewTeam
 )
 //
