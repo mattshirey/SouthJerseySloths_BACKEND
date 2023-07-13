@@ -14952,16 +14952,16 @@ const addPlayerToTeam = async (req, res, next) => {
 			} else {
 				createdRosterPlayer2 = new RosterPlayer({
 					teamId,
-					playerId: playerId1,
-					firstName: firstName1,
+					playerId: playerId2,
+					firstName: firstName2,
 					middleInitial: ' ',
-					lastName: lastName1,
+					lastName: lastName2,
 					rosterId,
 					teamName,
 					//leagueName,
 					//session,
 					year,
-					number: playerNumber1,
+					number: playerNumber2,
 					goals: 0,
 					assists: 0,
 				})
@@ -14997,16 +14997,16 @@ const addPlayerToTeam = async (req, res, next) => {
 			} else {
 				createdRosterPlayer2 = new RosterPlayer({
 					teamId,
-					playerId: playerId1,
-					firstName: firstName1,
+					playerId: playerId2,
+					firstName: firstName2,
 					middleInitial: ' ',
-					lastName: lastName1,
+					lastName: lastName2,
 					rosterId,
 					teamName,
 					//leagueName,
 					//session,
 					year,
-					number: playerNumber1,
+					number: playerNumber2,
 					goals: 0,
 					assists: 0,
 				})
@@ -15103,16 +15103,16 @@ const addPlayerToTeam = async (req, res, next) => {
 			} else {
 				createdRosterPlayer3 = new RosterPlayer({
 					teamId,
-					playerId: playerId1,
-					firstName: firstName1,
+					playerId: playerId3,
+					firstName: firstName3,
 					middleInitial: ' ',
-					lastName: lastName1,
+					lastName: lastName3,
 					rosterId,
 					teamName,
 					//leagueName,
 					//session,
 					year,
-					number: playerNumber1,
+					number: playerNumber3,
 					goals: 0,
 					assists: 0,
 				})
@@ -15150,16 +15150,16 @@ const addPlayerToTeam = async (req, res, next) => {
 			} else {
 				createdRosterPlayer3 = new RosterPlayer({
 					teamId,
-					playerId: playerId1,
-					firstName: firstName1,
+					playerId: playerId3,
+					firstName: firstName3,
 					middleInitial: ' ',
-					lastName: lastName1,
+					lastName: lastName3,
 					rosterId,
 					teamName,
 					//leagueName,
 					//session,
 					year,
-					number: playerNumber1,
+					number: playerNumber3,
 					goals: 0,
 					assists: 0,
 				})
@@ -20573,18 +20573,18 @@ const editPlayerNumber = async (req, res, next) => {
 		throw new HttpError('Invalid inputs - something is empty', 422)
 	}
 	const { number } = req.body
-	const session = req.params.session
+	//const session = req.params.session
 	const year = req.params.year
 	const teamName = req.params.teamName
 	const playerId = req.params.playerId
-	const leagueName = req.params.leagueName
+	//const leagueName = req.params.leagueName
 
 	//Need to find the correct RosterPlayer
 	let rosterPlayer
 	try {
 		rosterPlayer = await RosterPlayer.findOne({
-			leagueName: leagueName,
-			session: session,
+			//leagueName: leagueName,
+			//session: session,
 			year: year,
 			teamName: teamName,
 			playerId: playerId,
