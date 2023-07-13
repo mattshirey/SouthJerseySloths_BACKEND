@@ -278,7 +278,7 @@ router.patch(
 //
 //
 router.patch(
-	'/:leagueName/:session/:year/:teamName/:playerId/changeNumber',
+	'/:teamName/:year/:playerId/changeNumber',
 	check('number').not().isEmpty(),
 	adminControllers.editPlayerNumber
 )
