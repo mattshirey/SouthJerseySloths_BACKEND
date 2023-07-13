@@ -50,31 +50,23 @@ const getArchivedLeagues = async (req, res, next) => {
 //
 //****************************************************************************************** */
 //
-// Get all Current Leagues
+// Get Current Team
 //
-// We can return two different packages here:
-//    1.  currentLeagues - this goes to the end-user, and shows duplicates in case theres a
-//            league with multiple divisions
-//
-//		2.  currentLeaguesSortedNoDuplicates - this goes to the admin schedule page, to the
-//            filter by league dropdown.  Here, we DON'T want to see duplicates if there
-//            are different divisions.  We don't care, we just want to see all the games
-//            under the league umbrella
 //
 //****************************************************************************************** */
-const getCurrentLeagues = async (req, res, next) => {
-	let currentLeagues, currentLeaguesSorted
+const getCurrentTeam = async (req, res, next) => {
+	let currentTeam, currentLeaguesSorted
 	try {
-		currentLeagues = await League.find({
+		currentTeam = await Team.find({
 			isCurrent: true,
 		}).orFail()
 	} catch (err) {
 		const error = new HttpError(
-			'Cannot find any current leagues.  getCurrentLeagues',
+			'Cannot find a current team.  getCurrentTeam',
 			404
 		)
 	}
-
+	/* 
 	currentLeagues &&
 		(currentLeaguesSorted = currentLeagues.sort((a, b) =>
 			a.leagueName.localeCompare(b.leagueName)
@@ -85,9 +77,9 @@ const getCurrentLeagues = async (req, res, next) => {
 	currentLeagues &&
 		(currentLeaguesSortedNoDuplicates = [
 			...new Map(currentLeaguesSorted.map((m) => [m.leagueName, m])).values(),
-		])
+		]) */
 
-	res.json({ currentLeagues, currentLeaguesSortedNoDuplicates })
+	res.json({ currentTeam })
 }
 //
 //
@@ -132,32 +124,30 @@ const getVideos = async (req, res, next) => {
 //
 //****************************************************************************************** */
 //
-// Get league data (leagueName, session, year).
+// Get team data (teamName, year).
 // I'll use this for when/if I need to edit any of this stuff
 //
 //****************************************************************************************** */
-const getLeagueData = async (req, res, next) => {
-	const leagueId = req.params.leagueId
-	let leagueName
-	let session
+const getTeamData = async (req, res, next) => {
+	const teamId = req.params.teamId
+	let teamName
 	let year
 
 	//console.log('You are here 1')
 
 	try {
-		foundLeague = await League.findById(leagueId)
+		foundTeam = await Team.findById(teamId)
 	} catch (err) {
 		const error = new HttpError(
-			'Could not find league to obtain leagueName, session, or year.  getLeagueData',
+			'Could not find team to obtain teamName, or year.  getTeamData',
 			404
 		)
 		return next(error)
 	}
-	leagueName = foundLeague.leagueName
-	session = foundLeague.session
-	year = foundLeague.year
+	teamName = foundTeam.teamName
+	year = foundTeam.year
 
-	res.json({ league: foundLeague.toObject({ getters: true }) })
+	res.json({ team: foundTeam.toObject({ getters: true }) })
 	//res.json({ leagueName, session, year })
 }
 //****************************************************************************************** */
@@ -264,7 +254,7 @@ const getVideoData = async (req, res, next) => {
 // UPDATE: this is also where we can change the division of a team, if needed
 //
 //****************************************************************************************** */
-const getTeamData = async (req, res, next) => {
+/* const getTeamData = async (req, res, next) => {
 	const teamId = req.params.teamId
 	let teamName, divisionName, leagueId
 
@@ -335,7 +325,7 @@ const getTeamData = async (req, res, next) => {
 	} else {
 		res.json({ team: foundTeam.toObject({ getters: true }) })
 	}
-}
+} */
 //****************************************************************************************** */
 //
 // Get player's jersey Number.
@@ -20603,45 +20593,40 @@ const editPlayerNumber = async (req, res, next) => {
 //
 //****************************************************************************************** */
 //
-//PATCH request where we can edit the League Name, Division, Year, or Session for a current league
+//PATCH request where we can edit the Team Name or year for the current sloths team
 //
 //******************************************************************************************* */
-const editLeague = async (req, res, next) => {
+const editTeam = async (req, res, next) => {
 	const errors = validationResult(req)
 	if (!errors.isEmpty()) {
 		throw new HttpError('Invalid inputs - something is empty', 422)
 	}
 
-	const { leagueName, session, year, divisionName } = req.body
+	const { teamName, year } = req.body
 
-	const leagueId = req.params.leagueId
+	const teamId = req.params.teamId
 
-	let league,
-		previousLeagueName,
-		previousSession,
-		previousYear,
-		previousDivisionName
+	let team, previousTeamName, previousYear
 	try {
-		league = await League.findById(leagueId)
+		team = await Team.findById(teamId)
 	} catch (err) {
 		const error = new HttpError(err, 500)
 		return next(error)
 	}
 
-	previousLeagueName = league.leagueName
-	previousSession = league.session
-	previousYear = league.year
-	if (league.divisionName) {
+	previousTeamName = team.teamName
+	previousYear = team.year
+	/* if (league.divisionName) {
 		previousDivisionName = league.divisionName
-	}
+	} */
 
-	league.leagueName = leagueName.trim()
-	league.year = year
-	league.session = session.trim()
+	team.teamName = teamName.trim()
+	team.year = year
+	//league.session = session.trim()
 	//divisionName && (league.divisionName = divisionName)
 
 	try {
-		await league.save()
+		await team.save()
 	} catch (err) {
 		const error = new HttpError(err, 500)
 		return next(error)
@@ -20654,16 +20639,14 @@ const editLeague = async (req, res, next) => {
 
 	try {
 		rosterPlayers = await RosterPlayer.find({
-			leagueId: leagueId,
+			teamId: teamId,
 		}).orFail()
 	} catch {}
 
 	if (rosterPlayers) {
-		//console.log('rosterPlayers BEFORE: ' + rosterPlayers)
-
 		rosterPlayers.forEach(async (player) => {
-			player.leagueName = leagueName.trim()
-			player.session = session.trim()
+			player.teamName = teamName.trim()
+			//player.session = session.trim()
 			player.year = year
 			try {
 				await player.save()
@@ -20672,28 +20655,24 @@ const editLeague = async (req, res, next) => {
 				return next(error)
 			}
 		})
-
-		//console.log('rosterPlayers AFTER: ' + rosterPlayers)
 	}
 	//
-	//Next, we want to find all GAMES for this league that just got its name
-	//changed and be sure to change the league name in there too.
+	//Next, we want to find all GAMES for this team that just got its name
+	//changed and be sure to change the team name in there too.
 	let games
 
 	try {
 		games = await Game.find({
-			leagueName: previousLeagueName,
-			session: previousSession,
+			homeTeamName: previousTeamName,
+			//session: previousSession,
 			year: previousYear,
 		}).orFail()
 	} catch {}
 
 	if (games) {
-		//console.log('games before: ' + games)
-
 		games.forEach(async (game) => {
-			game.leagueName = leagueName.trim()
-			game.session = session.trim()
+			game.homeTeamName = teamName.trim()
+			//game.session = session.trim()
 			game.year = year
 			try {
 				await game.save()
@@ -20702,8 +20681,6 @@ const editLeague = async (req, res, next) => {
 				return next(error)
 			}
 		})
-
-		//console.log('games AFTER: ' + games)
 	}
 	//
 	//
@@ -20715,7 +20692,7 @@ const editLeague = async (req, res, next) => {
 	//
 	//
 	//
-	if (divisionName) {
+	/* if (divisionName) {
 		console.log('Looks like youre changing a DIVISION name')
 		let teams
 
@@ -20792,10 +20769,10 @@ const editLeague = async (req, res, next) => {
 			const error = new HttpError(err, 500)
 			return next(error)
 		}
-	}
+	} */
 
 	//set it to 200 instead of 201 because we're not creating anything new
-	res.status(200).json({ league: league.toObject({ getters: true }) })
+	res.status(200).json({ team: team.toObject({ getters: true }) })
 }
 //
 //
@@ -22760,13 +22737,13 @@ const login = async (req, res, next) => {
 //
 //
 exports.getArchivedLeagues = getArchivedLeagues
-exports.getCurrentLeagues = getCurrentLeagues
+exports.getCurrentTeam = getCurrentTeam
 exports.getVenues = getVenues
 exports.getVideos = getVideos
-exports.getLeagueData = getLeagueData
+exports.getTeamData = getTeamData
 exports.getVenueData = getVenueData
 exports.getVideoData = getVideoData
-exports.getTeamData = getTeamData
+//exports.getTeamData = getTeamData
 exports.getPlayerNumber = getPlayerNumber
 exports.getPlayerData = getPlayerData
 exports.getPlayerDataByRosterId = getPlayerDataByRosterId //< - - - used for testing
@@ -22801,7 +22778,7 @@ exports.addPlayerToTeamWithDivision = addPlayerToTeamWithDivision
 exports.editTeamName = editTeamName
 exports.editTeamNameWithDivision = editTeamNameWithDivision
 exports.editPlayerNumber = editPlayerNumber
-exports.editLeague = editLeague
+exports.editTeam = editTeam
 exports.archiveCurrentToggleLeague = archiveCurrentToggleLeague
 exports.editVenue = editVenue
 exports.editVideo = editVideo

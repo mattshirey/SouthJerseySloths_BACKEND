@@ -10,7 +10,7 @@ const checkAuth = require('../middleware/check-auth')
 //not authorized.  Once again, watch the video
 //router.use(checkAuth)
 
-router.get('/leagues/current', adminControllers.getCurrentLeagues)
+router.get('/team/current', adminControllers.getCurrentTeam)
 //
 //
 router.get('/leagues/archive', adminControllers.getArchivedLeagues)
@@ -56,7 +56,7 @@ router.get(
 )
 //
 //
-router.get('/leagues/:leagueId', adminControllers.getLeagueData)
+router.get('/team/:teamId', adminControllers.getTeamData)
 //
 //
 //
@@ -66,7 +66,7 @@ router.get('/venues/:venueId', adminControllers.getVenueData)
 router.get('/videos/:videoId', adminControllers.getVideoData)
 //
 //
-router.get('/teams/:teamId', adminControllers.getTeamData)
+//router.get('/teams/:teamId', adminControllers.getTeamData)
 //
 //
 router.get(
@@ -281,13 +281,9 @@ router.patch(
 //
 //
 router.patch(
-	'/updateLeague/:leagueId',
-	[
-		check('leagueName').not().isEmpty(),
-		check('session').not().isEmpty(),
-		check('year').not().isEmpty(),
-	],
-	adminControllers.editLeague
+	'/updateTeam/:teamId',
+	[check('teamName').not().isEmpty(), check('year').not().isEmpty()],
+	adminControllers.editTeam
 )
 //
 //
