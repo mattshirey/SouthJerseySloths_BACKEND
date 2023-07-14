@@ -55,7 +55,7 @@ const getArchivedTeams = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const getCurrentTeam = async (req, res, next) => {
-	let currentTeam, teamName
+	let currentTeam, teamName, year
 	try {
 		currentTeam = await Team.findOne({
 			isCurrent: true,
@@ -68,6 +68,7 @@ const getCurrentTeam = async (req, res, next) => {
 	}
 
 	teamName = currentTeam.teamName
+	year = currentTeam.year
 
 	/* 
 	currentLeagues &&
@@ -82,7 +83,7 @@ const getCurrentTeam = async (req, res, next) => {
 			...new Map(currentLeaguesSorted.map((m) => [m.leagueName, m])).values(),
 		]) */
 
-	res.json({ currentTeam, teamName: teamName })
+	res.json({ currentTeam, teamName: teamName, year: year })
 }
 //
 //
