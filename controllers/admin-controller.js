@@ -55,7 +55,7 @@ const getArchivedTeams = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const getCurrentTeam = async (req, res, next) => {
-	let currentTeam, currentLeaguesSorted
+	let currentTeam, teamName
 	try {
 		currentTeam = await Team.find({
 			isCurrent: true,
@@ -66,6 +66,9 @@ const getCurrentTeam = async (req, res, next) => {
 			404
 		)
 	}
+
+	teamName = currentTeam.teamName
+
 	/* 
 	currentLeagues &&
 		(currentLeaguesSorted = currentLeagues.sort((a, b) =>
@@ -79,7 +82,7 @@ const getCurrentTeam = async (req, res, next) => {
 			...new Map(currentLeaguesSorted.map((m) => [m.leagueName, m])).values(),
 		]) */
 
-	res.json({ currentTeam })
+	res.json({ currentTeam, teamName })
 }
 //
 //
@@ -3484,8 +3487,8 @@ const createGames = async (req, res, next) => {
 	}
 
 	const {
-		leagueName1,
-		session1,
+		//leagueName1,
+		//session1,
 		year1,
 		date1,
 		time1,
@@ -3493,11 +3496,11 @@ const createGames = async (req, res, next) => {
 		tbd1IsChecked,
 		playoff1IsChecked,
 		championship1IsChecked,
-		homeTeam1,
-		visitorTeam1,
+		//homeTeam1,
+		//visitorTeam1,
 		venue1,
-		leagueName2,
-		session2,
+		//leagueName2,
+		//session2,
 		year2,
 		date2,
 		time2,
@@ -3505,11 +3508,11 @@ const createGames = async (req, res, next) => {
 		tbd2IsChecked,
 		playoff2IsChecked,
 		championship2IsChecked,
-		homeTeam2,
-		visitorTeam2,
+		//homeTeam2,
+		//visitorTeam2,
 		venue2,
-		leagueName3,
-		session3,
+		//leagueName3,
+		//session3,
 		year3,
 		date3,
 		time3,
@@ -3517,11 +3520,11 @@ const createGames = async (req, res, next) => {
 		tbd3IsChecked,
 		playoff3IsChecked,
 		championship3IsChecked,
-		homeTeam3,
-		visitorTeam3,
+		//homeTeam3,
+		//visitorTeam3,
 		venue3,
-		leagueName4,
-		session4,
+		//leagueName4,
+		//session4,
 		year4,
 		date4,
 		time4,
@@ -3529,11 +3532,11 @@ const createGames = async (req, res, next) => {
 		tbd4IsChecked,
 		playoff4IsChecked,
 		championship4IsChecked,
-		homeTeam4,
-		visitorTeam4,
+		//homeTeam4,
+		//visitorTeam4,
 		venue4,
-		leagueName5,
-		session5,
+		//leagueName5,
+		//session5,
 		year5,
 		date5,
 		time5,
@@ -3541,11 +3544,11 @@ const createGames = async (req, res, next) => {
 		tbd5IsChecked,
 		playoff5IsChecked,
 		championship5IsChecked,
-		homeTeam5,
-		visitorTeam5,
+		//homeTeam5,
+		//visitorTeam5,
 		venue5,
-		leagueName6,
-		session6,
+		//leagueName6,
+		//session6,
 		year6,
 		date6,
 		time6,
@@ -3553,11 +3556,11 @@ const createGames = async (req, res, next) => {
 		tbd6IsChecked,
 		playoff6IsChecked,
 		championship6IsChecked,
-		homeTeam6,
-		visitorTeam6,
+		//homeTeam6,
+		//visitorTeam6,
 		venue6,
-		leagueName7,
-		session7,
+		//leagueName7,
+		//session7,
 		year7,
 		date7,
 		time7,
@@ -3565,11 +3568,11 @@ const createGames = async (req, res, next) => {
 		tbd7IsChecked,
 		playoff7IsChecked,
 		championship7IsChecked,
-		homeTeam7,
-		visitorTeam7,
+		//homeTeam7,
+		//visitorTeam7,
 		venue7,
-		leagueName8,
-		session8,
+		//leagueName8,
+		//session8,
 		year8,
 		date8,
 		time8,
@@ -3577,11 +3580,11 @@ const createGames = async (req, res, next) => {
 		tbd8IsChecked,
 		playoff8IsChecked,
 		championship8IsChecked,
-		homeTeam8,
-		visitorTeam8,
+		//homeTeam8,
+		//visitorTeam8,
 		venue8,
-		leagueName9,
-		session9,
+		//leagueName9,
+		//session9,
 		year9,
 		date9,
 		time9,
@@ -3589,11 +3592,11 @@ const createGames = async (req, res, next) => {
 		tbd9IsChecked,
 		playoff9IsChecked,
 		championship9IsChecked,
-		homeTeam9,
-		visitorTeam9,
+		//homeTeam9,
+		//visitorTeam9,
 		venue9,
-		leagueName10,
-		session10,
+		//leagueName10,
+		//session10,
 		year10,
 		date10,
 		time10,
@@ -3601,9 +3604,19 @@ const createGames = async (req, res, next) => {
 		tbd10IsChecked,
 		playoff10IsChecked,
 		championship10IsChecked,
-		homeTeam10,
-		visitorTeam10,
+		//homeTeam10,
+		//visitorTeam10,
 		venue10,
+		opponent1,
+		opponent2,
+		opponent3,
+		opponent4,
+		opponent5,
+		opponent6,
+		opponent7,
+		opponent8,
+		opponent9,
+		opponent10,
 	} = req.body
 
 	let createdGame1,
@@ -3641,7 +3654,7 @@ const createGames = async (req, res, next) => {
 		return next(error)
 	}
 
-	let leagueId1, divisionName
+	/* let leagueId1, divisionName
 	let foundLeague1, foundLeague1WithDivisions
 	try {
 		foundLeague1 = await League.findOne({
@@ -3655,458 +3668,143 @@ const createGames = async (req, res, next) => {
 			500
 		)
 		return next(error)
-	}
+	} */
 	//console.log('foundLeague1: ' + foundLeague1.length)
-	leagueId1 = foundLeague1.id
-	divisionName = foundLeague1.divisionName
-	console.log('leagueName: ' + leagueName1)
+	//leagueId1 = foundLeague1.id
+	//divisionName = foundLeague1.divisionName
+	//console.log('leagueName: ' + leagueName1)
 	//Next, we should see if the league has any divisions.  If the league has divisions,
 	//we want to go back and find all the leagues with the same name
 	//
 	//
 	//
-	if (divisionName) {
-		console.log('we have divisions here!')
+	//
+	//
+	//
+
+	/* let homeTeamId1
+	let foundHomeTeam1
+
+	if (homeTeam1 !== 'TBD') {
 		try {
-			foundLeague1WithDivisions = await League.find({
-				leagueName: leagueName1,
-				session: session1,
-				year: year1,
+			foundHomeTeam1 = await Team.findOne({
+				leagueId: leagueId1,
+				teamName: homeTeam1,
 			}).orFail()
 		} catch (err) {
 			const error = new HttpError(
-				'Could not find league to obtain leagueId. WITH divisions. createGame 1',
+				'Could not find team to obtain home teamId. createGame 1',
 				500
 			)
 			return next(error)
 		}
 
-		//So we have multiple leagues here.  Let's make an array of all teams
-		let allTeamsInThisLeague, teams
-		allTeamsInThisLeague = []
-		for (let i = 0; i < foundLeague1WithDivisions.length; i++) {
-			try {
-				teams = await Team.find({
-					leagueName: foundLeague1WithDivisions[i].leagueName,
-					divisionName: foundLeague1WithDivisions[i].divisionName,
-				}).orFail()
-			} catch {}
-			teams.forEach((team) => {
-				allTeamsInThisLeague.push(team)
-			})
+		homeTeamId1 = foundHomeTeam1.id
+	}
+
+	//find visitor team id
+	let visitorTeamId1
+	let foundVisitorTeam1
+	if (visitorTeam1 !== 'TBD') {
+		try {
+			foundVisitorTeam1 = await Team.findOne({
+				leagueId: leagueId1,
+				teamName: visitorTeam1,
+			}).orFail()
+		} catch (err) {
+			const error = new HttpError(
+				'Could not find team to obtain visitor teamId. createGame 1',
+				500
+			)
+			return next(error)
 		}
-		//
-		//
-		let homeTeamId1
-		let foundHomeTeam1
-		if (homeTeam1 !== 'TBD') {
-			allTeamsInThisLeague.forEach(async (team) => {
-				if (team.teamName === homeTeam1) {
-					foundHomeTeam1 = team
-				}
-			})
-			//console.log('foundHomeTeam1: ' + foundHomeTeam1)
-			homeTeamId1 = foundHomeTeam1.id
+		visitorTeamId1 = foundVisitorTeam1.id
+	} */
+
+	//console.log('visitorTeamId: ' + visitorTeamId1)
+
+	// We have team id's and league id's.  That should be enough to find rosters
+	// find home team roster id
+	/* let homeTeamRosterId1
+	let foundHomeTeamRosterId1
+	if (homeTeam1 !== 'TBD') {
+		try {
+			foundHomeTeamRosterId1 = await Roster.findOne({
+				leagueId: leagueId1,
+				teamId: homeTeamId1,
+			}).orFail()
+		} catch (err) {
+			const error = new HttpError(
+				'Could not find roster to obtain home rosterId. createGame 1',
+				500
+			)
+			return next(error)
 		}
-		//
-		//
-		//find visitor team id
-		let visitorTeamId1
-		let foundVisitorTeam1
-		if (visitorTeam1 !== 'TBD') {
-			allTeamsInThisLeague.forEach(async (team) => {
-				//console.log(team.leagueName)
-				console.log(team.teamName + '  ' + visitorTeam1)
-				console.log(team.divisionName + ' ' + divisionName)
+		homeTeamRosterId1 = foundHomeTeamRosterId1.id
+	}
 
-				if (team.teamName === visitorTeam1) {
-					foundVisitorTeam1 = team
-				}
-			})
-			visitorTeamId1 = foundVisitorTeam1.id
+	//// find visitor team roster id
+	let visitorTeamRosterId1
+	let foundVisitorTeamRosterId1
+	if (visitorTeam1 !== 'TBD') {
+		try {
+			foundVisitorTeamRosterId1 = await Roster.findOne({
+				leagueId: leagueId1,
+				teamId: visitorTeamId1,
+			}).orFail()
+		} catch (err) {
+			const error = new HttpError(
+				'Could not find roster to obtain visitor rosterId. createGame 1',
+				500
+			)
+			return next(error)
 		}
-		//
-		//
-		//
-		//Now let's find the roster id's
-		let homeTeamRosterId1
-		let foundHomeTeamRosterId1
-		if (homeTeam1 !== 'TBD') {
-			try {
-				foundHomeTeamRosterId1 = await Roster.findOne({
-					leagueId: foundHomeTeam1.leagueId,
-					teamId: homeTeamId1,
-					divisionName: foundHomeTeam1.divisionName,
-				}).orFail()
-			} catch (err) {
-				const error = new HttpError(
-					'Could not find roster to obtain home rosterId. WITH divisions.  createGame 1',
-					500
-				)
-				return next(error)
-			}
-			homeTeamRosterId1 = foundHomeTeamRosterId1.id
-		}
+		visitorTeamRosterId1 = foundVisitorTeamRosterId1.id
+	} */
 
-		//// find visitor team roster id
-		let visitorTeamRosterId1
-		let foundVisitorTeamRosterId1
-		if (visitorTeam1 !== 'TBD') {
-			try {
-				foundVisitorTeamRosterId1 = await Roster.findOne({
-					leagueId: foundVisitorTeam1.leagueId,
-					teamId: visitorTeamId1,
-					divisionName: foundVisitorTeam1.divisionName,
-				}).orFail()
-			} catch (err) {
-				const error = new HttpError(
-					'Could not find roster to obtain home rosterId. WITH divisions.  createGame 1',
-					500
-				)
-				return next(error)
-			}
-			visitorTeamRosterId1 = foundVisitorTeamRosterId1.id
-		}
-		//
-		//
-		//
-		const g1year = date1.substr(0, 4)
-		const g1month = date1.substr(5, 2)
-		const g1day = date1.substr(8, 2)
-		const MDYdate1 = g1month + '-' + g1day + '-' + g1year
+	const g1year = date1.substr(0, 4)
+	const g1month = date1.substr(5, 2)
+	const g1day = date1.substr(8, 2)
+	const MDYdate1 = g1month + '-' + g1day + '-' + g1year
 
-		const utcDate1 = new Date(MDYdate1)
+	const utcDate1 = new Date(MDYdate1)
 
-		const dateString1 = utcDate1.toString()
+	const dateString1 = utcDate1.toString()
 
-		const dayOfWeek1 = dateString1.substr(0, 3)
+	const dayOfWeek1 = dateString1.substr(0, 3)
 
-		//console.log('day of week: ' + dayOfWeek1)
-		//console.log('seeds: ' + foundHomeTeam1.seed + ' ' + foundVisitorTeam1.seed)
-		//Now we should have all the variables we need to create a new game
-		if (homeTeam1 !== 'TBD' && visitorTeam1 !== 'TBD') {
-			console.log('1d')
-			createdGame1 = new Game({
-				leagueName: leagueName1,
-				session: session1,
-				year: year1,
-				dayOfWeek: dayOfWeek1,
-				date: MDYdate1,
-				time: time1,
-				timeTBD: tbd1IsChecked,
-				playoff: playoff1IsChecked,
-				championship: championship1IsChecked,
-				homeTeamName: homeTeam1,
-				homeTeamId: homeTeamId1,
-				homeRosterId: homeTeamRosterId1,
-				homeTeamSeed: foundHomeTeam1.seed,
-				visitorTeamName: visitorTeam1,
-				visitorTeamId: visitorTeamId1,
-				visitorRosterId: visitorTeamRosterId1,
-				visitorTeamSeed: foundVisitorTeam1.seed,
-				venueName: venue1,
-				isCurrent: true,
-			})
-			try {
-				await createdGame1.save()
-			} catch (err) {
-				const error = new HttpError(err, 500)
-				return next(error)
-			}
-			//If only the home team is TBD
-		} else if (homeTeam1 === 'TBD' && visitorTeam1 !== 'TBD') {
-			console.log('2d')
-			createdGame1 = new Game({
-				leagueName: leagueName1,
-				session: session1,
-				year: year1,
-				dayOfWeek: dayOfWeek1,
-				date: MDYdate1,
-				time: time1,
-				timeTBD: tbd1IsChecked,
-				playoff: playoff1IsChecked,
-				championship: championship1IsChecked,
-				homeTeamName: 'TBD',
-				visitorTeamName: visitorTeam1,
-				visitorTeamId: visitorTeamId1,
-				visitorRosterId: visitorTeamRosterId1,
-				visitorTeamSeed: foundVisitorTeam1.seed,
-				venueName: venue1,
-				isCurrent: true,
-			})
-			try {
-				await createdGame1.save()
-			} catch (err) {
-				const error = new HttpError(err, 500)
-				return next(error)
-			}
-			//if only the visiting team is TBD
-		} else if (homeTeam1 !== 'TBD' && visitorTeam1 === 'TBD') {
-			console.log('3d')
-			createdGame1 = new Game({
-				leagueName: leagueName1,
-				session: session1,
-				year: year1,
-				dayOfWeek: dayOfWeek1,
-				date: MDYdate1,
-				time: time1,
-				timeTBD: tbd1IsChecked,
-				playoff: playoff1IsChecked,
-				championship: championship1IsChecked,
-				homeTeamName: homeTeam1,
-				homeTeamId: homeTeamId1,
-				homeRosterId: homeTeamRosterId1,
-				homeTeamSeed: foundHomeTeam1.seed,
-				visitorTeamName: 'TBD',
-				venueName: venue1,
-				isCurrent: true,
-			})
-			try {
-				await createdGame1.save()
-			} catch (err) {
-				const error = new HttpError(err, 500)
-				return next(error)
-			}
-			//Finally, if BOTH teams are TBD
-		} else if (homeTeam1 === 'TBD' && visitorTeam1 === 'TBD') {
-			console.log('4d')
-			createdGame1 = new Game({
-				leagueName: leagueName1,
-				session: session1,
-				year: year1,
-				dayOfWeek: dayOfWeek1,
-				date: MDYdate1,
-				time: time1,
-				timeTBD: tbd1IsChecked,
-				playoff: playoff1IsChecked,
-				championship: championship1IsChecked,
-				homeTeamName: 'TBD',
-				visitorTeamName: 'TBD',
-				venueName: venue1,
-				isCurrent: true,
-			})
-			try {
-				await createdGame1.save()
-			} catch (err) {
-				const error = new HttpError(err, 500)
-				return next(error)
-			}
-		}
-		console.log('Game 1 has been added')
-	} else if (!divisionName) {
-		//
-		//
-		//
-		//If there are NO DIVISIONS:
-		//
-		//
-		//
-		//
-		console.log('no divisions for this game')
+	//console.log('day of week: ' + dayOfWeek1)
 
-		let homeTeamId1
-		let foundHomeTeam1
+	//Now we should have all the variables we need to create a new game
+	//If neither team is TBD:
 
-		if (homeTeam1 !== 'TBD') {
-			try {
-				foundHomeTeam1 = await Team.findOne({
-					leagueId: leagueId1,
-					teamName: homeTeam1,
-				}).orFail()
-			} catch (err) {
-				const error = new HttpError(
-					'Could not find team to obtain home teamId. createGame 1',
-					500
-				)
-				return next(error)
-			}
-
-			homeTeamId1 = foundHomeTeam1.id
-		}
-
-		//find visitor team id
-		let visitorTeamId1
-		let foundVisitorTeam1
-		if (visitorTeam1 !== 'TBD') {
-			try {
-				foundVisitorTeam1 = await Team.findOne({
-					leagueId: leagueId1,
-					teamName: visitorTeam1,
-				}).orFail()
-			} catch (err) {
-				const error = new HttpError(
-					'Could not find team to obtain visitor teamId. createGame 1',
-					500
-				)
-				return next(error)
-			}
-			visitorTeamId1 = foundVisitorTeam1.id
-		}
-
-		//console.log('visitorTeamId: ' + visitorTeamId1)
-
-		// We have team id's and league id's.  That should be enough to find rosters
-		// find home team roster id
-		let homeTeamRosterId1
-		let foundHomeTeamRosterId1
-		if (homeTeam1 !== 'TBD') {
-			try {
-				foundHomeTeamRosterId1 = await Roster.findOne({
-					leagueId: leagueId1,
-					teamId: homeTeamId1,
-				}).orFail()
-			} catch (err) {
-				const error = new HttpError(
-					'Could not find roster to obtain home rosterId. createGame 1',
-					500
-				)
-				return next(error)
-			}
-			homeTeamRosterId1 = foundHomeTeamRosterId1.id
-		}
-
-		//// find visitor team roster id
-		let visitorTeamRosterId1
-		let foundVisitorTeamRosterId1
-		if (visitorTeam1 !== 'TBD') {
-			try {
-				foundVisitorTeamRosterId1 = await Roster.findOne({
-					leagueId: leagueId1,
-					teamId: visitorTeamId1,
-				}).orFail()
-			} catch (err) {
-				const error = new HttpError(
-					'Could not find roster to obtain visitor rosterId. createGame 1',
-					500
-				)
-				return next(error)
-			}
-			visitorTeamRosterId1 = foundVisitorTeamRosterId1.id
-		}
-
-		const g1year = date1.substr(0, 4)
-		const g1month = date1.substr(5, 2)
-		const g1day = date1.substr(8, 2)
-		const MDYdate1 = g1month + '-' + g1day + '-' + g1year
-
-		const utcDate1 = new Date(MDYdate1)
-
-		const dateString1 = utcDate1.toString()
-
-		const dayOfWeek1 = dateString1.substr(0, 3)
-
-		//console.log('day of week: ' + dayOfWeek1)
-
-		//Now we should have all the variables we need to create a new game
-		//If neither team is TBD:
-		if (homeTeam1 !== 'TBD' && visitorTeam1 !== 'TBD') {
-			console.log('1')
-			createdGame1 = new Game({
-				leagueName: leagueName1,
-				session: session1,
-				year: year1,
-				dayOfWeek: dayOfWeek1,
-				date: MDYdate1,
-				time: time1,
-				timeTBD: tbd1IsChecked,
-				playoff: playoff1IsChecked,
-				championship: championship1IsChecked,
-				homeTeamName: homeTeam1,
-				homeTeamId: homeTeamId1,
-				homeRosterId: homeTeamRosterId1,
-				homeTeamSeed: foundHomeTeam1.seed,
-				visitorTeamName: visitorTeam1,
-				visitorTeamId: visitorTeamId1,
-				visitorRosterId: visitorTeamRosterId1,
-				visitorTeamSeed: foundVisitorTeam1.seed,
-				venueName: venue1,
-				isCurrent: true,
-			})
-			try {
-				await createdGame1.save()
-			} catch (err) {
-				const error = new HttpError('1: ' + err, 500)
-				return next(error)
-			}
-			//If only the home team is TBD.
-		} else if (homeTeam1 === 'TBD' && visitorTeam1 !== 'TBD') {
-			console.log('2')
-			createdGame1 = new Game({
-				leagueName: leagueName1,
-				session: session1,
-				year: year1,
-				dayOfWeek: dayOfWeek1,
-				date: MDYdate1,
-				time: time1,
-				timeTBD: tbd1IsChecked,
-				playoff: playoff1IsChecked,
-				championship: championship1IsChecked,
-				homeTeamName: 'TBD',
-				visitorTeamName: visitorTeam1,
-				visitorTeamId: visitorTeamId1,
-				visitorRosterId: visitorTeamRosterId1,
-				visitorTeamSeed: foundVisitorTeam1.seed,
-				venueName: venue1,
-				isCurrent: true,
-			})
-			try {
-				await createdGame1.save()
-			} catch (err) {
-				const error = new HttpError(err, 500)
-				return next(error)
-			}
-			//If only the visiting team is TBD
-		} else if (homeTeam1 !== 'TBD' && visitorTeam1 === 'TBD') {
-			console.log('3')
-			createdGame1 = new Game({
-				leagueName: leagueName1,
-				session: session1,
-				year: year1,
-				dayOfWeek: dayOfWeek1,
-				date: MDYdate1,
-				time: time1,
-				timeTBD: tbd1IsChecked,
-				playoff: playoff1IsChecked,
-				championship: championship1IsChecked,
-				homeTeamName: homeTeam1,
-				homeTeamId: homeTeamId1,
-				homeRosterId: homeTeamRosterId1,
-				homeTeamSeed: foundHomeTeam1.seed,
-				visitorTeamName: 'TBD',
-				venueName: venue1,
-				isCurrent: true,
-			})
-			try {
-				await createdGame1.save()
-			} catch (err) {
-				const error = new HttpError('3: ' + err, 500)
-				return next(error)
-			}
-			//Finally, if BOTH teams are TBD:
-		} else if (homeTeam1 === 'TBD' && visitorTeam1 === 'TBD') {
-			console.log('4')
-			createdGame1 = new Game({
-				leagueName: leagueName1,
-				session: session1,
-				year: year1,
-				dayOfWeek: dayOfWeek1,
-				date: MDYdate1,
-				time: time1,
-				timeTBD: tbd1IsChecked,
-				playoff: playoff1IsChecked,
-				championship: championship1IsChecked,
-				homeTeamName: 'TBD',
-				visitorTeamName: 'TBD',
-				venueName: venue1,
-				isCurrent: true,
-			})
-			try {
-				await createdGame1.save()
-			} catch (err) {
-				const error = new HttpError('4: ' + err, 500)
-				return next(error)
-			}
-		}
+	console.log('1')
+	createdGame1 = new Game({
+		//leagueName: leagueName1,
+		//session: session1,
+		year: year1,
+		dayOfWeek: dayOfWeek1,
+		date: MDYdate1,
+		time: time1,
+		timeTBD: tbd1IsChecked,
+		playoff: playoff1IsChecked,
+		championship: championship1IsChecked,
+		//homeTeamName: homeTeam1,
+		//homeTeamId: homeTeamId1,
+		//homeRosterId: homeTeamRosterId1,
+		//homeTeamSeed: foundHomeTeam1.seed,
+		opponent: opponent1,
+		//visitorTeamId: visitorTeamId1,
+		//visitorRosterId: visitorTeamRosterId1,
+		//visitorTeamSeed: foundVisitorTeam1.seed,
+		venueName: venue1,
+		isCurrent: true,
+	})
+	try {
+		await createdGame1.save()
+	} catch (err) {
+		const error = new HttpError('error creating game 1: ' + err, 500)
+		return next(error)
 	}
 
 	//********************************************************************************* */
