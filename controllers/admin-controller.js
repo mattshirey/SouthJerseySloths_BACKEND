@@ -7074,7 +7074,7 @@ const createGameStats = async (req, res, next) => {
 				//
 				//
 				if (homePoints > visitorPoints) {
-					console.log('home team won')
+					console.log('home team won teamId: ' + teamId)
 					try {
 						minusWinForHomeTeam = await Team.findById(teamId)
 					} catch (err) {
