@@ -67,11 +67,7 @@ const getCurrentTeam = async (req, res, next) => {
 		)
 	}
 
-	console.log('currentTeam: ' + currentTeam)
-
 	teamName = currentTeam.teamName
-
-	console.log('teamName is ' + teamName)
 
 	/* 
 	currentLeagues &&
@@ -3491,7 +3487,7 @@ const createGames = async (req, res, next) => {
 	}
 
 	const {
-		//leagueName1,
+		teamName,
 		//session1,
 		year1,
 		date1,
@@ -3784,7 +3780,7 @@ const createGames = async (req, res, next) => {
 
 	console.log('1')
 	createdGame1 = new Game({
-		//leagueName: leagueName1,
+		teamName: teamName,
 		//session: session1,
 		year: year1,
 		dayOfWeek: dayOfWeek1,
