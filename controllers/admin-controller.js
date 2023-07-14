@@ -1108,27 +1108,53 @@ const getGameRostersAndPointsPerPeriod = async (req, res, next) => {
 	}
 	//
 	//
-	homeRosterId = foundGame.homeRosterId
-	visitorRosterId = foundGame.visitorRosterId
+	teamName = foundGame.teamName
+	//visitorRosterId = foundGame.visitorRosterId
 	dayOfWeek = foundGame.dayOfWeek
 	date = foundGame.date
 	time = foundGame.time
 	venue = foundGame.venueName
-	leagueName = foundGame.leagueName
-
-	/* if (!homeRosterId && visitorRosterId) {
-		console.log('home team was is TBD')
-	} else if (!visitorRosterId && homeRosterId) {
-		console.log('visitor team was is TBD')
-	} else if (!homeRosterId && !visitorRosterId) {
-		console.log('both teams were TBD')
-	} */
+	//leagueName = foundGame.leagueName
 	//
 	//
+	//let's get the most current Sloth team's id
+	let foundTeam, teamNameId
+	try {
+		foundTeam = await Team.find({
+			teamName: teamName,
+			isCurrent: true,
+		})
+	} catch (err) {
+		const error = new HttpError(
+			'Trouble finding teamName.  getGameRostersAndPointsPerPeriod',
+			404
+		)
+		return next(error)
+	}
+	teamNameId = foundTeam.id
+	console.log('foundTeam.id: ' + teamNameId)
+	//
+	//
+	//Next, using this current sloths team teamId, let's get their rosterId
+	//
+	let foundRoster, rosterId
+	try {
+		foundRoster = await Roster.find({
+			teamId: teamNameId,
+		})
+	} catch (err) {
+		const error = new HttpError(
+			'Trouble finding Roster.  getGameRostersAndPointsPerPeriod',
+			404
+		)
+		return next(error)
+	}
+	rosterId = foundRoster.id
+	console.log('foundRoster.id: ' + rosterId)
 	//
 	//Now that we have rosterId's, let's tap into the Roster record and grab teamId
 	//let homeTeamId, foundHomeRoster
-	console.log('homeRosterId: ' + homeRosterId)
+	/* console.log('homeRosterId: ' + homeRosterId)
 	try {
 		foundHomeRoster = await Roster.findById(homeRosterId)
 	} catch (err) {
@@ -1138,11 +1164,11 @@ const getGameRostersAndPointsPerPeriod = async (req, res, next) => {
 		)
 		return next(error)
 	}
-	homeTeamId = foundHomeRoster.teamId
+	homeTeamId = foundHomeRoster.teamId */
 	//
 	//
 	//
-	let visitorTeamId, foundVisitorRoster
+	/* let visitorTeamId, foundVisitorRoster
 	try {
 		foundVisitorRoster = await Roster.findById(visitorRosterId)
 	} catch (err) {
@@ -1152,12 +1178,12 @@ const getGameRostersAndPointsPerPeriod = async (req, res, next) => {
 		)
 		return next(error)
 	}
-	visitorTeamId = foundVisitorRoster.teamId
+	visitorTeamId = foundVisitorRoster.teamId */
 	//
 	//
 	//
 	//Now that we have team id's, let's get the team names
-	let homeTeamName, foundHomeTeam
+	/* let homeTeamName, foundHomeTeam
 	try {
 		foundHomeTeam = await Team.findById(homeTeamId)
 	} catch (err) {
@@ -1167,11 +1193,11 @@ const getGameRostersAndPointsPerPeriod = async (req, res, next) => {
 		)
 		return next(error)
 	}
-	homeTeamName = foundHomeTeam.teamName
+	homeTeamName = foundHomeTeam.teamName */
 	//
 	//
 	//
-	let visitorTeamName, foundVisitorTeam
+	/* let visitorTeamName, foundVisitorTeam
 	try {
 		foundVisitorTeam = await Team.findById(visitorTeamId)
 	} catch (err) {
@@ -1181,17 +1207,17 @@ const getGameRostersAndPointsPerPeriod = async (req, res, next) => {
 		)
 		return next(error)
 	}
-	visitorTeamName = foundVisitorTeam.teamName
+	visitorTeamName = foundVisitorTeam.teamName */
 	//
-	//Get all players on home roster.  This is where player id's and jersey numbers will be
-	let homeRosteredPlayers
+	//Get all players on current sloths team.  This is where player id's and jersey numbers will be
+	let currentSlothPlayers
 	try {
-		homeRosteredPlayers = await RosterPlayer.find({
-			rosterId: homeRosterId,
+		currentSlothPlayers = await RosterPlayer.find({
+			rosterId: rosterId,
 		})
 	} catch (err) {
 		const error = new HttpError(
-			'Trouble finding players for home team.  getGameRostersAndPointsPerPeriod',
+			'Trouble finding players for current Sloths team.  getGameRostersAndPointsPerPeriod',
 			404
 		)
 		return next(error)
@@ -1200,7 +1226,7 @@ const getGameRostersAndPointsPerPeriod = async (req, res, next) => {
 	//
 	//
 	//Get all players on home roster.  This is where player id's and jersey numbers will be
-	let visitorRosteredPlayers
+	/* let visitorRosteredPlayers
 	try {
 		visitorRosteredPlayers = await RosterPlayer.find({
 			rosterId: visitorRosterId,
@@ -1211,7 +1237,7 @@ const getGameRostersAndPointsPerPeriod = async (req, res, next) => {
 			404
 		)
 		return next(error)
-	}
+	} */
 	//
 	//
 	//I think here, we want to see if we already HAVE player stats for this game.
@@ -1273,21 +1299,21 @@ const getGameRostersAndPointsPerPeriod = async (req, res, next) => {
 		}
 	}
 
-	homeRosteredPlayers.sort((a, b) => a.lastName.localeCompare(b.lastName))
-	visitorRosteredPlayers.sort((a, b) => a.lastName.localeCompare(b.lastName))
+	currentSlothPlayers.sort((a, b) => a.lastName.localeCompare(b.lastName))
+	//visitorRosteredPlayers.sort((a, b) => a.lastName.localeCompare(b.lastName))
 
 	res.json({
-		homeRoster: homeRosteredPlayers,
-		visitorRoster: visitorRosteredPlayers,
-		homeTeamName,
-		visitorTeamName,
+		homeRoster: currentSlothPlayers,
+		//visitorRoster: visitorRosteredPlayers,
+		teamName,
+		//visitorTeamName,
 		rosterPlayerGameStats,
 		gameStats,
 		dayOfWeek,
 		date,
 		time,
 		venue,
-		leagueName,
+		//leagueName,
 	})
 }
 //
@@ -4572,7 +4598,7 @@ const createGameStats = async (req, res, next) => {
 		homePointsPerPeriod,
 		visitorPointsPerPeriod,
 		homeStats,
-		visitorStats,
+		//visitorStats,
 		gameStatus,
 		gameSummary,
 	} = req.body
@@ -4583,8 +4609,6 @@ const createGameStats = async (req, res, next) => {
 		newHomeGoals2,
 		newHomeGoals3,
 		newHomeGoals4,
-		//newHomeGoals5,
-		//newHomeGoals6,
 		newHomeGoalsTotal,
 		previousStatus
 	for (let i = 0; i < homePointsPerPeriod.length; i++) {
@@ -4593,8 +4617,6 @@ const createGameStats = async (req, res, next) => {
 		newHomeGoals2 = split[1]
 		newHomeGoals3 = split[2]
 		newHomeGoals4 = split[3]
-		//newHomeGoals5 = split[4]
-		//newHomeGoals6 = split[5]
 		newHomeGoalsTotal = split[4]
 	}
 
@@ -4610,8 +4632,6 @@ const createGameStats = async (req, res, next) => {
 		newVisitorGoals2,
 		newVisitorGoals3,
 		newVisitorGoals4,
-		//newVisitorGoals5,
-		//newVisitorGoals6,
 		newVisitorGoalsTotal
 	for (let i = 0; i < visitorPointsPerPeriod.length; i++) {
 		const split = visitorPointsPerPeriod[i].split('|')
@@ -4619,8 +4639,6 @@ const createGameStats = async (req, res, next) => {
 		newVisitorGoals2 = split[1]
 		newVisitorGoals3 = split[2]
 		newVisitorGoals4 = split[3]
-		//newVisitorGoals5 = split[4]
-		//newVisitorGoals6 = split[5]
 		newVisitorGoalsTotal = split[4]
 	}
 
@@ -4637,18 +4655,12 @@ const createGameStats = async (req, res, next) => {
 			homeGoalsPeriod2: newHomeGoals2,
 			homeGoalsPeriod3: newHomeGoals3,
 			homeGoalsPeriod4: newHomeGoals4,
-			//homeGoalsPeriod5: newHomeGoals5,
-			//homeGoalsPeriod6: newHomeGoals6,
 			homeGoalsTotal: newHomeGoalsTotal,
 			visitorGoalsPeriod1: newVisitorGoals1,
 			visitorGoalsPeriod2: newVisitorGoals2,
 			visitorGoalsPeriod3: newVisitorGoals3,
 			visitorGoalsPeriod4: newVisitorGoals4,
-			//visitorGoalsPeriod5: newVisitorGoals5,
-			//visitorGoalsPeriod6: newVisitorGoals6,
 			visitorGoalsTotal: newVisitorGoalsTotal,
-			//winner: winner,
-			//loser: loser,
 			status: gameStatus,
 			summary: gameSummary,
 		})
@@ -4674,18 +4686,40 @@ const createGameStats = async (req, res, next) => {
 		//************************************************************** */
 		//So, we find a game, so let's get the id's of the home team and the visiting team so
 		//that we can add goals for and goals against for those teams
-		let homeTeamId, visitorTeamId, foundHomeTeam, foundVisitorTeam
+		//NOTE 7/14/2023.  For Sloths, its only one team at a time, so lets find the most
+		//current sloth team and grab their teamId
+		let foundGame, teamName
 		try {
 			foundGame = await Game.findById(gameId)
 		} catch (err) {
 			const error = new HttpError('Could not find game.  createGameStats', 404)
 			return next(error)
 		}
-		homeTeamId = foundGame.homeTeamId
-		visitorTeamId = foundGame.visitorTeamId
+		teamName = foundGame.teamName
 		//
 		//
+		//Now, using teamName, let's get the current sloths team id
+		//
+		let foundTeam, teamId
 		try {
+			foundTeam = await Team.findOne({
+				teamName: teamName,
+				isCurrent: true,
+			})
+		} catch (err) {
+			const error = new HttpError(
+				'could not find teamName.  createGameStats ' + err,
+				500
+			)
+			return next(error)
+		}
+		teamId = foundTeam.id
+		//
+		//homeTeamId = foundGame.homeTeamId
+		//visitorTeamId = foundGame.visitorTeamId
+		//
+		//
+		/* try {
 			foundHomeTeam = await Team.findById(homeTeamId)
 		} catch (err) {
 			const error = new HttpError(
@@ -4693,10 +4727,10 @@ const createGameStats = async (req, res, next) => {
 				500
 			)
 			return next(error)
-		}
+		} */
 		//
 		//
-		try {
+		/* try {
 			foundVisitorTeam = await Team.findById(visitorTeamId)
 		} catch (err) {
 			const error = new HttpError(
@@ -4704,7 +4738,7 @@ const createGameStats = async (req, res, next) => {
 				500
 			)
 			return next(error)
-		}
+		} */
 		//Let's log wins/losses/ties for the home team.
 		//
 		let homeWins,
@@ -4712,11 +4746,11 @@ const createGameStats = async (req, res, next) => {
 			homeShootoutLosses,
 			homeOvertimeLosses,
 			homeTies,
-			visitorWins,
+			/* visitorWins,
 			visitorLosses,
 			visitorShootoutLosses,
 			visitorOvertimeLosses,
-			visitorTies,
+			visitorTies, */
 			winner,
 			loser
 
@@ -4731,18 +4765,18 @@ const createGameStats = async (req, res, next) => {
 					'  ' +
 					newHomeGoalsTotal
 			)
-			winner = visitorTeamId
-			loser = homeTeamId
-			homeShootoutLosses = Number(foundHomeTeam.shootoutLosses) + 1
-			homeOvertimeLosses = Number(foundHomeTeam.overtimeLosses)
-			visitorShootoutLosses = Number(foundVisitorTeam.shootoutLosses)
-			visitorOvertimeLosses = Number(foundVisitorTeam.overtimeLosses)
-			homeWins = Number(foundHomeTeam.wins)
-			homeLosses = Number(foundHomeTeam.losses)
-			homeTies = Number(foundHomeTeam.ties)
-			visitorWins = Number(foundVisitorTeam.wins) + 1
-			visitorLosses = Number(foundVisitorTeam.losses)
-			visitorTies = Number(foundVisitorTeam.ties)
+			//winner = visitorTeamId
+			loser = teamId
+			homeShootoutLosses = Number(foundTeam.shootoutLosses) + 1
+			homeOvertimeLosses = Number(foundTeam.overtimeLosses)
+			//visitorShootoutLosses = Number(foundVisitorTeam.shootoutLosses)
+			//visitorOvertimeLosses = Number(foundVisitorTeam.overtimeLosses)
+			homeWins = Number(foundTeam.wins)
+			homeLosses = Number(foundTeam.losses)
+			homeTies = Number(foundTeam.ties)
+			//visitorWins = Number(foundVisitorTeam.wins) + 1
+			//visitorLosses = Number(foundVisitorTeam.losses)
+			//visitorTies = Number(foundVisitorTeam.ties)
 		} else if (
 			Number(newVisitorGoalsTotal) > Number(newHomeGoalsTotal) &&
 			gameStatus === 'Overtime'
@@ -4753,18 +4787,18 @@ const createGameStats = async (req, res, next) => {
 					'  ' +
 					newHomeGoalsTotal
 			)
-			winner = visitorTeamId
-			loser = homeTeamId
-			homeOvertimeLosses = Number(foundHomeTeam.overtimeLosses) + 1
-			homeShootoutLosses = Number(foundHomeTeam.shootoutLosses)
-			visitorShootoutLosses = Number(foundVisitorTeam.shootoutLosses)
-			visitorOvertimeLosses = Number(foundVisitorTeam.overtimeLosses)
-			homeWins = Number(foundHomeTeam.wins)
-			homeLosses = Number(foundHomeTeam.losses)
-			homeTies = Number(foundHomeTeam.ties)
-			visitorWins = Number(foundVisitorTeam.wins) + 1
-			visitorLosses = Number(foundVisitorTeam.losses)
-			visitorTies = Number(foundVisitorTeam.ties)
+			//winner = visitorTeamId
+			loser = teamId
+			homeOvertimeLosses = Number(foundTeam.overtimeLosses) + 1
+			homeShootoutLosses = Number(foundTeam.shootoutLosses)
+			//visitorShootoutLosses = Number(foundVisitorTeam.shootoutLosses)
+			//visitorOvertimeLosses = Number(foundVisitorTeam.overtimeLosses)
+			homeWins = Number(foundTeam.wins)
+			homeLosses = Number(foundTeam.losses)
+			homeTies = Number(foundTeam.ties)
+			//visitorWins = Number(foundVisitorTeam.wins) + 1
+			//visitorLosses = Number(foundVisitorTeam.losses)
+			//visitorTies = Number(foundVisitorTeam.ties)
 		} else if (Number(newVisitorGoalsTotal) > Number(newHomeGoalsTotal)) {
 			console.log(
 				'home team loses in regulation ' +
@@ -4772,78 +4806,78 @@ const createGameStats = async (req, res, next) => {
 					'  ' +
 					newHomeGoalsTotal
 			)
-			winner = visitorTeamId
-			loser = homeTeamId
-			homeLosses = Number(foundHomeTeam.losses) + 1
-			homeWins = Number(foundHomeTeam.wins)
-			homeTies = Number(foundHomeTeam.ties)
-			homeOvertimeLosses = Number(foundHomeTeam.overtimeLosses)
-			homeShootoutLosses = Number(foundHomeTeam.shootoutLosses)
-			visitorShootoutLosses = Number(foundVisitorTeam.shootoutLosses)
-			visitorOvertimeLosses = Number(foundVisitorTeam.overtimeLosses)
-			visitorWins = Number(foundVisitorTeam.wins) + 1
-			visitorLosses = Number(foundVisitorTeam.losses)
-			visitorTies = Number(foundVisitorTeam.ties)
+			//winner = visitorTeamId
+			loser = teamId
+			homeLosses = Number(foundTeam.losses) + 1
+			homeWins = Number(foundTeam.wins)
+			homeTies = Number(foundTeam.ties)
+			homeOvertimeLosses = Number(foundTeam.overtimeLosses)
+			homeShootoutLosses = Number(foundTeam.shootoutLosses)
+			//visitorShootoutLosses = Number(foundVisitorTeam.shootoutLosses)
+			//visitorOvertimeLosses = Number(foundVisitorTeam.overtimeLosses)
+			//visitorWins = Number(foundVisitorTeam.wins) + 1
+			//visitorLosses = Number(foundVisitorTeam.losses)
+			//visitorTies = Number(foundVisitorTeam.ties)
 		} else if (
 			Number(newVisitorGoalsTotal) < Number(newHomeGoalsTotal) &&
 			gameStatus === 'Shootout'
 		) {
 			console.log('visitor team loses in shootout')
-			winner = homeTeamId
-			loser = visitorTeamId
-			homeWins = Number(foundHomeTeam.wins) + 1
-			homeLosses = Number(foundHomeTeam.losses)
-			homeTies = Number(foundHomeTeam.ties)
-			visitorWins = Number(foundVisitorTeam.wins)
-			visitorLosses = Number(foundVisitorTeam.losses)
-			visitorTies = Number(foundVisitorTeam.ties)
-			visitorShootoutLosses = Number(foundVisitorTeam.shootoutLosses) + 1
-			visitorOvertimeLosses = Number(foundVisitorTeam.overtimeLosses)
-			homeShootoutLosses = Number(foundHomeTeam.shootoutLosses)
-			homeOvertimeLosses = Number(foundHomeTeam.overtimeLosses)
+			winner = teamId
+			//loser = visitorTeamId
+			homeWins = Number(foundTeam.wins) + 1
+			homeLosses = Number(foundTeam.losses)
+			homeTies = Number(foundTeam.ties)
+			//visitorWins = Number(foundVisitorTeam.wins)
+			//visitorLosses = Number(foundVisitorTeam.losses)
+			//visitorTies = Number(foundVisitorTeam.ties)
+			//visitorShootoutLosses = Number(foundVisitorTeam.shootoutLosses) + 1
+			//visitorOvertimeLosses = Number(foundVisitorTeam.overtimeLosses)
+			homeShootoutLosses = Number(foundTeam.shootoutLosses)
+			homeOvertimeLosses = Number(foundTeam.overtimeLosses)
 		} else if (
 			Number(newVisitorGoalsTotal) < Number(newHomeGoalsTotal) &&
 			gameStatus === 'Overtime'
 		) {
 			console.log('visitor team loses in overtime')
-			winner = homeTeamId
-			loser = visitorTeamId
-			homeWins = Number(foundHomeTeam.wins) + 1
-			homeLosses = Number(foundHomeTeam.losses)
-			homeTies = Number(foundHomeTeam.ties)
-			visitorWins = Number(foundVisitorTeam.wins)
-			visitorLosses = Number(foundVisitorTeam.losses)
-			visitorTies = Number(foundVisitorTeam.ties)
-			visitorOvertimeLosses = Number(foundVisitorTeam.overtimeLosses) + 1
-			visitorShootoutLosses = Number(foundVisitorTeam.shootoutLosses)
-			homeShootoutLosses = Number(foundHomeTeam.shootoutLosses)
-			homeOvertimeLosses = Number(foundHomeTeam.overtimeLosses)
+			winner = teamId
+			//loser = visitorTeamId
+			homeWins = Number(foundTeam.wins) + 1
+			homeLosses = Number(foundTeam.losses)
+			homeTies = Number(foundTeam.ties)
+			//visitorWins = Number(foundVisitorTeam.wins)
+			//visitorLosses = Number(foundVisitorTeam.losses)
+			//visitorTies = Number(foundVisitorTeam.ties)
+			//visitorOvertimeLosses = Number(foundVisitorTeam.overtimeLosses) + 1
+			//visitorShootoutLosses = Number(foundVisitorTeam.shootoutLosses)
+			homeShootoutLosses = Number(foundTeam.shootoutLosses)
+			homeOvertimeLosses = Number(foundTeam.overtimeLosses)
 		} else if (Number(newVisitorGoalsTotal) < Number(newHomeGoalsTotal)) {
 			console.log('visitor team loses in regulation')
-			winner = homeTeamId
-			loser = visitorTeamId
-			homeWins = Number(foundHomeTeam.wins) + 1
-			homeLosses = Number(foundHomeTeam.losses)
-			homeTies = Number(foundHomeTeam.ties)
-			visitorWins = Number(foundVisitorTeam.wins)
-			visitorLosses = Number(foundVisitorTeam.losses) + 1
-			visitorTies = Number(foundVisitorTeam.ties)
-			visitorOvertimeLosses = Number(foundVisitorTeam.overtimeLosses)
-			visitorShootoutLosses = Number(foundVisitorTeam.shootoutLosses)
-			homeShootoutLosses = Number(foundHomeTeam.shootoutLosses)
-			homeOvertimeLosses = Number(foundHomeTeam.overtimeLosses)
+			winner = teamId
+			//loser = visitorTeamId
+			homeWins = Number(foundTeam.wins) + 1
+			homeLosses = Number(foundTeam.losses)
+			homeTies = Number(foundTeam.ties)
+			//visitorWins = Number(foundVisitorTeam.wins)
+			//visitorLosses = Number(foundVisitorTeam.losses) + 1
+			//visitorTies = Number(foundVisitorTeam.ties)
+			//visitorOvertimeLosses = Number(foundVisitorTeam.overtimeLosses)
+			//visitorShootoutLosses = Number(foundVisitorTeam.shootoutLosses)
+			homeShootoutLosses = Number(foundTeam.shootoutLosses)
+			homeOvertimeLosses = Number(foundTeam.overtimeLosses)
 		} else if (Number(newVisitorGoalsTotal) === Number(newHomeGoalsTotal)) {
 			console.log('we have a TIE')
-			homeTies = Number(foundHomeTeam.ties) + 1
-			visitorTies = Number(foundVisitorTeam.ties) + 1
-			homeWins = Number(foundHomeTeam.wins)
-			homeLosses = Number(foundHomeTeam.losses)
-			visitorWins = Number(foundVisitorTeam.wins)
-			visitorLosses = Number(foundVisitorTeam.losses)
-			visitorOvertimeLosses = Number(foundVisitorTeam.overtimeLosses)
-			visitorShootoutLosses = Number(foundVisitorTeam.shootoutLosses)
-			homeOvertimeLosses = Number(foundHomeTeam.overtimeLosses)
-			homeShootoutLosses = Number(foundHomeTeam.shootoutLosses)
+			homeTies = Number(foundTeam.ties) + 1
+			//visitorTies = Number(foundVisitorTeam.ties) + 1
+			homeWins = Number(foundTeam.wins)
+			homeLosses = Number(foundTeam.losses)
+			//visitorWins = Number(foundVisitorTeam.wins)
+			//visitorLosses = Number(foundVisitorTeam.losses)
+			//visitorOvertimeLosses = Number(foundVisitorTeam.overtimeLosses)
+			//visitorShootoutLosses = Number(foundVisitorTeam.shootoutLosses)
+			homeOvertimeLosses = Number(foundTeam.overtimeLosses)
+			homeShootoutLosses = Number(foundTeam.shootoutLosses)
 		}
 		//}
 
@@ -4858,24 +4892,23 @@ const createGameStats = async (req, res, next) => {
 		}
 		//
 
-		foundHomeTeam.goalsFor =
-			Number(foundHomeTeam.goalsFor) + Number(newHomeGoalsTotal)
-		foundHomeTeam.goalsAgainst =
-			Number(foundHomeTeam.goalsAgainst) + Number(newVisitorGoalsTotal)
-		foundVisitorTeam.goalsFor =
+		foundTeam.goalsFor = Number(foundTeam.goalsFor) + Number(newHomeGoalsTotal)
+		foundTeam.goalsAgainst =
+			Number(foundTeam.goalsAgainst) + Number(newVisitorGoalsTotal)
+		/* foundVisitorTeam.goalsFor =
 			Number(foundVisitorTeam.goalsFor) + Number(newVisitorGoalsTotal)
 		foundVisitorTeam.goalsAgainst =
-			Number(foundVisitorTeam.goalsAgainst) + Number(newHomeGoalsTotal)
+			Number(foundVisitorTeam.goalsAgainst) + Number(newHomeGoalsTotal) */
 
-		if (foundHomeTeam) {
-			console.log('saving home team: ' + foundHomeTeam.goalsFor)
-			foundHomeTeam.wins = homeWins
-			foundHomeTeam.losses = homeLosses
-			foundHomeTeam.ties = homeTies
-			foundHomeTeam.overtimeLosses = homeOvertimeLosses
-			foundHomeTeam.shootoutLosses = homeShootoutLosses
+		if (foundTeam) {
+			console.log('saving home team: ' + foundTeam.goalsFor)
+			foundTeam.wins = homeWins
+			foundTeam.losses = homeLosses
+			foundTeam.ties = homeTies
+			foundTeam.overtimeLosses = homeOvertimeLosses
+			foundTeam.shootoutLosses = homeShootoutLosses
 			try {
-				await foundHomeTeam.save()
+				await foundTeam.save()
 			} catch (err) {
 				const error = new HttpError(
 					'could not save home team stats.  createGameStats ' + err,
@@ -4886,7 +4919,7 @@ const createGameStats = async (req, res, next) => {
 		}
 		//
 		//
-		if (foundVisitorTeam) {
+		/* if (foundVisitorTeam) {
 			console.log('saving visitor team: ' + foundVisitorTeam.goalsFor)
 			foundVisitorTeam.wins = visitorWins
 			foundVisitorTeam.losses = visitorLosses
@@ -4920,7 +4953,7 @@ const createGameStats = async (req, res, next) => {
 				)
 				return next(error)
 			}
-		}
+		} */
 		//
 		//
 		//
@@ -4940,17 +4973,12 @@ const createGameStats = async (req, res, next) => {
 			previousHomeGoalsPeriod2,
 			previousHomeGoalsPeriod3,
 			previousHomeGoalsPeriod4,
-			//previousHomeGoalsPeriod5,
-			//previousHomeGoalsPeriod6,
 			previousHomeGoalsTotal,
 			previousVisitorGoalsPeriod1,
 			previousVisitorGoalsPeriod2,
 			previousVisitorGoalsPeriod3,
 			previousVisitorGoalsPeriod4,
-			//previousVisitorGoalsPeriod5,
-			//previousVisitorGoalsPeriod6,
 			previousVisitorGoalsTotal,
-			//previousStatus,
 			previousSummary,
 			previousWinner,
 			previousLoser
@@ -4960,15 +4988,11 @@ const createGameStats = async (req, res, next) => {
 		previousHomeGoalsPeriod2 = gameStatsExist.homeGoalsPeriod2
 		previousHomeGoalsPeriod3 = gameStatsExist.homeGoalsPeriod3
 		previousHomeGoalsPeriod4 = gameStatsExist.homeGoalsPeriod4
-		//previousHomeGoalsPeriod5 = gameStatsExist.homeGoalsPeriod5
-		//previousHomeGoalsPeriod6 = gameStatsExist.homeGoalsPeriod6
 		previousHomeGoalsTotal = gameStatsExist.homeGoalsTotal
 		previousVisitorGoalsPeriod1 = gameStatsExist.visitorGoalsPeriod1
 		previousVisitorGoalsPeriod2 = gameStatsExist.visitorGoalsPeriod2
 		previousVisitorGoalsPeriod3 = gameStatsExist.visitorGoalsPeriod3
 		previousVisitorGoalsPeriod4 = gameStatsExist.visitorGoalsPeriod4
-		//previousVisitorGoalsPeriod5 = gameStatsExist.visitorGoalsPeriod5
-		//previousVisitorGoalsPeriod6 = gameStatsExist.visitorGoalsPeriod6
 		previousVisitorGoalsTotal = gameStatsExist.visitorGoalsTotal
 		previousStatus = gameStatsExist.status
 		previousSummary = gameStatsExist.summary
@@ -4976,7 +5000,7 @@ const createGameStats = async (req, res, next) => {
 		previousLoser = gameStatsExist.loser
 		//
 		//
-		//Let's once again go find the home and visitor teams
+		//Let's once again go find the home and visitor teams shirey
 		let homeTeamId,
 			visitorTeamId,
 			foundHomeTeam,
@@ -4989,7 +5013,33 @@ const createGameStats = async (req, res, next) => {
 			visitorLosses,
 			homeTies,
 			visitorTies
+		let foundGame, teamName
 		try {
+			foundGame = await Game.findById(gameId)
+		} catch (err) {
+			const error = new HttpError('Could not find game.  createGameStats', 404)
+			return next(error)
+		}
+		teamName = foundGame.teamName
+		//
+		//
+		//Now, using teamName, let's get the current sloths team id
+		//
+		let foundTeam, teamId
+		try {
+			foundTeam = await Team.findOne({
+				teamName: teamName,
+				isCurrent: true,
+			})
+		} catch (err) {
+			const error = new HttpError(
+				'could not find teamName.  createGameStats ' + err,
+				500
+			)
+			return next(error)
+		}
+		teamId = foundTeam.id
+		/* try {
 			foundGame = await Game.findById(gameId)
 		} catch (err) {
 			const error = new HttpError('Could not find game.  createGameStats', 404)
@@ -5018,7 +5068,7 @@ const createGameStats = async (req, res, next) => {
 				500
 			)
 			return next(error)
-		}
+		} */
 
 		//
 		//  MATT:  get this working first!
@@ -5027,19 +5077,19 @@ const createGameStats = async (req, res, next) => {
 		//
 		if (previousHomeGoalsTotal != newHomeGoalsTotal) {
 			console.log('There is a difference in home goals')
-			foundHomeTeam.goalsFor =
-				Number(foundHomeTeam.goalsFor) -
+			foundTeam.goalsFor =
+				Number(foundTeam.goalsFor) -
 				Number(previousHomeGoalsTotal) +
 				Number(newHomeGoalsTotal)
 			//
-			foundVisitorTeam.goalsAgainst =
+			/* foundVisitorTeam.goalsAgainst =
 				Number(foundVisitorTeam.goalsAgainst) -
 				Number(previousHomeGoalsTotal) +
-				Number(newHomeGoalsTotal)
+				Number(newHomeGoalsTotal) */
 
 			try {
 				console.log('saving home team')
-				await foundHomeTeam.save()
+				await foundTeam.save()
 			} catch (err) {
 				const error = new HttpError(
 					'could not save home team stats.  createGameStats ' + err,
@@ -5049,7 +5099,7 @@ const createGameStats = async (req, res, next) => {
 			}
 			//
 			//
-			try {
+			/* try {
 				console.log('saving visitor team')
 				await foundVisitorTeam.save()
 			} catch (err) {
@@ -5058,7 +5108,7 @@ const createGameStats = async (req, res, next) => {
 					500
 				)
 				return next(error)
-			}
+			} */
 
 			//save game stats
 			gameStatsExist.homeGoalsTotal = newHomeGoalsTotal
@@ -5082,15 +5132,11 @@ const createGameStats = async (req, res, next) => {
 			previousHomeGoalsPeriod2 !== newHomeGoals2 ||
 			previousHomeGoalsPeriod3 !== newHomeGoals3 ||
 			previousHomeGoalsPeriod4 !== newHomeGoals4
-			//previousHomeGoalsPeriod5 !== newHomeGoals5 ||
-			//previousHomeGoalsPeriod6 !== newHomeGoals6
 		) {
 			gameStatsExist.homeGoalsPeriod1 = newHomeGoals1
 			gameStatsExist.homeGoalsPeriod2 = newHomeGoals2
 			gameStatsExist.homeGoalsPeriod3 = newHomeGoals3
 			gameStatsExist.homeGoalsPeriod4 = newHomeGoals4
-			//gameStatsExist.homeGoalsPeriod5 = newHomeGoals5
-			//gameStatsExist.homeGoalsPeriod6 = newHomeGoals6
 
 			try {
 				console.log('saving new game stats')
@@ -5110,18 +5156,18 @@ const createGameStats = async (req, res, next) => {
 		//
 		if (previousVisitorGoalsTotal != newVisitorGoalsTotal) {
 			console.log('There is a difference in visitor goals')
-			foundVisitorTeam.goalsFor =
+			/* foundVisitorTeam.goalsFor =
 				Number(foundVisitorTeam.goalsFor) -
 				Number(previousVisitorGoalsTotal) +
-				Number(newVisitorGoalsTotal)
+				Number(newVisitorGoalsTotal) */
 			//
-			foundHomeTeam.goalsAgainst =
-				Number(foundHomeTeam.goalsAgainst) -
+			foundTeam.goalsAgainst =
+				Number(foundTeam.goalsAgainst) -
 				Number(previousVisitorGoalsTotal) +
 				Number(newVisitorGoalsTotal)
 
 			try {
-				await foundHomeTeam.save()
+				await foundTeam.save()
 			} catch (err) {
 				const error = new HttpError(
 					'could not save home team stats 1.  createGameStats ' + err,
@@ -5131,7 +5177,7 @@ const createGameStats = async (req, res, next) => {
 			}
 			//
 			//
-			try {
+			/* try {
 				await foundVisitorTeam.save()
 			} catch (err) {
 				const error = new HttpError(
@@ -5139,7 +5185,7 @@ const createGameStats = async (req, res, next) => {
 					500
 				)
 				return next(error)
-			}
+			} */
 
 			//save game stats
 			gameStatsExist.visitorGoalsTotal = newVisitorGoalsTotal
@@ -5159,15 +5205,11 @@ const createGameStats = async (req, res, next) => {
 			previousVisitorGoalsPeriod2 !== newVisitorGoals2 ||
 			previousVisitorGoalsPeriod3 !== newVisitorGoals3 ||
 			previousVisitorGoalsPeriod4 !== newVisitorGoals4
-			//previousVisitorGoalsPeriod5 !== newVisitorGoals5 ||
-			//previousVisitorGoalsPeriod6 !== newVisitorGoals6
 		) {
 			gameStatsExist.visitorGoalsPeriod1 = newVisitorGoals1
 			gameStatsExist.visitorGoalsPeriod2 = newVisitorGoals2
 			gameStatsExist.visitorGoalsPeriod3 = newVisitorGoals3
 			gameStatsExist.visitorGoalsPeriod4 = newVisitorGoals4
-			//gameStatsExist.visitorGoalsPeriod5 = newVisitorGoals5
-			//gameStatsExist.visitorGoalsPeriod6 = newVisitorGoals6
 
 			try {
 				console.log('saving new game stats 3')
@@ -5187,12 +5229,12 @@ const createGameStats = async (req, res, next) => {
 		//
 		if (Number(newHomeGoalsTotal) > Number(newVisitorGoalsTotal)) {
 			console.log('HOME team wins!')
-			newWinner = homeTeamId
-			newLoser = visitorTeamId
+			newWinner = teamId
+			//newLoser = visitorTeamId
 		} else if (Number(newVisitorGoalsTotal) > Number(newHomeGoalsTotal)) {
 			console.log('VISITOR team wins')
-			newWinner = visitorTeamId
-			newLoser = homeTeamId
+			//newWinner = visitorTeamId
+			newLoser = teamId
 		} else {
 			console.log('WE HAVE A TIE')
 		}
@@ -5207,7 +5249,7 @@ const createGameStats = async (req, res, next) => {
 				newWinner !== previousWinner &&
 				previousHomeGoalsTotal !== previousVisitorGoalsTotal
 			) {
-				if (newWinner === homeTeamId) {
+				if (newWinner === teamId) {
 					console.log(
 						'home team is winner this time in Overtime!!  Last game was NOT a tie'
 					)
@@ -5218,20 +5260,19 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'visitor team WON last game in overtime, and LOST this game in overtime'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses =
-							Number(foundHomeTeam.overtimeLosses) - 1
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses =
-							Number(foundVisitorTeam.overtimeLosses) + 1
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins) + 1
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses) - 1
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses =
+						//	Number(foundVisitorTeam.overtimeLosses) + 1
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					} else if (previousStatus === 'Shootout') {
 						console.log(
 							'home team LOST last game in shootout, but WON this time in overtime...'
@@ -5239,20 +5280,19 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'visitor team WON last game in shootout, but LOST this time in overtime...'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses =
-							Number(foundHomeTeam.shootoutLosses) - 1
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses =
-							Number(foundVisitorTeam.overtimeLosses) + 1
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins) + 1
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses) - 1
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses =
+						//	Number(foundVisitorTeam.overtimeLosses) + 1
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					} else {
 						console.log(
 							'home team LOST in regulation last time, but WON this time in overtime'
@@ -5260,23 +5300,23 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'visitor team WON in regulation last time, but LOST this time in overtime'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
-						foundHomeTeam.losses = Number(foundHomeTeam.losses) - 1
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses =
-							Number(foundVisitorTeam.overtimeLosses) + 1
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins) + 1
+						foundTeam.losses = Number(foundTeam.losses) - 1
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses =
+						//	Number(foundVisitorTeam.overtimeLosses) + 1
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					}
 					//
 					//
-				} else if (newWinner === visitorTeamId) {
+				} else if (newWinner !== teamId) {
 					//do even more shit
 					console.log('visitor team is winner this time in Overtime!!  1')
 					if (previousStatus === 'Overtime') {
@@ -5286,20 +5326,19 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'home team WON last game in overtime, and LOST this game in overtime'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins) - 1
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses =
-							Number(foundHomeTeam.overtimeLosses) + 1
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses =
-							Number(foundVisitorTeam.overtimeLosses) - 1
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins) - 1
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses) + 1
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses =
+						//	Number(foundVisitorTeam.overtimeLosses) - 1
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					} else if (previousStatus === 'Shootout') {
 						console.log(
 							'visitor team LOST last game in shootout, but WON this time in overtime...'
@@ -5307,20 +5346,19 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'home team WON last game in shootout, but LOST this time in overtime...'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins) - 1
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses =
-							Number(foundHomeTeam.overtimeLosses) + 1
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses =
-							Number(foundVisitorTeam.shootoutLosses) - 1
+						foundTeam.wins = Number(foundTeam.wins) - 1
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses) + 1
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses =
+						//	Number(foundVisitorTeam.shootoutLosses) - 1
 					} else {
 						console.log(
 							'visitor team LOST in regulation last time, but WON this time in overtime'
@@ -5328,28 +5366,27 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'home team WON in regulation last time, but LOST this time in overtime'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins) - 1
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses =
-							Number(foundHomeTeam.overtimeLosses) + 1
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses) - 1
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins) - 1
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses) + 1
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses) - 1
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					}
 				}
 			} else if (
 				newWinner !== previousWinner &&
 				previousHomeGoalsTotal === previousVisitorGoalsTotal
 			) {
-				if (newWinner === homeTeamId) {
+				if (newWinner === teamId) {
 					console.log(
 						'home team is winner this time in Overtime!!  Last game was a tie in overtime'
 					)
@@ -5357,116 +5394,113 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'Previous game was a tie in overtime, but home WON this game in overtime'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties) - 1
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
-						foundVisitorTeam.overtimeLosses =
-							Number(foundVisitorTeam.overtimeLosses) + 1
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins) + 1
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties) - 1
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
+						//foundVisitorTeam.overtimeLosses =
+						//	Number(foundVisitorTeam.overtimeLosses) + 1
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					} else if (previousStatus === 'Shootout') {
 						console.log(
 							'last game was a TIE in a shootout, but home team WON this time in overtime...'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties) - 1
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
-						foundVisitorTeam.overtimeLosses =
-							Number(foundVisitorTeam.overtimeLosses) + 1
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins) + 1
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties) - 1
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
+						//foundVisitorTeam.overtimeLosses =
+						//	Number(foundVisitorTeam.overtimeLosses) + 1
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					} else {
 						console.log(
 							'last game was a TIE in regulation, but home WON this time in overtime'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties) - 1
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
-						foundVisitorTeam.overtimeLosses =
-							Number(foundVisitorTeam.overtimeLosses) + 1
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins) + 1
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties) - 1
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
+						//foundVisitorTeam.overtimeLosses =
+						//	Number(foundVisitorTeam.overtimeLosses) + 1
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					}
 					//
 					//
-				} else if (newWinner === visitorTeamId) {
+				} else if (newWinner !== teamId) {
 					//do even more shit
 					console.log('visitor team is winner this time in Overtime!!  13')
 					if (previousStatus === 'Overtime') {
 						console.log(
 							'last game was a TIE in overtime, but visitor WON this game in overtime'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins)
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties) - 1
-						foundHomeTeam.overtimeLosses =
-							Number(foundHomeTeam.overtimeLosses) + 1
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins)
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties) - 1
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses) + 1
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					} else if (previousStatus === 'Shootout') {
 						console.log(
 							'last game was a TIE in a shootout, but visitor WON this time in overtime...'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins)
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties) - 1
-						foundHomeTeam.overtimeLosses =
-							Number(foundHomeTeam.overtimeLosses) + 1
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins)
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties) - 1
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses) + 1
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					} else {
 						console.log(
 							'last game was a TIE in regulation, visitor but WON this time in overtime'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins)
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties) - 1
-						foundHomeTeam.overtimeLosses =
-							Number(foundHomeTeam.overtimeLosses) + 1
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins)
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties) - 1
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses) + 1
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					}
 				}
 			} else if (newWinner === previousWinner) {
@@ -5476,7 +5510,7 @@ const createGameStats = async (req, res, next) => {
 						'  ' +
 						previousWinner
 				)
-				if (newWinner === homeTeamId) {
+				if (newWinner === teamId) {
 					console.log('home team is winner this time in Overtime!!')
 					if (previousStatus === 'Overtime') {
 						console.log(
@@ -5485,20 +5519,20 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'visitor team LOST last game in overtime, and LOST this game in overtime'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins)
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins)
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					} else if (previousStatus === 'Shootout') {
 						console.log(
 							'home team WON last game in shootout, but WON this time in overtime'
@@ -5506,18 +5540,18 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'visitor team LOST last game in shootout, but LOST this time in a overtime'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins)
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses =
-							Number(foundVisitorTeam.overtimeLosses) + 1
-						foundVisitorTeam.shootoutLosses =
-							Number(foundVisitorTeam.shootoutLosses) - 1
+						foundTeam.wins = Number(foundTeam.wins)
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses =
+						//	Number(foundVisitorTeam.overtimeLosses) + 1
+						//foundVisitorTeam.shootoutLosses =
+						//	Number(foundVisitorTeam.shootoutLosses) - 1
 					} else {
 						console.log(
 							'home team WON in regulation last time, but WON this time in overtime' //done
@@ -5525,23 +5559,23 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'visitor team LOST in regulation last time, but LOST this time in overtime' //done
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins)
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses) - 1
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses =
-							Number(foundVisitorTeam.overtimeLosses) + 1
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins)
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses) - 1
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses =
+						//	Number(foundVisitorTeam.overtimeLosses) + 1
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					}
 					//
 					//
-				} else if (newWinner === visitorTeamId) {
+				} else if (newWinner !== teamId) {
 					console.log('visitor team is winner this time in a Shootout!!  41')
 					if (previousStatus === 'Overtime') {
 						console.log(
@@ -5550,20 +5584,20 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'home team LOST last game in overtime, and LOST this game in overtime' //done
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins)
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins)
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					} else if (previousStatus === 'Shootout') {
 						console.log(
 							'visitor team WON last game in shootout, but WON this time in overtime'
@@ -5571,22 +5605,20 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'home team LOST last game in shootout, but LOST this time in overtime'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins)
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses =
-							Number(foundHomeTeam.overtimeLosses) + 1
-						foundHomeTeam.shootoutLosses =
-							Number(foundHomeTeam.shootoutLosses) - 1
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins)
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses) + 1
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses) - 1
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					} else {
 						console.log(
 							'visitor team WON in regulation last time, but WON this time in overtime'
@@ -5594,21 +5626,20 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'home team LOST in regulation last time, but LOST this time in overtime'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins)
-						foundHomeTeam.losses = Number(foundHomeTeam.losses) - 1
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses =
-							Number(foundHomeTeam.overtimeLosses) + 1
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins)
+						foundTeam.losses = Number(foundTeam.losses) - 1
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses) + 1
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					}
 				}
 			}
@@ -5620,7 +5651,7 @@ const createGameStats = async (req, res, next) => {
 				newWinner !== previousWinner &&
 				previousHomeGoalsTotal !== previousVisitorGoalsTotal
 			) {
-				if (newWinner === homeTeamId) {
+				if (newWinner === teamId) {
 					console.log(
 						'home team is winner this time in a shootout.  Last game was NOT a tie!!'
 					)
@@ -5631,20 +5662,19 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'visitor team WON last game in overtime, and LOST this game in a shootout' //done
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses =
-							Number(foundHomeTeam.overtimeLosses) - 1
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses =
-							Number(foundVisitorTeam.shootoutLosses) + 1
+						foundTeam.wins = Number(foundTeam.wins) + 1
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses) - 1
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses =
+						//	Number(foundVisitorTeam.shootoutLosses) + 1
 					} else if (previousStatus === 'Shootout') {
 						console.log(
 							'home team LOST last game in shootout, but WON this time in a shootout...'
@@ -5652,20 +5682,19 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'visitor team WON last game in shootout, but LOST this time in a shootout...'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses =
-							Number(foundHomeTeam.shootoutLosses) - 1
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses =
-							Number(foundVisitorTeam.shootoutLosses) + 1
+						foundTeam.wins = Number(foundTeam.wins) + 1
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses) - 1
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses =
+						//	Number(foundVisitorTeam.shootoutLosses) + 1
 					} else {
 						console.log(
 							'home team LOST in regulation last time, but WON this time in a shootout'
@@ -5673,23 +5702,23 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'visitor team WON in regulation last time, but LOST this time in a shootout'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
-						foundHomeTeam.losses = Number(foundHomeTeam.losses) - 1
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses =
-							Number(foundVisitorTeam.shootoutLosses) + 1
+						foundTeam.wins = Number(foundTeam.wins) + 1
+						foundTeam.losses = Number(foundTeam.losses) - 1
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses =
+						//	Number(foundVisitorTeam.shootoutLosses) + 1
 					}
 					//
 					//
-				} else if (newWinner === visitorTeamId) {
+				} else if (newWinner !== teamId) {
 					console.log('visitor team is winner this time in Shootout!!  3')
 					if (previousStatus === 'Overtime') {
 						console.log(
@@ -5698,20 +5727,19 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'home team WON last game in overtime, and LOST this game in a shootout'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins) - 1
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses =
-							Number(foundHomeTeam.shootoutLosses) + 1
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses =
-							Number(foundVisitorTeam.overtimeLosses) - 1
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins) - 1
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses) + 1
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses =
+						//	Number(foundVisitorTeam.overtimeLosses) - 1
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					} else if (previousStatus === 'Shootout') {
 						console.log(
 							'visitor team LOST last game in shootout, but WON this time in a shootout...'
@@ -5719,20 +5747,19 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'home team WON last game in shootout, but LOST this time in a shootout...'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins) - 1
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses =
-							Number(foundHomeTeam.shootoutLosses) + 1
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses =
-							Number(foundVisitorTeam.shootoutLosses) - 1
+						foundTeam.wins = Number(foundTeam.wins) - 1
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses) + 1
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses =
+						//	Number(foundVisitorTeam.shootoutLosses) - 1
 					} else {
 						console.log(
 							'visitor team LOST in regulation last time, but WON this time in a shootout'
@@ -5740,28 +5767,27 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'home team WON in regulation last time, but LOST this time in a shootout'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins) - 1
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses =
-							Number(foundHomeTeam.shootoutLosses) + 1
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses) - 1
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins) - 1
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses) + 1
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses) - 1
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					}
 				}
 			} else if (
 				newWinner !== previousWinner &&
 				previousHomeGoalsTotal === previousVisitorGoalsTotal
 			) {
-				if (newWinner === homeTeamId) {
+				if (newWinner === teamId) {
 					console.log(
 						'home team is winner this time in a shootout!!  Last game was a tie in overtime'
 					)
@@ -5769,115 +5795,112 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'Last game was a tie in overtime, but home WON this game in a shootout'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties) - 1
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses =
-							Number(foundVisitorTeam.shootoutLosses) + 1
+						foundTeam.wins = Number(foundTeam.wins) + 1
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties) - 1
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses =
+						//	Number(foundVisitorTeam.shootoutLosses) + 1
 					} else if (previousStatus === 'Shootout') {
 						console.log(
 							'last game was a TIE in a shootout, but home team WON this time in a shootout...'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties) - 1
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses =
-							Number(foundVisitorTeam.shootoutLosses) + 1
+						foundTeam.wins = Number(foundTeam.wins) + 1
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties) - 1
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses =
+						//	Number(foundVisitorTeam.shootoutLosses) + 1
 					} else {
 						console.log(
 							'last game was a TIE in regulation, but home WON this time in shootout'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties) - 1
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses =
-							Number(foundVisitorTeam.shootoutLosses) + 1
+						foundTeam.wins = Number(foundTeam.wins) + 1
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties) - 1
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses =
+						//	Number(foundVisitorTeam.shootoutLosses) + 1
 					}
 					//
 					//
-				} else if (newWinner === visitorTeamId) {
+				} else if (newWinner !== teamId) {
 					console.log('visitor team is winner this time in Overtime!!  13')
 					if (previousStatus === 'Overtime') {
 						console.log(
 							'last game was a TIE in overtime, but visitor WON this game in shootout'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins)
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties) - 1
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses =
-							Number(foundHomeTeam.shootoutLosses) + 1
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins)
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties) - 1
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses) + 1
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					} else if (previousStatus === 'Shootout') {
 						console.log(
 							'last game was a TIE in a shootout, but visitor WON this time in shootout...'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins)
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties) - 1
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses =
-							Number(foundHomeTeam.shootoutLosses) + 1
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins)
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties) - 1
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses) + 1
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					} else {
 						console.log(
 							'last game was a TIE in regulation, visitor but WON this time in shootout'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins)
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties) - 1
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses =
-							Number(foundHomeTeam.shootoutLosses) + 1
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins)
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties) - 1
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses) + 1
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					}
 				}
 			} else if (newWinner === previousWinner) {
@@ -5887,7 +5910,7 @@ const createGameStats = async (req, res, next) => {
 						'  ' +
 						previousWinner
 				)
-				if (newWinner === homeTeamId) {
+				if (newWinner === teamId) {
 					console.log('home team is winner this time in a Shootout!!')
 					if (previousStatus === 'Overtime') {
 						console.log(
@@ -5896,18 +5919,18 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'visitor team LOST last game in overtime, and LOST this game in a shootout'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins)
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses =
-							Number(foundVisitorTeam.overtimeLosses) - 1
-						foundVisitorTeam.shootoutLosses =
-							Number(foundVisitorTeam.shootoutLosses) + 1
+						foundTeam.wins = Number(foundTeam.wins)
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses =
+						//	Number(foundVisitorTeam.overtimeLosses) - 1
+						//foundVisitorTeam.shootoutLosses =
+						//	Number(foundVisitorTeam.shootoutLosses) + 1
 					} else if (previousStatus === 'Shootout') {
 						console.log(
 							'home team WON last game in shootout, but WON this time in a shootout...'
@@ -5915,20 +5938,20 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'visitor team LOST last game in shootout, but LOST this time in a shootout...'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins)
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins)
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					} else {
 						console.log(
 							'home team WON in regulation last time, but WON this time in a shootout' //done
@@ -5936,23 +5959,23 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'visitor team LOST in regulation last time, but LOST this time in a shootout' //done
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins)
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses) - 1
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses =
-							Number(foundVisitorTeam.shootoutLosses) + 1
+						foundTeam.wins = Number(foundTeam.wins)
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses) - 1
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses =
+						//	Number(foundVisitorTeam.shootoutLosses) + 1
 					}
 					//
 					//
-				} else if (newWinner === visitorTeamId) {
+				} else if (newWinner !== teamId) {
 					console.log('visitor team is winner this time in a Shootout!!  4')
 					if (previousStatus === 'Overtime') {
 						console.log(
@@ -5961,22 +5984,20 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'home team LOST last game in overtime, and LOST this game in a shootout' //done
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins)
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses =
-							Number(foundHomeTeam.overtimeLosses) - 1
-						foundHomeTeam.shootoutLosses =
-							Number(foundHomeTeam.shootoutLosses) + 1
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins)
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses) - 1
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses) + 1
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					} else if (previousStatus === 'Shootout') {
 						console.log(
 							'visitor team WON last game in shootout, but WON this time in a shootout...'
@@ -5984,20 +6005,20 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'home team LOST last game in shootout, but LOST this time in a shootout...'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins)
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins)
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					} else {
 						console.log(
 							'visitor team WON in regulation last time, but WON this time in a shootout'
@@ -6005,21 +6026,20 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'home team LOST in regulation last time, but LOST this time in a shootout'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins)
-						foundHomeTeam.losses = Number(foundHomeTeam.losses) - 1
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses =
-							Number(foundHomeTeam.shootoutLosses) + 1
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins)
+						foundTeam.losses = Number(foundTeam.losses) - 1
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses) + 1
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					}
 				}
 			}
@@ -6031,7 +6051,7 @@ const createGameStats = async (req, res, next) => {
 				newWinner !== previousWinner &&
 				previousHomeGoalsTotal !== previousVisitorGoalsTotal
 			) {
-				if (newWinner === homeTeamId) {
+				if (newWinner === teamId) {
 					console.log(
 						'home team is winner this time in a regulation.  Last game was NOT a tie!!'
 					)
@@ -6042,21 +6062,20 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'visitor team WON last game in overtime, and LOST this game in regulation'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses =
-							Number(foundHomeTeam.overtimeLosses) - 1
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses) + 1
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins) + 1
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses) - 1
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses) + 1
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					} else if (previousStatus === 'Shootout') {
 						console.log(
 							'home team LOST last game in shootout, but WON this time in regulation'
@@ -6064,21 +6083,20 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'visitor team WON last game in shootout, but LOST this time in regulation'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses =
-							Number(foundHomeTeam.shootoutLosses) - 1
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses) + 1
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins) + 1
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses) - 1
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses) + 1
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					} else {
 						console.log(
 							'home team LOST in regulation last time, but WON this time in regulation'
@@ -6086,24 +6104,24 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'visitor team WON in regulation last time, but LOST this time in regulation'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
-						foundHomeTeam.losses = Number(foundHomeTeam.losses) - 1
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses) + 1
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins) + 1
+						foundTeam.losses = Number(foundTeam.losses) - 1
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses) + 1
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					}
 					//
 					//
-				} else if (newWinner === visitorTeamId) {
+				} else if (newWinner !== teamId) {
 					console.log('visitor team is winner this time in Shootout!!  33')
 					if (previousStatus === 'Overtime') {
 						console.log(
@@ -6112,19 +6130,19 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'home team WON last game in overtime, and LOST this game in regulation'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins) - 1
-						foundHomeTeam.losses = Number(foundHomeTeam.losses) + 1
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses =
-							Number(foundVisitorTeam.overtimeLosses) - 1
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins) - 1
+						foundTeam.losses = Number(foundTeam.losses) + 1
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses =
+						//	Number(foundVisitorTeam.overtimeLosses) - 1
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					} else if (previousStatus === 'Shootout') {
 						console.log(
 							'visitor team LOST last game in shootout, but WON this time in regulation'
@@ -6132,19 +6150,19 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'home team WON last game in shootout, but LOST this time in regulation'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins) - 1
-						foundHomeTeam.losses = Number(foundHomeTeam.losses) + 1
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses =
-							Number(foundVisitorTeam.shootoutLosses) - 1
+						foundTeam.wins = Number(foundTeam.wins) - 1
+						foundTeam.losses = Number(foundTeam.losses) + 1
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses =
+						//	Number(foundVisitorTeam.shootoutLosses) - 1
 					} else {
 						console.log(
 							'visitor team LOST in regulation last time, but WON this time in regulation'
@@ -6152,27 +6170,27 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'home team WON in regulation last time, but LOST this time in regulation'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins) - 1
-						foundHomeTeam.losses = Number(foundHomeTeam.losses) + 1
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses) - 1
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins) - 1
+						foundTeam.losses = Number(foundTeam.losses) + 1
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses) - 1
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					}
 				}
 			} else if (
 				newWinner !== previousWinner &&
 				previousHomeGoalsTotal === previousVisitorGoalsTotal
 			) {
-				if (newWinner === homeTeamId) {
+				if (newWinner === teamId) {
 					console.log(
 						'home team is winner this time in regulation!  Last game was a tie in overtime'
 					)
@@ -6180,115 +6198,115 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'Last game was a tie in overtime, but home WON this game in regulation'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties) - 1
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses) + 1
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins) + 1
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties) - 1
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses) + 1
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					} else if (previousStatus === 'Shootout') {
 						console.log(
 							'last game was a TIE in a shootout, but home team WON this time in regulation'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties) - 1
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses) + 1
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins) + 1
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties) - 1
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses) + 1
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					} else {
 						console.log(
 							'last game was a TIE in regulation, but home WON this time in regulation'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties) - 1
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses) + 1
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins) + 1
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties) - 1
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses) + 1
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					}
 					//
 					//
-				} else if (newWinner === visitorTeamId) {
+				} else if (newWinner !== teamId) {
 					console.log('visitor team is winner this time in Overtime!!  13')
 					if (previousStatus === 'Overtime') {
 						console.log(
 							'last game was a TIE in overtime, but visitor WON this game in regulation'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins)
-						foundHomeTeam.losses = Number(foundHomeTeam.losses) + 1
-						foundHomeTeam.ties = Number(foundHomeTeam.ties) - 1
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins)
+						foundTeam.losses = Number(foundTeam.losses) + 1
+						foundTeam.ties = Number(foundTeam.ties) - 1
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					} else if (previousStatus === 'Shootout') {
 						console.log(
 							'last game was a TIE in a shootout, but visitor WON this time in regulation'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins)
-						foundHomeTeam.losses = Number(foundHomeTeam.losses) + 1
-						foundHomeTeam.ties = Number(foundHomeTeam.ties) - 1
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins)
+						foundTeam.losses = Number(foundTeam.losses) + 1
+						foundTeam.ties = Number(foundTeam.ties) - 1
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					} else {
 						console.log(
 							'last game was a TIE in regulation,  but visitor WON this time in regulation'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins)
-						foundHomeTeam.losses = Number(foundHomeTeam.losses) + 1
-						foundHomeTeam.ties = Number(foundHomeTeam.ties) - 1
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins)
+						foundTeam.losses = Number(foundTeam.losses) + 1
+						foundTeam.ties = Number(foundTeam.ties) - 1
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) + 1
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) - 1
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					}
 				}
 			} else if (newWinner === previousWinner) {
@@ -6298,7 +6316,7 @@ const createGameStats = async (req, res, next) => {
 						'  ' +
 						previousWinner
 				)
-				if (newWinner === homeTeamId) {
+				if (newWinner === teamId) {
 					console.log('home team is winner this time in regulation')
 					if (previousStatus === 'Overtime') {
 						console.log(
@@ -6307,19 +6325,19 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'visitor team LOST last game in overtime, and LOST this game in regulation'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins)
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses) + 1
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses =
-							Number(foundVisitorTeam.overtimeLosses) - 1
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins)
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses) + 1
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses =
+						//	Number(foundVisitorTeam.overtimeLosses) - 1
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					} else if (previousStatus === 'Shootout') {
 						console.log(
 							'home team WON last game in shootout, but WON this time in regulation'
@@ -6327,19 +6345,19 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'visitor team LOST last game in shootout, but LOST this time in regulation'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins)
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses) + 1
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses =
-							Number(foundVisitorTeam.shootoutLosses) - 1
+						foundTeam.wins = Number(foundTeam.wins)
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses) + 1
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses =
+						//	Number(foundVisitorTeam.shootoutLosses) - 1
 					} else {
 						console.log(
 							'home team WON in regulation last time, but WON this time in regulation'
@@ -6347,24 +6365,24 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'visitor team LOST in regulation last time, but LOST this time in regulation'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins)
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins)
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					}
 					//
 					//
-				} else if (newWinner === visitorTeamId) {
+				} else if (newWinner !== teamId) {
 					console.log('visitor team is winner this time in regulation  42')
 					if (previousStatus === 'Overtime') {
 						console.log(
@@ -6373,21 +6391,20 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'home team LOST last game in overtime, and LOST this game in regulation'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins)
-						foundHomeTeam.losses = Number(foundHomeTeam.losses) + 1
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses =
-							Number(foundHomeTeam.overtimeLosses) - 1
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins)
+						foundTeam.losses = Number(foundTeam.losses) + 1
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses) - 1
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					} else if (previousStatus === 'Shootout') {
 						console.log(
 							'visitor team WON last game in shootout, but WON this time in regulation'
@@ -6395,21 +6412,20 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'home team LOST last game in shootout, but LOST this time in regulation'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins)
-						foundHomeTeam.losses = Number(foundHomeTeam.losses) + 1
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses =
-							Number(foundHomeTeam.shootoutLosses) - 1
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins)
+						foundTeam.losses = Number(foundTeam.losses) + 1
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses) - 1
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					} else {
 						console.log(
 							'visitor team WON in regulation last time, but WON this time in regulation'
@@ -6417,20 +6433,20 @@ const createGameStats = async (req, res, next) => {
 						console.log(
 							'home team LOST in regulation last time, but LOST this time in regulation'
 						)
-						foundHomeTeam.wins = Number(foundHomeTeam.wins)
-						foundHomeTeam.losses = Number(foundHomeTeam.losses)
-						foundHomeTeam.ties = Number(foundHomeTeam.ties)
-						foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-						foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-						foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-						foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-						foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-						foundVisitorTeam.overtimeLosses = Number(
-							foundVisitorTeam.overtimeLosses
-						)
-						foundVisitorTeam.shootoutLosses = Number(
-							foundVisitorTeam.shootoutLosses
-						)
+						foundTeam.wins = Number(foundTeam.wins)
+						foundTeam.losses = Number(foundTeam.losses)
+						foundTeam.ties = Number(foundTeam.ties)
+						foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+						foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+						//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+						//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+						//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+						//foundVisitorTeam.overtimeLosses = Number(
+						//	foundVisitorTeam.overtimeLosses
+						//)
+						//foundVisitorTeam.shootoutLosses = Number(
+						//	foundVisitorTeam.shootoutLosses
+						//)
 					}
 				}
 			}
@@ -6444,7 +6460,7 @@ const createGameStats = async (req, res, next) => {
 		) {
 			//console.log('you are here matthew')
 			if (
-				previousWinner === homeTeamId &&
+				previousWinner === teamId &&
 				previousHomeGoalsTotal !== previousVisitorGoalsTotal
 			) {
 				//home team won last game, NOT in a tie.  This game is a TIE marked as Overtime
@@ -6454,59 +6470,59 @@ const createGameStats = async (req, res, next) => {
 					console.log(
 						'home team won last game, NOT in a tie but in Overtime.  This game is a TIE marked as Overtime'
 					)
-					foundHomeTeam.wins = Number(foundHomeTeam.wins) - 1
-					foundHomeTeam.losses = Number(foundHomeTeam.losses)
-					foundHomeTeam.ties = Number(foundHomeTeam.ties) + 1
-					foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-					foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-					foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-					foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-					foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
-					foundVisitorTeam.overtimeLosses =
-						Number(foundVisitorTeam.overtimeLosses) - 1
-					foundVisitorTeam.shootoutLosses = Number(
-						foundVisitorTeam.shootoutLosses
-					)
+					foundTeam.wins = Number(foundTeam.wins) - 1
+					foundTeam.losses = Number(foundTeam.losses)
+					foundTeam.ties = Number(foundTeam.ties) + 1
+					foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+					foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+					//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+					//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+					//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
+					//foundVisitorTeam.overtimeLosses =
+					//	Number(foundVisitorTeam.overtimeLosses) - 1
+					//foundVisitorTeam.shootoutLosses = Number(
+					//	foundVisitorTeam.shootoutLosses
+					//)
 				} else if (previousStatus === 'Shootout') {
 					//
 					console.log(
 						'home team won last game, NOT in a tie but in a Shootout.  This game is a TIE marked as Overtime'
 					)
-					foundHomeTeam.wins = Number(foundHomeTeam.wins) - 1
-					foundHomeTeam.losses = Number(foundHomeTeam.losses)
-					foundHomeTeam.ties = Number(foundHomeTeam.ties) + 1
-					foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-					foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-					foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-					foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-					foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
-					foundVisitorTeam.overtimeLosses = Number(
-						foundVisitorTeam.overtimeLosses
-					)
-					foundVisitorTeam.shootoutLosses =
-						Number(foundVisitorTeam.shootoutLosses) - 1
+					foundTeam.wins = Number(foundTeam.wins) - 1
+					foundTeam.losses = Number(foundTeam.losses)
+					foundTeam.ties = Number(foundTeam.ties) + 1
+					foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+					foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+					//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+					//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+					//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
+					//foundVisitorTeam.overtimeLosses = Number(
+					//	foundVisitorTeam.overtimeLosses
+					//)
+					//foundVisitorTeam.shootoutLosses =
+					//	Number(foundVisitorTeam.shootoutLosses) - 1
 				} else if (previousStatus === 'FINAL') {
 					//
 					console.log(
 						'home team won last game, NOT in a tie but in Regulation.  This game is a TIE marked as Overtime'
 					)
-					foundHomeTeam.wins = Number(foundHomeTeam.wins) - 1
-					foundHomeTeam.losses = Number(foundHomeTeam.losses)
-					foundHomeTeam.ties = Number(foundHomeTeam.ties) + 1
-					foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-					foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-					foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-					foundVisitorTeam.losses = Number(foundVisitorTeam.losses) - 1
-					foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
-					foundVisitorTeam.overtimeLosses = Number(
-						foundVisitorTeam.overtimeLosses
-					)
-					foundVisitorTeam.shootoutLosses = Number(
-						foundVisitorTeam.shootoutLosses
-					)
+					foundTeam.wins = Number(foundTeam.wins) - 1
+					foundTeam.losses = Number(foundTeam.losses)
+					foundTeam.ties = Number(foundTeam.ties) + 1
+					foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+					foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+					//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+					//foundVisitorTeam.losses = Number(foundVisitorTeam.losses) - 1
+					//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
+					//foundVisitorTeam.overtimeLosses = Number(
+					//	foundVisitorTeam.overtimeLosses
+					//)
+					//foundVisitorTeam.shootoutLosses = Number(
+					//	foundVisitorTeam.shootoutLosses
+					//)
 				}
 			} else if (
-				previousWinner === visitorTeamId &&
+				previousWinner !== teamId &&
 				previousHomeGoalsTotal !== previousVisitorGoalsTotal
 			) {
 				//visitor team won last game, NOT in a tie.  This game is a TIE, marked as Overtime
@@ -6516,60 +6532,58 @@ const createGameStats = async (req, res, next) => {
 					console.log(
 						'visitor team won last game, NOT in a tie but in Overtime.  This game is a TIE marked as Overtime'
 					)
-					foundHomeTeam.wins = Number(foundHomeTeam.wins)
-					foundHomeTeam.losses = Number(foundHomeTeam.losses)
-					foundHomeTeam.ties = Number(foundHomeTeam.ties) + 1
-					foundHomeTeam.overtimeLosses =
-						Number(foundHomeTeam.overtimeLosses) - 1
-					foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-					foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
-					foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-					foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
-					foundVisitorTeam.overtimeLosses = Number(
-						foundVisitorTeam.overtimeLosses
-					)
-					foundVisitorTeam.shootoutLosses = Number(
-						foundVisitorTeam.shootoutLosses
-					)
+					foundTeam.wins = Number(foundTeam.wins)
+					foundTeam.losses = Number(foundTeam.losses)
+					foundTeam.ties = Number(foundTeam.ties) + 1
+					foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses) - 1
+					foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+					//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
+					//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+					//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
+					//foundVisitorTeam.overtimeLosses = Number(
+					//	foundVisitorTeam.overtimeLosses
+					//)
+					//foundVisitorTeam.shootoutLosses = Number(
+					//	foundVisitorTeam.shootoutLosses
+					//)
 				} else if (previousStatus === 'Shootout') {
 					//
 					console.log(
 						'visitor team won last game, NOT in a tie but in a Shootout.  This game is a TIE marked as Overtime'
 					)
-					foundHomeTeam.wins = Number(foundHomeTeam.wins)
-					foundHomeTeam.losses = Number(foundHomeTeam.losses)
-					foundHomeTeam.ties = Number(foundHomeTeam.ties) + 1
-					foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-					foundHomeTeam.shootoutLosses =
-						Number(foundHomeTeam.shootoutLosses) - 1
-					foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
-					foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-					foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
-					foundVisitorTeam.overtimeLosses = Number(
-						foundVisitorTeam.overtimeLosses
-					)
-					foundVisitorTeam.shootoutLosses = Number(
-						foundVisitorTeam.shootoutLosses
-					)
+					foundTeam.wins = Number(foundTeam.wins)
+					foundTeam.losses = Number(foundTeam.losses)
+					foundTeam.ties = Number(foundTeam.ties) + 1
+					foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+					foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses) - 1
+					//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
+					//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+					//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
+					//foundVisitorTeam.overtimeLosses = Number(
+					//	foundVisitorTeam.overtimeLosses
+					//)
+					//foundVisitorTeam.shootoutLosses = Number(
+					//	foundVisitorTeam.shootoutLosses
+					//)
 				} else if (previousStatus === 'FINAL') {
 					//
 					console.log(
 						'visitor team won last game, NOT in a tie but in Regulation.  This game is a TIE marked as Overtime'
 					)
-					foundHomeTeam.wins = Number(foundHomeTeam.wins)
-					foundHomeTeam.losses = Number(foundHomeTeam.losses) - 1
-					foundHomeTeam.ties = Number(foundHomeTeam.ties) + 1
-					foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-					foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-					foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
-					foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-					foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
-					foundVisitorTeam.overtimeLosses = Number(
-						foundVisitorTeam.overtimeLosses
-					)
-					foundVisitorTeam.shootoutLosses = Number(
-						foundVisitorTeam.shootoutLosses
-					)
+					foundTeam.wins = Number(foundTeam.wins)
+					foundTeam.losses = Number(foundTeam.losses) - 1
+					foundTeam.ties = Number(foundTeam.ties) + 1
+					foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+					foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+					//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
+					//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+					//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
+					//foundVisitorTeam.overtimeLosses = Number(
+					//	foundVisitorTeam.overtimeLosses
+					//)
+					//foundVisitorTeam.shootoutLosses = Number(
+					//	foundVisitorTeam.shootoutLosses
+					//)
 				}
 			} else if (
 				!previousWinner &&
@@ -6578,52 +6592,52 @@ const createGameStats = async (req, res, next) => {
 				//last game was a TIE.  This game is a TIE, marked as Overtime
 				if (previousStatus === 'Overtime') {
 					console.log('TIE last time in Overtime, TIE this time in Overtime')
-					foundHomeTeam.wins = Number(foundHomeTeam.wins)
-					foundHomeTeam.losses = Number(foundHomeTeam.losses)
-					foundHomeTeam.ties = Number(foundHomeTeam.ties)
-					foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-					foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-					foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-					foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-					foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-					foundVisitorTeam.overtimeLosses = Number(
-						foundVisitorTeam.overtimeLosses
-					)
-					foundVisitorTeam.shootoutLosses = Number(
-						foundVisitorTeam.shootoutLosses
-					)
+					foundTeam.wins = Number(foundTeam.wins)
+					foundTeam.losses = Number(foundTeam.losses)
+					foundTeam.ties = Number(foundTeam.ties)
+					foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+					foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+					//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+					//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+					//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+					//foundVisitorTeam.overtimeLosses = Number(
+					//	foundVisitorTeam.overtimeLosses
+					//)
+					//foundVisitorTeam.shootoutLosses = Number(
+					//	foundVisitorTeam.shootoutLosses
+					//)
 				} else if (previousStatus === 'Shootout') {
 					console.log('TIE last time in Shootout, TIE this time in Overtime')
-					foundHomeTeam.wins = Number(foundHomeTeam.wins)
-					foundHomeTeam.losses = Number(foundHomeTeam.losses)
-					foundHomeTeam.ties = Number(foundHomeTeam.ties)
-					foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-					foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-					foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-					foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-					foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-					foundVisitorTeam.overtimeLosses = Number(
-						foundVisitorTeam.overtimeLosses
-					)
-					foundVisitorTeam.shootoutLosses = Number(
-						foundVisitorTeam.shootoutLosses
-					)
+					foundTeam.wins = Number(foundTeam.wins)
+					foundTeam.losses = Number(foundTeam.losses)
+					foundTeam.ties = Number(foundTeam.ties)
+					foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+					foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+					//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+					//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+					//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+					//foundVisitorTeam.overtimeLosses = Number(
+					//	foundVisitorTeam.overtimeLosses
+					//)
+					//foundVisitorTeam.shootoutLosses = Number(
+					//	foundVisitorTeam.shootoutLosses
+					//)
 				} else if (previousStatus === 'FINAL') {
 					console.log('TIE last time in Regulation, TIE this time in Overtime')
-					foundHomeTeam.wins = Number(foundHomeTeam.wins)
-					foundHomeTeam.losses = Number(foundHomeTeam.losses)
-					foundHomeTeam.ties = Number(foundHomeTeam.ties)
-					foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-					foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-					foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-					foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-					foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-					foundVisitorTeam.overtimeLosses = Number(
-						foundVisitorTeam.overtimeLosses
-					)
-					foundVisitorTeam.shootoutLosses = Number(
-						foundVisitorTeam.shootoutLosses
-					)
+					foundTeam.wins = Number(foundTeam.wins)
+					foundTeam.losses = Number(foundTeam.losses)
+					foundTeam.ties = Number(foundTeam.ties)
+					foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+					foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+					//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+					//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+					//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+					//foundVisitorTeam.overtimeLosses = Number(
+					//	foundVisitorTeam.overtimeLosses
+					//)
+					//foundVisitorTeam.shootoutLosses = Number(
+					//	foundVisitorTeam.shootoutLosses
+					//)
 				}
 			}
 			//
@@ -6633,7 +6647,7 @@ const createGameStats = async (req, res, next) => {
 			newHomeGoalsTotal === newVisitorGoalsTotal
 		) {
 			if (
-				previousWinner === homeTeamId &&
+				previousWinner === teamId &&
 				previousHomeGoalsTotal !== previousVisitorGoalsTotal
 			) {
 				//home team won last game, NOT in a tie.  This game is a TIE marked as Overtime
@@ -6643,59 +6657,59 @@ const createGameStats = async (req, res, next) => {
 					console.log(
 						'home team won last game, NOT in a tie but in Overtime.  This game is a TIE marked as a Shootout'
 					)
-					foundHomeTeam.wins = Number(foundHomeTeam.wins) - 1
-					foundHomeTeam.losses = Number(foundHomeTeam.losses)
-					foundHomeTeam.ties = Number(foundHomeTeam.ties) + 1
-					foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-					foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-					foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-					foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-					foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
-					foundVisitorTeam.overtimeLosses =
-						Number(foundVisitorTeam.overtimeLosses) - 1
-					foundVisitorTeam.shootoutLosses = Number(
-						foundVisitorTeam.shootoutLosses
-					)
+					foundTeam.wins = Number(foundTeam.wins) - 1
+					foundTeam.losses = Number(foundTeam.losses)
+					foundTeam.ties = Number(foundTeam.ties) + 1
+					foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+					foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+					//oundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+					//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+					//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
+					//foundVisitorTeam.overtimeLosses =
+					//	Number(foundVisitorTeam.overtimeLosses) - 1
+					//foundVisitorTeam.shootoutLosses = Number(
+					//	foundVisitorTeam.shootoutLosses
+					//)
 				} else if (previousStatus === 'Shootout') {
 					//
 					console.log(
 						'home team won last game, NOT in a tie but in a Shootout.  This game is a TIE marked as a Shootout'
 					)
-					foundHomeTeam.wins = Number(foundHomeTeam.wins) - 1
-					foundHomeTeam.losses = Number(foundHomeTeam.losses)
-					foundHomeTeam.ties = Number(foundHomeTeam.ties) + 1
-					foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-					foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-					foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-					foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-					foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
-					foundVisitorTeam.overtimeLosses = Number(
-						foundVisitorTeam.overtimeLosses
-					)
-					foundVisitorTeam.shootoutLosses =
-						Number(foundVisitorTeam.shootoutLosses) - 1
+					foundTeam.wins = Number(foundTeam.wins) - 1
+					foundTeam.losses = Number(foundTeam.losses)
+					foundTeam.ties = Number(foundTeam.ties) + 1
+					foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+					foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+					//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+					//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+					//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
+					//foundVisitorTeam.overtimeLosses = Number(
+					//	foundVisitorTeam.overtimeLosses
+					//)
+					//foundVisitorTeam.shootoutLosses =
+					//	Number(foundVisitorTeam.shootoutLosses) - 1
 				} else if (previousStatus === 'FINAL') {
 					//
 					console.log(
 						'home team won last game, NOT in a tie but in Regulation.  This game is a TIE marked as a Shootout'
 					)
-					foundHomeTeam.wins = Number(foundHomeTeam.wins) - 1
-					foundHomeTeam.losses = Number(foundHomeTeam.losses)
-					foundHomeTeam.ties = Number(foundHomeTeam.ties) + 1
-					foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-					foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-					foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-					foundVisitorTeam.losses = Number(foundVisitorTeam.losses) - 1
-					foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
-					foundVisitorTeam.overtimeLosses = Number(
-						foundVisitorTeam.overtimeLosses
-					)
-					foundVisitorTeam.shootoutLosses = Number(
-						foundVisitorTeam.shootoutLosses
-					)
+					foundTeam.wins = Number(foundTeam.wins) - 1
+					foundTeam.losses = Number(foundTeam.losses)
+					foundTeam.ties = Number(foundTeam.ties) + 1
+					foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+					foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+					//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+					//foundVisitorTeam.losses = Number(foundVisitorTeam.losses) - 1
+					//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
+					//foundVisitorTeam.overtimeLosses = Number(
+					//	foundVisitorTeam.overtimeLosses
+					//)
+					//foundVisitorTeam.shootoutLosses = Number(
+					//	foundVisitorTeam.shootoutLosses
+					//)
 				}
 			} else if (
-				previousWinner === visitorTeamId &&
+				previousWinner !== teamId &&
 				previousHomeGoalsTotal !== previousVisitorGoalsTotal
 			) {
 				//visitor team won last game, NOT in a tie.  This game is a TIE, marked as Overtime
@@ -6705,60 +6719,58 @@ const createGameStats = async (req, res, next) => {
 					console.log(
 						'visitor team won last game, NOT in a tie but in Overtime.  This game is a TIE marked as a Shootout'
 					)
-					foundHomeTeam.wins = Number(foundHomeTeam.wins)
-					foundHomeTeam.losses = Number(foundHomeTeam.losses)
-					foundHomeTeam.ties = Number(foundHomeTeam.ties) + 1
-					foundHomeTeam.overtimeLosses =
-						Number(foundHomeTeam.overtimeLosses) - 1
-					foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-					foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
-					foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-					foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
-					foundVisitorTeam.overtimeLosses = Number(
-						foundVisitorTeam.overtimeLosses
-					)
-					foundVisitorTeam.shootoutLosses = Number(
-						foundVisitorTeam.shootoutLosses
-					)
+					foundTeam.wins = Number(foundTeam.wins)
+					foundTeam.losses = Number(foundTeam.losses)
+					foundTeam.ties = Number(foundTeam.ties) + 1
+					foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses) - 1
+					foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+					//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
+					//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+					//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
+					//foundVisitorTeam.overtimeLosses = Number(
+					//	foundVisitorTeam.overtimeLosses
+					//)
+					//foundVisitorTeam.shootoutLosses = Number(
+					//	foundVisitorTeam.shootoutLosses
+					//)
 				} else if (previousStatus === 'Shootout') {
 					//
 					console.log(
 						'visitor team won last game, NOT in a tie but in a Shootout.  This game is a TIE marked as a Shootout'
 					)
-					foundHomeTeam.wins = Number(foundHomeTeam.wins)
-					foundHomeTeam.losses = Number(foundHomeTeam.losses)
-					foundHomeTeam.ties = Number(foundHomeTeam.ties) + 1
-					foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-					foundHomeTeam.shootoutLosses =
-						Number(foundHomeTeam.shootoutLosses) - 1
-					foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
-					foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-					foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
-					foundVisitorTeam.overtimeLosses = Number(
-						foundVisitorTeam.overtimeLosses
-					)
-					foundVisitorTeam.shootoutLosses = Number(
-						foundVisitorTeam.shootoutLosses
-					)
+					foundTeam.wins = Number(foundTeam.wins)
+					foundTeam.losses = Number(foundTeam.losses)
+					foundTeam.ties = Number(foundTeam.ties) + 1
+					foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+					foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses) - 1
+					//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
+					//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+					//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
+					//foundVisitorTeam.overtimeLosses = Number(
+					//	foundVisitorTeam.overtimeLosses
+					//)
+					//foundVisitorTeam.shootoutLosses = Number(
+					//	foundVisitorTeam.shootoutLosses
+					//)
 				} else if (previousStatus === 'FINAL') {
 					//
 					console.log(
 						'visitor team won last game, NOT in a tie but in Regulation.  This game is a TIE marked as a Shootout'
 					)
-					foundHomeTeam.wins = Number(foundHomeTeam.wins)
-					foundHomeTeam.losses = Number(foundHomeTeam.losses) - 1
-					foundHomeTeam.ties = Number(foundHomeTeam.ties) + 1
-					foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-					foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-					foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
-					foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-					foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
-					foundVisitorTeam.overtimeLosses = Number(
-						foundVisitorTeam.overtimeLosses
-					)
-					foundVisitorTeam.shootoutLosses = Number(
-						foundVisitorTeam.shootoutLosses
-					)
+					foundTeam.wins = Number(foundTeam.wins)
+					foundTeam.losses = Number(foundTeam.losses) - 1
+					foundTeam.ties = Number(foundTeam.ties) + 1
+					foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+					foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+					//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
+					//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+					//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
+					//foundVisitorTeam.overtimeLosses = Number(
+					//	foundVisitorTeam.overtimeLosses
+					//)
+					//foundVisitorTeam.shootoutLosses = Number(
+					//	foundVisitorTeam.shootoutLosses
+					//)
 				}
 			} else if (
 				!previousWinner &&
@@ -6767,54 +6779,54 @@ const createGameStats = async (req, res, next) => {
 				//last game was a TIE.  This game is a TIE, marked as Overtime
 				if (previousStatus === 'Overtime') {
 					console.log('TIE last time in Overtime, TIE this time in a Shootout')
-					foundHomeTeam.wins = Number(foundHomeTeam.wins)
-					foundHomeTeam.losses = Number(foundHomeTeam.losses)
-					foundHomeTeam.ties = Number(foundHomeTeam.ties)
-					foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-					foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-					foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-					foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-					foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-					foundVisitorTeam.overtimeLosses = Number(
-						foundVisitorTeam.overtimeLosses
-					)
-					foundVisitorTeam.shootoutLosses = Number(
-						foundVisitorTeam.shootoutLosses
-					)
+					foundTeam.wins = Number(foundTeam.wins)
+					foundTeam.losses = Number(foundTeam.losses)
+					foundTeam.ties = Number(foundTeam.ties)
+					foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+					foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+					//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+					//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+					//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+					//foundVisitorTeam.overtimeLosses = Number(
+					//	foundVisitorTeam.overtimeLosses
+					//)
+					//foundVisitorTeam.shootoutLosses = Number(
+					//	foundVisitorTeam.shootoutLosses
+					//)
 				} else if (previousStatus === 'Shootout') {
 					console.log('TIE last time in Shootout, TIE this time in a Shootout')
-					foundHomeTeam.wins = Number(foundHomeTeam.wins)
-					foundHomeTeam.losses = Number(foundHomeTeam.losses)
-					foundHomeTeam.ties = Number(foundHomeTeam.ties)
-					foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-					foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-					foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-					foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-					foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-					foundVisitorTeam.overtimeLosses = Number(
-						foundVisitorTeam.overtimeLosses
-					)
-					foundVisitorTeam.shootoutLosses = Number(
-						foundVisitorTeam.shootoutLosses
-					)
+					foundTeam.wins = Number(foundTeam.wins)
+					foundTeam.losses = Number(foundTeam.losses)
+					foundTeam.ties = Number(foundTeam.ties)
+					foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+					foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+					//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+					//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+					//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+					//foundVisitorTeam.overtimeLosses = Number(
+					//	foundVisitorTeam.overtimeLosses
+					//)
+					//foundVisitorTeam.shootoutLosses = Number(
+					//	foundVisitorTeam.shootoutLosses
+					//)
 				} else if (previousStatus === 'FINAL') {
 					console.log(
 						'TIE last time in Regulation, TIE this time in a Shootout'
 					)
-					foundHomeTeam.wins = Number(foundHomeTeam.wins)
-					foundHomeTeam.losses = Number(foundHomeTeam.losses)
-					foundHomeTeam.ties = Number(foundHomeTeam.ties)
-					foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-					foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-					foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-					foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-					foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-					foundVisitorTeam.overtimeLosses = Number(
-						foundVisitorTeam.overtimeLosses
-					)
-					foundVisitorTeam.shootoutLosses = Number(
-						foundVisitorTeam.shootoutLosses
-					)
+					foundTeam.wins = Number(foundTeam.wins)
+					foundTeam.losses = Number(foundTeam.losses)
+					foundTeam.ties = Number(foundTeam.ties)
+					foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+					foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+					//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+					//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+					//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+					//foundVisitorTeam.overtimeLosses = Number(
+					//	foundVisitorTeam.overtimeLosses
+					//)
+					//foundVisitorTeam.shootoutLosses = Number(
+					//	foundVisitorTeam.shootoutLosses
+					//)
 				}
 			}
 			//MORE TIE STUFF
@@ -6823,7 +6835,7 @@ const createGameStats = async (req, res, next) => {
 			newHomeGoalsTotal === newVisitorGoalsTotal
 		) {
 			if (
-				previousWinner === homeTeamId &&
+				previousWinner === teamId &&
 				previousHomeGoalsTotal !== previousVisitorGoalsTotal
 			) {
 				//home team won last game, NOT in a tie.  This game is a TIE marked as Overtime
@@ -6833,59 +6845,59 @@ const createGameStats = async (req, res, next) => {
 					console.log(
 						'home team won last game, NOT in a tie but in Overtime.  This game is a TIE marked as Regulation'
 					)
-					foundHomeTeam.wins = Number(foundHomeTeam.wins) - 1
-					foundHomeTeam.losses = Number(foundHomeTeam.losses)
-					foundHomeTeam.ties = Number(foundHomeTeam.ties) + 1
-					foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-					foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-					foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-					foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-					foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
-					foundVisitorTeam.overtimeLosses =
-						Number(foundVisitorTeam.overtimeLosses) - 1
-					foundVisitorTeam.shootoutLosses = Number(
-						foundVisitorTeam.shootoutLosses
-					)
+					foundTeam.wins = Number(foundTeam.wins) - 1
+					foundTeam.losses = Number(foundTeam.losses)
+					foundTeam.ties = Number(foundTeam.ties) + 1
+					foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+					foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+					//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+					//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+					//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
+					//foundVisitorTeam.overtimeLosses =
+					//	Number(foundVisitorTeam.overtimeLosses) - 1
+					//foundVisitorTeam.shootoutLosses = Number(
+					//	foundVisitorTeam.shootoutLosses
+					//)
 				} else if (previousStatus === 'Shootout') {
 					//
 					console.log(
 						'home team won last game, NOT in a tie but in a Shootout.  This game is a TIE marked as Regulation'
 					)
-					foundHomeTeam.wins = Number(foundHomeTeam.wins) - 1
-					foundHomeTeam.losses = Number(foundHomeTeam.losses)
-					foundHomeTeam.ties = Number(foundHomeTeam.ties) + 1
-					foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-					foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-					foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-					foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-					foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
-					foundVisitorTeam.overtimeLosses = Number(
-						foundVisitorTeam.overtimeLosses
-					)
-					foundVisitorTeam.shootoutLosses =
-						Number(foundVisitorTeam.shootoutLosses) - 1
+					foundTeam.wins = Number(foundTeam.wins) - 1
+					foundTeam.losses = Number(foundTeam.losses)
+					foundTeam.ties = Number(foundTeam.ties) + 1
+					foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+					foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+					//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+					//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+					//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
+					//foundVisitorTeam.overtimeLosses = Number(
+					//	foundVisitorTeam.overtimeLosses
+					//)
+					//foundVisitorTeam.shootoutLosses =
+					//	Number(foundVisitorTeam.shootoutLosses) - 1
 				} else if (previousStatus === 'FINAL') {
 					//
 					console.log(
 						'home team won last game, NOT in a tie but in Regulation.  This game is a TIE marked as Regulation'
 					)
-					foundHomeTeam.wins = Number(foundHomeTeam.wins) - 1
-					foundHomeTeam.losses = Number(foundHomeTeam.losses)
-					foundHomeTeam.ties = Number(foundHomeTeam.ties) + 1
-					foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-					foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-					foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-					foundVisitorTeam.losses = Number(foundVisitorTeam.losses) - 1
-					foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
-					foundVisitorTeam.overtimeLosses = Number(
-						foundVisitorTeam.overtimeLosses
-					)
-					foundVisitorTeam.shootoutLosses = Number(
-						foundVisitorTeam.shootoutLosses
-					)
+					foundTeam.wins = Number(foundTeam.wins) - 1
+					foundTeam.losses = Number(foundTeam.losses)
+					foundTeam.ties = Number(foundTeam.ties) + 1
+					foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+					foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+					//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+					//foundVisitorTeam.losses = Number(foundVisitorTeam.losses) - 1
+					//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
+					//foundVisitorTeam.overtimeLosses = Number(
+					//	foundVisitorTeam.overtimeLosses
+					//)
+					//foundVisitorTeam.shootoutLosses = Number(
+					//	foundVisitorTeam.shootoutLosses
+					//)
 				}
 			} else if (
-				previousWinner === visitorTeamId &&
+				previousWinner !== teamId &&
 				previousHomeGoalsTotal !== previousVisitorGoalsTotal
 			) {
 				//visitor team won last game, NOT in a tie.  This game is a TIE, marked as Overtime
@@ -6895,60 +6907,58 @@ const createGameStats = async (req, res, next) => {
 					console.log(
 						'visitor team won last game, NOT in a tie but in Overtime.  This game is a TIE marked as Regulation'
 					)
-					foundHomeTeam.wins = Number(foundHomeTeam.wins)
-					foundHomeTeam.losses = Number(foundHomeTeam.losses)
-					foundHomeTeam.ties = Number(foundHomeTeam.ties) + 1
-					foundHomeTeam.overtimeLosses =
-						Number(foundHomeTeam.overtimeLosses) - 1
-					foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-					foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
-					foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-					foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
-					foundVisitorTeam.overtimeLosses = Number(
-						foundVisitorTeam.overtimeLosses
-					)
-					foundVisitorTeam.shootoutLosses = Number(
-						foundVisitorTeam.shootoutLosses
-					)
+					foundTeam.wins = Number(foundTeam.wins)
+					foundTeam.losses = Number(foundTeam.losses)
+					foundTeam.ties = Number(foundTeam.ties) + 1
+					foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses) - 1
+					foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+					//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
+					//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+					//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
+					//foundVisitorTeam.overtimeLosses = Number(
+					//	foundVisitorTeam.overtimeLosses
+					//)
+					//foundVisitorTeam.shootoutLosses = Number(
+					//	foundVisitorTeam.shootoutLosses
+					//)
 				} else if (previousStatus === 'Shootout') {
 					//
 					console.log(
 						'visitor team won last game, NOT in a tie but in a Shootout.  This game is a TIE marked as Regulation'
 					)
-					foundHomeTeam.wins = Number(foundHomeTeam.wins)
-					foundHomeTeam.losses = Number(foundHomeTeam.losses)
-					foundHomeTeam.ties = Number(foundHomeTeam.ties) + 1
-					foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-					foundHomeTeam.shootoutLosses =
-						Number(foundHomeTeam.shootoutLosses) - 1
-					foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
-					foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-					foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
-					foundVisitorTeam.overtimeLosses = Number(
-						foundVisitorTeam.overtimeLosses
-					)
-					foundVisitorTeam.shootoutLosses = Number(
-						foundVisitorTeam.shootoutLosses
-					)
+					foundTeam.wins = Number(foundTeam.wins)
+					foundTeam.losses = Number(foundTeam.losses)
+					foundTeam.ties = Number(foundTeam.ties) + 1
+					foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+					foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses) - 1
+					//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
+					//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+					//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
+					//foundVisitorTeam.overtimeLosses = Number(
+					//	foundVisitorTeam.overtimeLosses
+					//)
+					//foundVisitorTeam.shootoutLosses = Number(
+					//	foundVisitorTeam.shootoutLosses
+					//)
 				} else if (previousStatus === 'FINAL') {
 					//
 					console.log(
 						'visitor team won last game, NOT in a tie but in Regulation.  This game is a TIE marked as Regulation'
 					)
-					foundHomeTeam.wins = Number(foundHomeTeam.wins)
-					foundHomeTeam.losses = Number(foundHomeTeam.losses) - 1
-					foundHomeTeam.ties = Number(foundHomeTeam.ties) + 1
-					foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-					foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-					foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
-					foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-					foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
-					foundVisitorTeam.overtimeLosses = Number(
-						foundVisitorTeam.overtimeLosses
-					)
-					foundVisitorTeam.shootoutLosses = Number(
-						foundVisitorTeam.shootoutLosses
-					)
+					foundTeam.wins = Number(foundTeam.wins)
+					foundTeam.losses = Number(foundTeam.losses) - 1
+					foundTeam.ties = Number(foundTeam.ties) + 1
+					foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+					foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+					//foundVisitorTeam.wins = Number(foundVisitorTeam.wins) - 1
+					//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+					//foundVisitorTeam.ties = Number(foundVisitorTeam.ties) + 1
+					//foundVisitorTeam.overtimeLosses = Number(
+					//	foundVisitorTeam.overtimeLosses
+					//)
+					//foundVisitorTeam.shootoutLosses = Number(
+					//	foundVisitorTeam.shootoutLosses
+					//)
 				}
 			} else if (
 				!previousWinner &&
@@ -6957,54 +6967,54 @@ const createGameStats = async (req, res, next) => {
 				//last game was a TIE.  This game is a TIE, marked as Overtime
 				if (previousStatus === 'Overtime') {
 					console.log('TIE last time in Overtime, TIE this time in Regulation')
-					foundHomeTeam.wins = Number(foundHomeTeam.wins)
-					foundHomeTeam.losses = Number(foundHomeTeam.losses)
-					foundHomeTeam.ties = Number(foundHomeTeam.ties)
-					foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-					foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-					foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-					foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-					foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-					foundVisitorTeam.overtimeLosses = Number(
-						foundVisitorTeam.overtimeLosses
-					)
-					foundVisitorTeam.shootoutLosses = Number(
-						foundVisitorTeam.shootoutLosses
-					)
+					foundTeam.wins = Number(foundTeam.wins)
+					foundTeam.losses = Number(foundTeam.losses)
+					foundTeam.ties = Number(foundTeam.ties)
+					foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+					foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+					//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+					//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+					//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+					//foundVisitorTeam.overtimeLosses = Number(
+					//	foundVisitorTeam.overtimeLosses
+					//)
+					//foundVisitorTeam.shootoutLosses = Number(
+					//	foundVisitorTeam.shootoutLosses
+					//)
 				} else if (previousStatus === 'Shootout') {
 					console.log('TIE last time in Shootout, TIE this time in Regulation')
-					foundHomeTeam.wins = Number(foundHomeTeam.wins)
-					foundHomeTeam.losses = Number(foundHomeTeam.losses)
-					foundHomeTeam.ties = Number(foundHomeTeam.ties)
-					foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-					foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-					foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-					foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-					foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-					foundVisitorTeam.overtimeLosses = Number(
-						foundVisitorTeam.overtimeLosses
-					)
-					foundVisitorTeam.shootoutLosses = Number(
-						foundVisitorTeam.shootoutLosses
-					)
+					foundTeam.wins = Number(foundTeam.wins)
+					foundTeam.losses = Number(foundTeam.losses)
+					foundTeam.ties = Number(foundTeam.ties)
+					foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+					foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+					//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+					//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+					//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+					//foundVisitorTeam.overtimeLosses = Number(
+					//	foundVisitorTeam.overtimeLosses
+					//)
+					//foundVisitorTeam.shootoutLosses = Number(
+					//	foundVisitorTeam.shootoutLosses
+					//)
 				} else if (previousStatus === 'FINAL') {
 					console.log(
 						'TIE last time in Regulation, TIE this time in Regulation'
 					)
-					foundHomeTeam.wins = Number(foundHomeTeam.wins)
-					foundHomeTeam.losses = Number(foundHomeTeam.losses)
-					foundHomeTeam.ties = Number(foundHomeTeam.ties)
-					foundHomeTeam.overtimeLosses = Number(foundHomeTeam.overtimeLosses)
-					foundHomeTeam.shootoutLosses = Number(foundHomeTeam.shootoutLosses)
-					foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
-					foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
-					foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
-					foundVisitorTeam.overtimeLosses = Number(
-						foundVisitorTeam.overtimeLosses
-					)
-					foundVisitorTeam.shootoutLosses = Number(
-						foundVisitorTeam.shootoutLosses
-					)
+					foundTeam.wins = Number(foundTeam.wins)
+					foundTeam.losses = Number(foundTeam.losses)
+					foundTeam.ties = Number(foundTeam.ties)
+					foundTeam.overtimeLosses = Number(foundTeam.overtimeLosses)
+					foundTeam.shootoutLosses = Number(foundTeam.shootoutLosses)
+					//foundVisitorTeam.wins = Number(foundVisitorTeam.wins)
+					//foundVisitorTeam.losses = Number(foundVisitorTeam.losses)
+					//foundVisitorTeam.ties = Number(foundVisitorTeam.ties)
+					//foundVisitorTeam.overtimeLosses = Number(
+					//	foundVisitorTeam.overtimeLosses
+					//)
+					//foundVisitorTeam.shootoutLosses = Number(
+					//	foundVisitorTeam.shootoutLosses
+					//)
 				}
 			}
 		} else if (gameStatus === 'TBP') {
@@ -7023,14 +7033,14 @@ const createGameStats = async (req, res, next) => {
 					})
 				} catch (err) {
 					const error = new HttpError(
-						'Could not find game stats for this itemId',
+						'Could not find game stats for this itemId ' + error,
 						404
 					)
 				}
 				console.log('gameStats: ' + gameStats)
 			}
 
-			//Most of this logic was taken from removeEvent:
+			//Most of this logic was taken from removeEvent: shirey2
 			let homePoints,
 				visitorPoints,
 				minusWinForHomeTeam,
@@ -7048,7 +7058,6 @@ const createGameStats = async (req, res, next) => {
 				tie
 
 			if (gameStats) {
-				//if (gameStats) {
 				homePoints = gameStats.homeGoalsTotal
 				visitorPoints = gameStats.visitorGoalsTotal
 				//If the home team was the winner, we need to tap into the team and remove a win from them
@@ -7061,7 +7070,7 @@ const createGameStats = async (req, res, next) => {
 				if (homePoints > visitorPoints) {
 					console.log('home team won')
 					try {
-						minusWinForHomeTeam = await Team.findById(homeTeamId)
+						minusWinForHomeTeam = await Team.findById(teamId)
 					} catch (err) {
 						const error = new HttpError(
 							'Could not find homeTeam to delete their win.',
@@ -7070,7 +7079,7 @@ const createGameStats = async (req, res, next) => {
 						return next(error)
 					}
 
-					try {
+					/* try {
 						minusLossForVisitorTeam = await Team.findById(visitorTeamId)
 					} catch (err) {
 						const error = new HttpError(
@@ -7078,9 +7087,9 @@ const createGameStats = async (req, res, next) => {
 							404
 						)
 						return next(error)
-					}
+					} */
 
-					try {
+					/* try {
 						minusOvertimeLossForVisitorTeam = await Team.findById(visitorTeamId)
 					} catch (err) {
 						const error = new HttpError(
@@ -7088,9 +7097,9 @@ const createGameStats = async (req, res, next) => {
 							404
 						)
 						return next(error)
-					}
+					} */
 
-					try {
+					/* try {
 						minusShootoutLossForVisitorTeam = await Team.findById(visitorTeamId)
 					} catch (err) {
 						const error = new HttpError(
@@ -7098,7 +7107,7 @@ const createGameStats = async (req, res, next) => {
 							404
 						)
 						return next(error)
-					}
+					} */
 					//
 					//
 					minusWinForHomeTeam.wins = Number(minusWinForHomeTeam.wins) - 1
@@ -7110,44 +7119,45 @@ const createGameStats = async (req, res, next) => {
 						Number(minusWinForHomeTeam.goalsAgainst) - visitorPoints
 					//
 					//
-					minusLossForVisitorTeam.goalsFor =
-						Number(minusLossForVisitorTeam.goalsFor) - visitorPoints
+					//minusLossForVisitorTeam.goalsFor =
+					//	Number(minusLossForVisitorTeam.goalsFor) - visitorPoints
 					//
-					minusLossForVisitorTeam.goalsAgainst =
-						Number(minusLossForVisitorTeam.goalsAgainst) - homePoints
+					//minusLossForVisitorTeam.goalsAgainst =
+					//	Number(minusLossForVisitorTeam.goalsAgainst) - homePoints
 
 					if (previousStatus === 'Overtime') {
 						console.log('visitor lost in overtime')
-						minusOvertimeLossForVisitorTeam.overtimeLosses =
-							Number(minusOvertimeLossForVisitorTeam.overtimeLosses) - 1
-						minusShootoutLossForVisitorTeam.shootoutLosses = Number(
-							minusShootoutLossForVisitorTeam.shootoutLosses
-						)
-						minusOvertimeLossForVisitorTeam.goalsFor =
-							Number(minusOvertimeLossForVisitorTeam.goalsFor) - visitorPoints
-						minusOvertimeLossForVisitorTeam.goalsAgainst =
-							Number(minusOvertimeLossForVisitorTeam.goalsAgainst) - homePoints
+						//minusOvertimeLossForVisitorTeam.overtimeLosses =
+						//	Number(minusOvertimeLossForVisitorTeam.overtimeLosses) - 1
+						//minusShootoutLossForVisitorTeam.shootoutLosses = Number(
+						//	minusShootoutLossForVisitorTeam.shootoutLosses
+						//)
+						//minusOvertimeLossForVisitorTeam.goalsFor =
+						//	Number(minusOvertimeLossForVisitorTeam.goalsFor) - visitorPoints
+						//minusOvertimeLossForVisitorTeam.goalsAgainst =
+						//	Number(minusOvertimeLossForVisitorTeam.goalsAgainst) - homePoints
 					} else if (previousStatus === 'Shootout') {
-						console.log('visitor lost in shootout')
-						minusShootoutLossForVisitorTeam.shootoutLosses =
-							Number(minusShootoutLossForVisitorTeam.shootoutLosses) - 1
-						minusOvertimeLossForVisitorTeam.overtimeLosses = Number(
-							minusOvertimeLossForVisitorTeam.overtimeLosses
-						)
-						minusShootoutLossForVisitorTeam.goalsFor =
-							Number(minusShootoutLossForVisitorTeam.goalsFor) - visitorPoints
-						minusShootoutLossForVisitorTeam.goalsAgainst =
-							Number(minusShootoutLossForVisitorTeam.goalsAgainst) - homePoints
+						console.log('visitor lost in shootout') /
+							//minusShootoutLossForVisitorTeam.shootoutLosses =
+							Number(minusShootoutLossForVisitorTeam.shootoutLosses) -
+							1
+						//minusOvertimeLossForVisitorTeam.overtimeLosses = Number(
+						//	minusOvertimeLossForVisitorTeam.overtimeLosses
+						//)
+						//minusShootoutLossForVisitorTeam.goalsFor =
+						//	Number(minusShootoutLossForVisitorTeam.goalsFor) - visitorPoints
+						//minusShootoutLossForVisitorTeam.goalsAgainst =
+						//	Number(minusShootoutLossForVisitorTeam.goalsAgainst) - homePoints
 					} else {
 						console.log('visitor lost in regulation')
-						minusLossForVisitorTeam.losses =
-							Number(minusLossForVisitorTeam.losses) - 1
-						minusOvertimeLossForVisitorTeam.overtimeLosses = Number(
-							minusOvertimeLossForVisitorTeam.overtimeLosses
-						)
-						minusShootoutLossForVisitorTeam.shootoutLosses = Number(
-							minusShootoutLossForVisitorTeam.shootoutLosses
-						)
+						//minusLossForVisitorTeam.losses =
+						//	Number(minusLossForVisitorTeam.losses) - 1
+						//minusOvertimeLossForVisitorTeam.overtimeLosses = Number(
+						//	minusOvertimeLossForVisitorTeam.overtimeLosses
+						//)
+						//minusShootoutLossForVisitorTeam.shootoutLosses = Number(
+						//	minusShootoutLossForVisitorTeam.shootoutLosses
+						//)
 					}
 
 					try {
@@ -7162,7 +7172,7 @@ const createGameStats = async (req, res, next) => {
 					}
 					//
 					//
-					if (previousStatus === 'Overtime') {
+					/* if (previousStatus === 'Overtime') {
 						try {
 							console.log(
 								'saving visitor team after deleting their overtime loss...'
@@ -7202,7 +7212,7 @@ const createGameStats = async (req, res, next) => {
 							)
 							return next(error)
 						}
-					}
+					} */
 					//
 					//
 					//
@@ -7260,7 +7270,7 @@ const createGameStats = async (req, res, next) => {
 					//
 				} else if (visitorPoints > homePoints) {
 					console.log('visitor team won previously')
-					try {
+					/* try {
 						minusWinForVisitorTeam = await Team.findById(visitorTeamId)
 					} catch (err) {
 						const error = new HttpError(
@@ -7268,30 +7278,30 @@ const createGameStats = async (req, res, next) => {
 							404
 						)
 						return next(error)
-					}
+					} */
 
 					try {
-						minusOvertimeLossForHomeTeam = await Team.findById(homeTeamId)
+						minusOvertimeLossForHomeTeam = await Team.findById(teamId)
 					} catch (err) {
 						const error = new HttpError(
-							'Could not find visitorTeam to delete their Overtime loss.',
+							'Could not find homeTeam to delete their Overtime loss.',
 							404
 						)
 						return next(error)
 					}
 
 					try {
-						minusShootoutLossForHomeTeam = await Team.findById(homeTeamId)
+						minusShootoutLossForHomeTeam = await Team.findById(teamId)
 					} catch (err) {
 						const error = new HttpError(
-							'Could not find visitorTeam to delete their shootout loss.',
+							'Could not find homeTeam to delete their shootout loss.',
 							404
 						)
 						return next(error)
 					}
 
 					try {
-						minusLossForHomeTeam = await Team.findById(homeTeamId)
+						minusLossForHomeTeam = await Team.findById(teamId)
 					} catch (err) {
 						const error = new HttpError(
 							'Could not find homeTeam to delete their loss.',
@@ -7300,15 +7310,15 @@ const createGameStats = async (req, res, next) => {
 						return next(error)
 					}
 					//
-					minusWinForVisitorTeam.wins = Number(minusWinForVisitorTeam.wins) - 1
+					//minusWinForVisitorTeam.wins = Number(minusWinForVisitorTeam.wins) - 1
 					//
 					//console.log(minusWinForVisitorTeam.goalsFor + ' ' + visitorPoints)
-					minusWinForVisitorTeam.goalsFor =
-						Number(minusWinForVisitorTeam.goalsFor) - visitorPoints
+					//minusWinForVisitorTeam.goalsFor =
+					//	Number(minusWinForVisitorTeam.goalsFor) - visitorPoints
 					//
 					//console.log(minusWinForVisitorTeam.goalsAgainst + ' ' + homePoints)
-					minusWinForVisitorTeam.goalsAgainst =
-						Number(minusWinForVisitorTeam.goalsAgainst) - homePoints
+					//minusWinForVisitorTeam.goalsAgainst =
+					//	Number(minusWinForVisitorTeam.goalsAgainst) - homePoints
 					//
 					minusLossForHomeTeam.losses = Number(minusLossForHomeTeam.losses) - 1
 					//
@@ -7351,7 +7361,7 @@ const createGameStats = async (req, res, next) => {
 						)
 					}
 
-					try {
+					/* try {
 						console.log('saving visitor team after removing their win...')
 						await minusWinForVisitorTeam.save()
 					} catch (err) {
@@ -7360,7 +7370,7 @@ const createGameStats = async (req, res, next) => {
 							500
 						)
 						return next(error)
-					}
+					} */
 					//
 					//
 					if (previousStatus === 'Overtime') {
@@ -7461,7 +7471,7 @@ const createGameStats = async (req, res, next) => {
 							' ' +
 							visitorPoints
 					)
-					try {
+					/* try {
 						minusTieForVisitorTeam = await Team.findById(visitorTeamId)
 					} catch (err) {
 						const error = new HttpError(
@@ -7469,10 +7479,10 @@ const createGameStats = async (req, res, next) => {
 							404
 						)
 						return next(error)
-					}
+					} */
 
 					try {
-						minusTieForHomeTeam = await Team.findById(homeTeamId)
+						minusTieForHomeTeam = await Team.findById(teamId)
 					} catch (err) {
 						const error = new HttpError(
 							'Could not find homeTeam to delete their tie.',
@@ -7487,13 +7497,13 @@ const createGameStats = async (req, res, next) => {
 						'Matt - might want to fix something here.  Check team ties.'
 					)
 					//
-					minusTieForVisitorTeam.ties = Number(minusTieForVisitorTeam.ties) - 1
+					//minusTieForVisitorTeam.ties = Number(minusTieForVisitorTeam.ties) - 1
 					//
-					minusTieForVisitorTeam.goalsFor =
-						Number(minusTieForVisitorTeam.goalsFor) - visitorPoints
+					//minusTieForVisitorTeam.goalsFor =
+					//	Number(minusTieForVisitorTeam.goalsFor) - visitorPoints
 					//
-					minusTieForVisitorTeam.goalsAgainst =
-						Number(minusTieForVisitorTeam.goalsAgainst) - homePoints
+					//minusTieForVisitorTeam.goalsAgainst =
+					//	Number(minusTieForVisitorTeam.goalsAgainst) - homePoints
 					//
 					minusTieForHomeTeam.ties = Number(minusTieForHomeTeam.ties) - 1
 					//
@@ -7503,7 +7513,7 @@ const createGameStats = async (req, res, next) => {
 					minusTieForHomeTeam.goalsAgainst =
 						Number(minusTieForHomeTeam.goalsAgainst) - visitorPoints
 
-					try {
+					/* try {
 						console.log('saving visitor team...')
 						await minusTieForVisitorTeam.save()
 					} catch (err) {
@@ -7512,7 +7522,7 @@ const createGameStats = async (req, res, next) => {
 							500
 						)
 						return next(error)
-					}
+					} */
 					//
 					//
 					try {
@@ -7598,7 +7608,7 @@ const createGameStats = async (req, res, next) => {
 			}
 
 			try {
-				await foundHomeTeam.save()
+				await foundTeam.save()
 			} catch (err) {
 				const error = new HttpError(
 					'saving home team to determine win or loss.  createGameStats ' + err,
@@ -7608,7 +7618,7 @@ const createGameStats = async (req, res, next) => {
 			}
 			//
 			//
-			try {
+			/* try {
 				await foundVisitorTeam.save()
 			} catch (err) {
 				const error = new HttpError(
@@ -7617,7 +7627,7 @@ const createGameStats = async (req, res, next) => {
 					500
 				)
 				return next(error)
-			}
+			} */
 
 			//Finally, lets save the foundGame with status and score
 			foundGame.status = gameStatus
@@ -7779,7 +7789,7 @@ const createGameStats = async (req, res, next) => {
 				//
 				//
 				//
-				//
+				//if game status = TBP
 			} else {
 				let rosterPlayerGameStatsToDelete
 				console.log(
@@ -7816,11 +7826,11 @@ const createGameStats = async (req, res, next) => {
 	//
 	//
 
-	let foundVisitorRosterPlayer,
+	/* let foundVisitorRosterPlayer,
 		rosterVisitorPlayerId,
 		rosterVisitorPlayerNewGoals,
 		rosterVisitorPlayerNewAssists,
-		rosterVisitorPlayerGameStats
+		rosterVisitorPlayerGameStats 
 	for (let i = 0; i < visitorStats.length; i++) {
 		const split = visitorStats[i].split('|')
 		rosterVisitorPlayerId = split[0]
@@ -7977,7 +7987,7 @@ const createGameStats = async (req, res, next) => {
 				}
 			}
 		}
-	}
+	} */
 
 	res.status(200).json({ message: 'Game stats have been added' })
 }
@@ -16338,24 +16348,17 @@ const editGame = async (req, res, next) => {
 
 	//We're only getting gameId from the params, the rest come from the form
 	const {
-		//leagueName1,
-		//session1,
 		teamName,
 		year1,
 		time1,
-		//endTime1,
 		date1,
 		tbd1IsChecked,
 		playoff1IsChecked,
 		championship1IsChecked,
 		opponent,
-		//homeTeam1,
-		//visitorTeam1,
 		venue1,
 	} = req.body
 	const gameId = req.params.gameId
-
-	//console.log('date1: ' + date1)
 
 	const g1year = date1.substr(0, 4)
 	const g1month = date1.substr(5, 2)
@@ -16368,288 +16371,21 @@ const editGame = async (req, res, next) => {
 
 	const dayOfWeek1 = dateString1.substr(0, 3)
 
-	//Next, we have to find the leagueId
-	let foundLeague, leagueId, divisionName, foundLeagueWithDivisions
-	//
-	//7-6-2023  NBHL.  Got rid of session finder and replaced with isCurrent
-	//
-	//
-	/* try {
-		foundLeague = await League.findOne({
-			leagueName: leagueName1,
-			//session: session1,
-			isCurrent: true,
-			year: year1,
-		})
-	} catch (err) {
-		const error = new HttpError('Cant find league.  editGame', 500)
-		return next(error)
-	}
-
-	leagueId = foundLeague._id
-	divisionName = foundLeague.divisionName */
-
 	let game
-
-	//
-	//7-6-2023  NBHL.  Got rid of session finder and replaced with isCurrent
-	//
-	//
-	/* if (divisionName) {
-		console.log('we have divisions here!')
-		try {
-			foundLeagueWithDivisions = await League.find({
-				leagueName: leagueName1,
-				//session: session1,
-				year: year1,
-				isCurrent: true,
-			}).orFail()
-		} catch (err) {
-			const error = new HttpError(
-				'Could not find league to obtain leagueId. WITH divisions. createGame 1',
-				500
-			)
-			return next(error)
-		}
-
-		//So we have multiple leagues here.  Let's make an array of all teams
-		let allTeamsInThisLeague, teams
-		//MATT START
-		allTeamsInThisLeague = []
-		for (let i = 0; i < foundLeagueWithDivisions.length; i++) {
-			try {
-				teams = await Team.find({
-					leagueName: foundLeagueWithDivisions[i].leagueName,
-					divisionName: foundLeagueWithDivisions[i].divisionName,
-				}).orFail()
-			} catch {}
-			teams.forEach((team) => {
-				allTeamsInThisLeague.push(team)
-			})
-		}
-		//
-		let homeTeamId
-		let foundHomeTeam
-		if (homeTeam1 !== 'TBD') {
-			allTeamsInThisLeague.forEach(async (team) => {
-				if (team.teamName === homeTeam1) {
-					foundHomeTeam = team
-				}
-			})
-			//console.log('foundHomeTeam1: ' + foundHomeTeam1)
-			homeTeamId = foundHomeTeam.id
-		}
-		//
-		//
-		//find visitor team id
-		let visitorTeamId
-		let foundVisitorTeam
-		if (visitorTeam1 !== 'TBD') {
-			allTeamsInThisLeague.forEach(async (team) => {
-				//console.log(team.leagueName)
-				console.log(team.teamName + '  ' + visitorTeam1)
-				console.log(team.divisionName + ' ' + divisionName)
-
-				if (team.teamName === visitorTeam1) {
-					foundVisitorTeam = team
-				}
-			})
-			//console.log('foundVisitorTeam!: ' + foundVisitorTeam1)
-			visitorTeamId = foundVisitorTeam.id
-		}
-		//
-		//
-		//
-		//Now let's find the roster id's
-		let homeRosterId
-		let foundHomeTeamRosterId
-		if (homeTeam1 !== 'TBD') {
-			try {
-				foundHomeTeamRosterId = await Roster.findOne({
-					leagueId: foundHomeTeam.leagueId,
-					teamId: homeTeamId,
-					divisionName: foundHomeTeam.divisionName,
-				}).orFail()
-			} catch (err) {
-				const error = new HttpError(
-					'Could not find roster to obtain home rosterId. WITH divisions.  editGame',
-					500
-				)
-				return next(error)
-			}
-			homeRosterId = foundHomeTeamRosterId.id
-		}
-
-		//// find visitor team roster id
-		let visitorRosterId
-		let foundVisitorTeamRosterId1
-		if (visitorTeam1 !== 'TBD') {
-			try {
-				foundVisitorTeamRosterId = await Roster.findOne({
-					leagueId: foundVisitorTeam.leagueId,
-					teamId: visitorTeamId,
-					divisionName: foundVisitorTeam.divisionName,
-				}).orFail()
-			} catch (err) {
-				const error = new HttpError(
-					'Could not find roster to obtain home rosterId. WITH divisions.  editGame',
-					500
-				)
-				return next(error)
-			}
-			visitorRosterId = foundVisitorTeamRosterId.id
-		}
-		//
-		//
-		//let game
-		try {
-			game = await Game.findById(gameId)
-		} catch (err) {
-			const error = new HttpError('Cant find game via gameId.  editGame', 500)
-			return next(error)
-		}
-
-		console.log('homeTeamId: ' + homeTeamId)
-
-		game.leagueName = leagueName1.trim()
-		//game.session = session1.trim()
-		game.year = year1
-		game.time = time1
-		//game.endTime = endTime1
-		game.date = MDYdate1
-		game.dayOfWeek = dayOfWeek1
-		game.timeTBD = tbd1IsChecked
-		game.playoff = playoff1IsChecked
-		game.championship = championship1IsChecked
-		game.homeTeamName = homeTeam1.trim()
-		if (homeTeam1 !== 'TBD') {
-			game.homeTeamId = homeTeamId
-			game.homeRosterId = homeRosterId
-		}
-		game.visitorTeamName = visitorTeam1.trim()
-		if (visitorTeam1 !== 'TBD') {
-			game.visitorTeamId = visitorTeamId
-			game.visitorRosterId = visitorRosterId
-		}
-		game.venueName = venue1.trim()
-
-		try {
-			await game.save()
-		} catch (err) {
-			const error = new HttpError(
-				err,
-				//'Something went wrong with saving the updated game.  editGame',
-				500
-			)
-			return next(error)
-		}
-	} */
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//
-	//Next, I believe we need to find the homeTeamId, homeRosterId, visitorTeamId, and visitorRosterId
-	//To find them, we'll use leagueName, session, year, and teamName
-	let foundHomeTeamId, foundHomeRosterId, homeTeamId, homeRosterId
-
-	/* 	if (homeTeam1 !== 'TBD') {
-		try {
-			foundHomeTeamId = await Team.findOne({
-				teamName: homeTeam1,
-				leagueId: leagueId,
-			})
-		} catch (err) {
-			const error = new HttpError('Cant find homeTeam id.  editGame', 500)
-			return next(error)
-		}
-		homeTeamId = foundHomeTeamId._id
-	} */
-	//
-	//
-	// find home team roster id
-	//
-	/* if (homeTeam1 !== 'TBD') {
-		try {
-			foundHomeRosterId = await Roster.findOne({
-				teamId: homeTeamId,
-			})
-		} catch (err) {
-			const error = new HttpError('Cant find homeTeam rosterid.  editGame', 500)
-			return next(error)
-		}
-		homeRosterId = foundHomeRosterId._id
-	} */
-
-	//Now lets do the same for the visitor team:
-	/* let foundVisitorTeamId, foundVisitorRosterId, visitorTeamId, visitorRosterId
-	if (visitorTeam1 !== 'TBD') {
-		try {
-			foundVisitorTeamId = await Team.findOne({
-				teamName: visitorTeam1,
-				leagueId: leagueId,
-			})
-		} catch (err) {
-			const error = new HttpError('Cant find visitorTeam id.  editGame', 500)
-			return next(error)
-		}
-		visitorTeamId = foundVisitorTeamId._id
-	} */
-	//
-	//
-	// find visitor team roster id
-	//
-	/* if (visitorTeam1 !== 'TBD') {
-		try {
-			foundVisitorRosterId = await Roster.findOne({
-				teamId: visitorTeamId,
-			})
-		} catch (err) {
-			const error = new HttpError(
-				'Cant find visitorTeam rosterid.  editGame',
-				500
-			)
-			return next(error)
-		}
-		visitorRosterId = foundVisitorRosterId._id
-	} */
-	//
-	//
-	//
-	//
-	//let game
 	try {
 		game = await Game.findById(gameId)
 	} catch (err) {
 		const error = new HttpError('Cant find game via gameId.  editGame', 500)
 		return next(error)
 	}
-
-	//game.leagueName = leagueName1.trim()
-	//game.session = session1.trim()
 	game.teamName = teamName
 	game.year = year1
 	game.time = time1
-	//game.endTime = endTime1
 	game.date = MDYdate1
 	game.dayOfWeek = dayOfWeek1
 	game.timeTBD = tbd1IsChecked
 	game.playoff = playoff1IsChecked
 	game.championship = championship1IsChecked
-	/* game.homeTeamName = homeTeam1.trim()
-	if (homeTeam1 !== 'TBD') {
-		game.homeTeamId = homeTeamId
-		game.homeRosterId = homeRosterId
-	}
-	game.visitorTeamName = visitorTeam1.trim()
-	if (visitorTeam1 !== 'TBD') {
-		game.visitorTeamId = visitorTeamId
-		game.visitorRosterId = visitorRosterId
-	} */
 	game.opponent = opponent.trim()
 	game.venueName = venue1.trim()
 
