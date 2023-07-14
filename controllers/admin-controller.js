@@ -1132,7 +1132,7 @@ const getGameRostersAndPointsPerPeriod = async (req, res, next) => {
 		)
 		return next(error)
 	}
-	teamNameId = foundTeam.id
+	teamNameId = foundTeam._id
 	console.log('foundTeam.id: ' + teamNameId)
 	//
 	//
@@ -1150,7 +1150,7 @@ const getGameRostersAndPointsPerPeriod = async (req, res, next) => {
 		)
 		return next(error)
 	}
-	rosterId = foundRoster.id
+	rosterId = foundRoster._id
 	console.log('foundRoster.id: ' + rosterId)
 	//
 	//Now that we have rosterId's, let's tap into the Roster record and grab teamId
