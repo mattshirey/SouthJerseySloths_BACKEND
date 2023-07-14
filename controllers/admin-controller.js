@@ -426,7 +426,7 @@ const getPlayerDataByRosterId = async (req, res, next) => {
 //
 //****************************************************************************************** */
 //
-// Get Game data (league, date, start time, end time, TBD, playoff/championship?, homeTeam, visitorTeam, venue).
+// Get Game data (date, start time, end time, TBD, playoff/championship?, opponent, venue).
 // I'll use this for when/if I need to edit a game
 //
 // We also want to get the gameStats info and send it to the GameSummary page
@@ -515,7 +515,7 @@ const getGameData = async (req, res, next) => {
 	//7-6-2023  NBHL.  Got rid of session finder and replaced with isCurrent
 	//
 	//
-	try {
+	/* try {
 		foundLeague = await League.findOne({
 			leagueName: foundGame.leagueName,
 			//session: foundGame.session,
@@ -530,7 +530,7 @@ const getGameData = async (req, res, next) => {
 		return next(error)
 	}
 
-	leagueId = foundLeague._id
+	leagueId = foundLeague._id */
 
 	//Let's rearrange the date format here so we send it back the way
 	//we want it, (to auto-populate the update form correctly)
@@ -541,9 +541,10 @@ const getGameData = async (req, res, next) => {
 
 	//console.log(rearrangedDate)
 
-	leagueId = leagueId
-	leagueName = foundGame.leagueName
+	//leagueId = leagueId
+	//leagueName = foundGame.leagueName
 	//session = foundGame.session
+	teamName = foundGame.teamName
 	year = foundGame.year
 	date = rearrangedDate
 	dayOfWeek = foundGame.dayOfWeek
@@ -552,12 +553,13 @@ const getGameData = async (req, res, next) => {
 	timeTBD = foundGame.timeTBD
 	playoff = foundGame.playoff
 	championship = foundGame.championship
-	homeTeamName = foundGame.homeTeamName
-	homeTeamId = foundGame.homeTeamId
-	homeRosterId = foundGame.homeRosterId
-	visitorTeamName = foundGame.visitorTeamName
-	visitorTeamId = foundGame.visitorTeamId
-	visitorRosterId = foundGame.visitorRosterId
+	opponent = foundGame.opponent
+	//homeTeamName = foundGame.homeTeamName
+	//homeTeamId = foundGame.homeTeamId
+	//homeRosterId = foundGame.homeRosterId
+	//visitorTeamName = foundGame.visitorTeamName
+	//visitorTeamId = foundGame.visitorTeamId
+	//visitorRosterId = foundGame.visitorRosterId
 	venueName = foundGame.venueName
 
 	if (foundPlayoffGameStats) {
