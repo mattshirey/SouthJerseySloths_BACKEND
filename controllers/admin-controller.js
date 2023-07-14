@@ -4923,6 +4923,25 @@ const createGameStats = async (req, res, next) => {
 				return next(error)
 			}
 		}
+
+		//Ok so I think the last thing I want to do here is find the game,
+		//then set the games status and final score
+		foundGame.winner = winner
+		foundGame.loser = loser
+		foundGame.status = gameStatus
+		foundGame.score =
+			Number(newVisitorGoalsTotal) + ' - ' + Number(newHomeGoalsTotal)
+		console.log('saving game zeroth place')
+		try {
+			await foundGame.save()
+		} catch (err) {
+			const error = new HttpError(
+				'could not save game for status and final score.  createGameStats ' +
+					err,
+				500
+			)
+			return next(error)
+		}
 		//
 		//
 		/* if (foundVisitorTeam) {
@@ -4940,25 +4959,7 @@ const createGameStats = async (req, res, next) => {
 					500
 				)
 				return next(error)
-			}
-
-			//Ok so I think the last thing I want to do here is find the game,
-			//then set the games status and final score
-			foundGame.winner = winner
-			foundGame.loser = loser
-			foundGame.status = gameStatus
-			foundGame.score =
-				Number(newVisitorGoalsTotal) + ' - ' + Number(newHomeGoalsTotal)
-			try {
-				await foundGame.save()
-			} catch (err) {
-				const error = new HttpError(
-					'could not save game for status and final score.  createGameStats ' +
-						err,
-					500
-				)
-				return next(error)
-			}
+			}			
 		} */
 		//
 		//
