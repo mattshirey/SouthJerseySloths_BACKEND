@@ -1121,7 +1121,7 @@ const getGameRostersAndPointsPerPeriod = async (req, res, next) => {
 	//let's get the most current Sloth team's id
 	let foundTeam, teamNameId
 	try {
-		foundTeam = await Team.find({
+		foundTeam = await Team.findOne({
 			teamName: teamName,
 			isCurrent: true,
 		})
