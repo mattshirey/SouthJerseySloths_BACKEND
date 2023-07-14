@@ -1132,6 +1132,7 @@ const getGameRostersAndPointsPerPeriod = async (req, res, next) => {
 		)
 		return next(error)
 	}
+	foundTeam && console.log('foundTeam: ' + foundTeam)
 	teamNameId = foundTeam._id
 	console.log('foundTeam.id: ' + teamNameId)
 	//
