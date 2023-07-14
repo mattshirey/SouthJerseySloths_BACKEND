@@ -865,7 +865,7 @@ const getVenueSchedule = async (req, res, next) => {
 		return next(error)
 	}
 
-	//console.log('allVenueGames: ' + allVenueGames)
+	console.log('allVenueGames: ' + allVenueGames)
 
 	let allVenueGamesAndEventsArray
 	allVenueGamesAndEventsArray = []
