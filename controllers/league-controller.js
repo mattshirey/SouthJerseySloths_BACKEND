@@ -842,11 +842,7 @@ const getVenueSchedule = async (req, res, next) => {
 		return next(error)
 	}
 	//
-	//July 6, 2023   MATT:  this used to be venueName = foundVenue.venueName.toUpperCase()
-	//but I got rid of that toUpperCase when I was trying to upload games for
-	//NBHL.  It wasnt working when I tried to look up games per league until I
-	//got rid of that part.
-	venueName = foundVenue.venueName
+	venueName = foundVenue.venueName.toUpperCase()
 	//
 	//
 	//
