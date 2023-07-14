@@ -67,6 +67,8 @@ const getCurrentTeam = async (req, res, next) => {
 		)
 	}
 
+	console.log('currentTeam: ' + currentTeam)
+
 	teamName = currentTeam.teamName
 
 	console.log('teamName is ' + teamName)
