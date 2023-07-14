@@ -1094,7 +1094,7 @@ const getPlayersOnTeamWithDivision = async (req, res, next) => {
 const getGameRostersAndPointsPerPeriod = async (req, res, next) => {
 	const gameId = req.params.gameId
 
-	let homeRosterId, visitorRosterId, dayOfWeek, date, time, venue, leagueName
+	let homeRosterId, visitorRosterId, dayOfWeek, date, time, venue, opponent
 	let foundGame
 	let homeTeamId, foundHomeRoster
 	try {
@@ -1109,6 +1109,7 @@ const getGameRostersAndPointsPerPeriod = async (req, res, next) => {
 	//
 	//
 	teamName = foundGame.teamName
+	opponent = foundGame.opponent
 	//visitorRosterId = foundGame.visitorRosterId
 	dayOfWeek = foundGame.dayOfWeek
 	date = foundGame.date
@@ -1313,6 +1314,7 @@ const getGameRostersAndPointsPerPeriod = async (req, res, next) => {
 		date,
 		time,
 		venue,
+		opponent,
 		//leagueName,
 	})
 }
