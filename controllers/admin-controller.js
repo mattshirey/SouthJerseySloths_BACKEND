@@ -69,6 +69,8 @@ const getCurrentTeam = async (req, res, next) => {
 
 	teamName = currentTeam.teamName
 
+	console.log('teamName is ' + teamName)
+
 	/* 
 	currentLeagues &&
 		(currentLeaguesSorted = currentLeagues.sort((a, b) =>
