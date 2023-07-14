@@ -57,7 +57,7 @@ const getArchivedTeams = async (req, res, next) => {
 const getCurrentTeam = async (req, res, next) => {
 	let currentTeam, teamName
 	try {
-		currentTeam = await Team.find({
+		currentTeam = await Team.findOne({
 			isCurrent: true,
 		}).orFail()
 	} catch (err) {
