@@ -1428,6 +1428,8 @@ const allGamesAndEvents = async (req, res, next) => {
 
 	//res.json({ allItemsThisWeek: allGamesAndEventsArrayFilteredByOneWeek })
 
+	console.log('allItems: ' + allItems)
+
 	res.json({
 		allItems: allGamesAndEventsArray,
 		allItemsThisWeek: allGamesAndEventsArrayFilteredByOneWeek,
@@ -7594,7 +7596,7 @@ const createGameStats = async (req, res, next) => {
 		//
 		//
 		if (gameStatus !== 'TBP') {
-			console.log('game status is NOW TBP, dont want to go any further...')
+			console.log('game status is NOT TBP, dont want to go any further...')
 
 			gameStatsExist.status = gameStatus
 			gameStatsExist.summary = gameSummary
