@@ -7085,6 +7085,8 @@ const createGameStats = async (req, res, next) => {
 						return next(error)
 					}
 
+					console.log('minusWinForHomeTeam: ' + minusWinForHomeTeam)
+
 					/* try {
 						minusLossForVisitorTeam = await Team.findById(visitorTeamId)
 					} catch (err) {
