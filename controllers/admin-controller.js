@@ -82,7 +82,7 @@ const getCurrentTeam = async (req, res, next) => {
 			...new Map(currentLeaguesSorted.map((m) => [m.leagueName, m])).values(),
 		]) */
 
-	res.json({ currentTeam, teamName })
+	res.json({ currentTeam, teamName: teamName })
 }
 //
 //
