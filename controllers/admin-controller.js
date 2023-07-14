@@ -7643,6 +7643,7 @@ const createGameStats = async (req, res, next) => {
 				Number(newVisitorGoalsTotal) + ' - ' + Number(newHomeGoalsTotal)
 			foundGame.winner = newWinner
 			foundGame.loser = newLoser
+			console.log('saving game - first')
 			try {
 				await foundGame.save()
 			} catch (err) {
@@ -8092,7 +8093,7 @@ const createPlayoffGameStats = async (req, res, next) => {
 	foundGame.winner = winnerId
 	foundGame.loser = loserId
 	foundGame.score = Number(homePointsTotal) + ' - ' + Number(visitorPointsTotal)
-
+	console.log('saving game - second')
 	try {
 		await foundGame.save()
 	} catch (err) {
@@ -8194,7 +8195,7 @@ const createChampionshipGameStats = async (req, res, next) => {
 	foundGame.winner = winnerId
 	foundGame.loser = loserId
 	foundGame.score = Number(homePointsTotal) + ' - ' + Number(visitorPointsTotal)
-
+	console.log('saving game - third')
 	try {
 		await foundGame.save()
 	} catch (err) {
