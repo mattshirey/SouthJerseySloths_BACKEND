@@ -4623,7 +4623,7 @@ const createGameStats = async (req, res, next) => {
 		newHomeGoalsTotal = split[4]
 	}
 
-	console.log('gameStatus: ' + gameStatus)
+	console.log('inside createGameStats: ' + gameStatus)
 
 	if (!gameStatus) {
 		const error = new HttpError('Please enter a game status')
@@ -4652,6 +4652,7 @@ const createGameStats = async (req, res, next) => {
 	//If no game stats exist already, we just create some
 	let gameStats
 	if (!gameStatsExist) {
+		console.log('no game stats yet, lets add some...')
 		gameStats = new GameStats({
 			gameId: gameId,
 			homeGoalsPeriod1: newHomeGoals1,
