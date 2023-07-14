@@ -1141,7 +1141,7 @@ const getGameRostersAndPointsPerPeriod = async (req, res, next) => {
 	//
 	let foundRoster, rosterId
 	try {
-		foundRoster = await Roster.find({
+		foundRoster = await Roster.findOne({
 			teamId: teamNameId,
 		})
 	} catch (err) {
