@@ -564,21 +564,21 @@ const getGameData = async (req, res, next) => {
 
 	if (foundPlayoffGameStats) {
 		res.json({
-			leagueId: leagueId,
+			//leagueId: leagueId,
 			game: foundGame.toObject({ getters: true }),
 			gameStats: foundPlayoffGameStats,
 			winner: winnerTeamName,
 		})
 	} else if (foundChampionshipGameStats) {
 		res.json({
-			leagueId: leagueId,
+			//leagueId: leagueId,
 			game: foundGame.toObject({ getters: true }),
 			gameStats: foundChampionshipGameStats,
 			winner: winnerTeamName,
 		})
 	} else {
 		res.json({
-			leagueId: leagueId,
+			//leagueId: leagueId,
 			game: foundGame.toObject({ getters: true }),
 			gameStats: foundGameStats,
 			winner: winnerTeamName,
