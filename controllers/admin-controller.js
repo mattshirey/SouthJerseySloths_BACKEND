@@ -3672,11 +3672,6 @@ const createGames = async (req, res, next) => {
 
 		const dayOfWeek2 = dateString2.substr(0, 3)
 
-		//console.log('day of week: ' + dayOfWeek1)
-
-		//Now we should have all the variables we need to create a new game
-		//If neither team is TBD:
-
 		console.log('2')
 		createdGame2 = new Game({
 			teamName: teamName,
@@ -3730,6 +3725,39 @@ const createGames = async (req, res, next) => {
 			const error = new HttpError('Please enter a VENUE for game 3', 422)
 			return next(error)
 		}
+		const g3year = date3.substr(0, 4)
+		const g3month = date3.substr(5, 2)
+		const g3day = date3.substr(8, 2)
+		const MDYdate3 = g3month + '-' + g3day + '-' + g3year
+
+		const utcDate3 = new Date(MDYdate3)
+
+		const dateString3 = utcDate3.toString()
+
+		const dayOfWeek3 = dateString3.substr(0, 3)
+
+		console.log('3')
+		createdGame3 = new Game({
+			teamName: teamName,
+			year: year,
+			dayOfWeek: dayOfWeek3,
+			date: MDYdate3,
+			time: time3,
+			timeTBD: tbd3IsChecked,
+			playoff: playoff3IsChecked,
+			championship: championship3IsChecked,
+			opponent: opponent3,
+			venueName: venue3,
+			isCurrent: true,
+		})
+		try {
+			await createdGame3.save()
+		} catch (err) {
+			const error = new HttpError('error creating game 3: ' + err, 500)
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			return next(error)
+		}
 	}
 	//END PASTE HERE
 
@@ -3764,6 +3792,40 @@ const createGames = async (req, res, next) => {
 			createdGame2 && createdGame2.deleteOne()
 			createdGame3 && createdGame3.deleteOne()
 			const error = new HttpError('Please enter a VENUE for game 4', 422)
+			return next(error)
+		}
+		const g4year = date4.substr(0, 4)
+		const g4month = date4.substr(5, 2)
+		const g4day = date4.substr(8, 2)
+		const MDYdate4 = g4month + '-' + g4day + '-' + g4year
+
+		const utcDate4 = new Date(MDYdate4)
+
+		const dateString4 = utcDate4.toString()
+
+		const dayOfWeek4 = dateString4.substr(0, 3)
+
+		console.log('4')
+		createdGame4 = new Game({
+			teamName: teamName,
+			year: year,
+			dayOfWeek: dayOfWeek4,
+			date: MDYdate4,
+			time: time4,
+			timeTBD: tbd4IsChecked,
+			playoff: playoff4IsChecked,
+			championship: championship4IsChecked,
+			opponent: opponent4,
+			venueName: venue4,
+			isCurrent: true,
+		})
+		try {
+			await createdGame4.save()
+		} catch (err) {
+			const error = new HttpError('error creating game 4: ' + err, 500)
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
 			return next(error)
 		}
 	}
@@ -3803,6 +3865,41 @@ const createGames = async (req, res, next) => {
 			createdGame3 && createdGame3.deleteOne()
 			createdGame4 && createdGame4.deleteOne()
 			const error = new HttpError('Please enter a VENUE for game 5', 422)
+			return next(error)
+		}
+		const g5year = date5.substr(0, 4)
+		const g5month = date5.substr(5, 2)
+		const g5day = date5.substr(8, 2)
+		const MDYdate5 = g5month + '-' + g5day + '-' + g5year
+
+		const utcDate5 = new Date(MDYdate5)
+
+		const dateString5 = utcDate5.toString()
+
+		const dayOfWeek5 = dateString5.substr(0, 3)
+
+		console.log('5')
+		createdGame5 = new Game({
+			teamName: teamName,
+			year: year,
+			dayOfWeek: dayOfWeek5,
+			date: MDYdate5,
+			time: time5,
+			timeTBD: tbd5IsChecked,
+			playoff: playoff5IsChecked,
+			championship: championship5IsChecked,
+			opponent: opponent5,
+			venueName: venue5,
+			isCurrent: true,
+		})
+		try {
+			await createdGame5.save()
+		} catch (err) {
+			const error = new HttpError('error creating game 5: ' + err, 500)
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
 			return next(error)
 		}
 	}
@@ -3847,6 +3944,42 @@ const createGames = async (req, res, next) => {
 			const error = new HttpError('Please enter a VENUE for game 6', 422)
 			return next(error)
 		}
+		const g6year = date6.substr(0, 4)
+		const g6month = date6.substr(5, 2)
+		const g6day = date6.substr(8, 2)
+		const MDYdate6 = g6month + '-' + g6day + '-' + g6year
+
+		const utcDate6 = new Date(MDYdate6)
+
+		const dateString6 = utcDate6.toString()
+
+		const dayOfWeek6 = dateString6.substr(0, 3)
+
+		console.log('6')
+		createdGame6 = new Game({
+			teamName: teamName,
+			year: year,
+			dayOfWeek: dayOfWeek6,
+			date: MDYdate6,
+			time: time6,
+			timeTBD: tbd6IsChecked,
+			playoff: playoff6IsChecked,
+			championship: championship6IsChecked,
+			opponent: opponent6,
+			venueName: venue6,
+			isCurrent: true,
+		})
+		try {
+			await createdGame6.save()
+		} catch (err) {
+			const error = new HttpError('error creating game 6: ' + err, 500)
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
+			createdGame5 && createdGame5.deleteOne()
+			return next(error)
+		}
 	}
 	//END PASTE HERE
 	//********************************************************************************* */
@@ -3889,6 +4022,43 @@ const createGames = async (req, res, next) => {
 			createdGame5 && createdGame5.deleteOne()
 			createdGame6 && createdGame6.deleteOne()
 			const error = new HttpError('Please enter a VENUE for game 7', 422)
+			return next(error)
+		}
+		const g7year = date7.substr(0, 4)
+		const g7month = date7.substr(5, 2)
+		const g7day = date7.substr(8, 2)
+		const MDYdate7 = g7month + '-' + g7day + '-' + g7year
+
+		const utcDate7 = new Date(MDYdate7)
+
+		const dateString7 = utcDate7.toString()
+
+		const dayOfWeek7 = dateString7.substr(0, 3)
+
+		console.log('7')
+		createdGame7 = new Game({
+			teamName: teamName,
+			year: year,
+			dayOfWeek: dayOfWeek7,
+			date: MDYdate7,
+			time: time7,
+			timeTBD: tbd7IsChecked,
+			playoff: playoff7IsChecked,
+			championship: championship7IsChecked,
+			opponent: opponent7,
+			venueName: venue7,
+			isCurrent: true,
+		})
+		try {
+			await createdGame7.save()
+		} catch (err) {
+			const error = new HttpError('error creating game 7: ' + err, 500)
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
+			createdGame5 && createdGame5.deleteOne()
+			createdGame6 && createdGame6.deleteOne()
 			return next(error)
 		}
 	}
@@ -3936,6 +4106,44 @@ const createGames = async (req, res, next) => {
 			createdGame6 && createdGame6.deleteOne()
 			createdGame7 && createdGame7.deleteOne()
 			const error = new HttpError('Please enter a VENUE for game 8', 422)
+			return next(error)
+		}
+		const g8year = date8.substr(0, 4)
+		const g8month = date8.substr(5, 2)
+		const g8day = date8.substr(8, 2)
+		const MDYdate8 = g8month + '-' + g8day + '-' + g8year
+
+		const utcDate8 = new Date(MDYdate8)
+
+		const dateString8 = utcDate8.toString()
+
+		const dayOfWeek8 = dateString8.substr(0, 3)
+
+		console.log('8')
+		createdGame8 = new Game({
+			teamName: teamName,
+			year: year,
+			dayOfWeek: dayOfWeek8,
+			date: MDYdate8,
+			time: time8,
+			timeTBD: tbd8IsChecked,
+			playoff: playoff8IsChecked,
+			championship: championship8IsChecked,
+			opponent: opponent8,
+			venueName: venue8,
+			isCurrent: true,
+		})
+		try {
+			await createdGame8.save()
+		} catch (err) {
+			const error = new HttpError('error creating game 8: ' + err, 500)
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
+			createdGame5 && createdGame5.deleteOne()
+			createdGame6 && createdGame6.deleteOne()
+			createdGame7 && createdGame7.deleteOne()
 			return next(error)
 		}
 	}
@@ -3986,6 +4194,45 @@ const createGames = async (req, res, next) => {
 			createdGame7 && createdGame7.deleteOne()
 			createdGame8 && createdGame8.deleteOne()
 			const error = new HttpError('Please enter a VENUE for game 9', 422)
+			return next(error)
+		}
+		const g9year = date9.substr(0, 4)
+		const g9month = date9.substr(5, 2)
+		const g9day = date9.substr(8, 2)
+		const MDYdate9 = g9month + '-' + g9day + '-' + g9year
+
+		const utcDate9 = new Date(MDYdate9)
+
+		const dateString9 = utcDate9.toString()
+
+		const dayOfWeek9 = dateString9.substr(0, 3)
+
+		console.log('9')
+		createdGame9 = new Game({
+			teamName: teamName,
+			year: year,
+			dayOfWeek: dayOfWeek9,
+			date: MDYdate9,
+			time: time9,
+			timeTBD: tbd9IsChecked,
+			playoff: playoff9IsChecked,
+			championship: championship9IsChecked,
+			opponent: opponent9,
+			venueName: venue9,
+			isCurrent: true,
+		})
+		try {
+			await createdGame9.save()
+		} catch (err) {
+			const error = new HttpError('error creating game 9: ' + err, 500)
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
+			createdGame5 && createdGame5.deleteOne()
+			createdGame6 && createdGame6.deleteOne()
+			createdGame7 && createdGame7.deleteOne()
+			createdGame8 && createdGame8.deleteOne()
 			return next(error)
 		}
 	}
@@ -4039,6 +4286,46 @@ const createGames = async (req, res, next) => {
 			createdGame8 && createdGame8.deleteOne()
 			createdGame9 && createdGame9.deleteOne()
 			const error = new HttpError('Please enter a VENUE for game 10', 422)
+			return next(error)
+		}
+		const g10year = date10.substr(0, 4)
+		const g10month = date10.substr(5, 2)
+		const g10day = date10.substr(8, 2)
+		const MDYdate10 = g10month + '-' + g10day + '-' + g10year
+
+		const utcDate10 = new Date(MDYdate10)
+
+		const dateString10 = utcDate10.toString()
+
+		const dayOfWeek10 = dateString10.substr(0, 3)
+
+		console.log('10')
+		createdGame10 = new Game({
+			teamName: teamName,
+			year: year,
+			dayOfWeek: dayOfWeek10,
+			date: MDYdate10,
+			time: time10,
+			timeTBD: tbd10IsChecked,
+			playoff: playoff10IsChecked,
+			championship: championship10IsChecked,
+			opponent: opponent10,
+			venueName: venue10,
+			isCurrent: true,
+		})
+		try {
+			await createdGame10.save()
+		} catch (err) {
+			const error = new HttpError('error creating game 10: ' + err, 500)
+			createdGame1 && createdGame1.deleteOne()
+			createdGame2 && createdGame2.deleteOne()
+			createdGame3 && createdGame3.deleteOne()
+			createdGame4 && createdGame4.deleteOne()
+			createdGame5 && createdGame5.deleteOne()
+			createdGame6 && createdGame6.deleteOne()
+			createdGame7 && createdGame7.deleteOne()
+			createdGame8 && createdGame8.deleteOne()
+			createdGame9 && createdGame9.deleteOne()
 			return next(error)
 		}
 	}
