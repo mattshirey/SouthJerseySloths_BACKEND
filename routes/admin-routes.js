@@ -199,9 +199,9 @@ router.post(
 router.post(
 	'/createGames',
 	[
-		check('leagueName1').not().isEmpty(),
+		/* check('leagueName1').not().isEmpty(),
 		check('homeTeam1').not().isEmpty(),
-		check('visitorTeam1').not().isEmpty(),
+		check('visitorTeam1').not().isEmpty(), */
 		check('venue1').not().isEmpty(),
 	],
 	adminControllers.createGames
