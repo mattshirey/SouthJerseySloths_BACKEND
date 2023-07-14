@@ -17065,6 +17065,7 @@ const removePlayer = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const removeEvent = async (req, res, next) => {
+	console.log('inside removeEvent')
 	const itemId = req.params.itemId
 
 	//First, we need to get the game
@@ -17077,12 +17078,37 @@ const removeEvent = async (req, res, next) => {
 	//If we find a game, let's grab the homeTeamRosterId and visitorTeamRosterId
 	let homeTeam, visitorTeam, status
 	if (game) {
-		homeTeam = game.homeTeamId
-		visitorTeam = game.visitorTeamId
-		homeRosterId = game.homeRosterId
-		visitorRosterId = game.visitorRosterId
+		homeTeam = game.teamName
+		//visitorTeam = game.visitorTeamId
+		//homeRosterId = game.homeRosterId
+		//visitorRosterId = game.visitorRosterId
 		status = game.status
 	}
+	//Now that we have teamName, lets go get the current sloth team and
+	//get their teamId
+	let foundTeam, teamId
+	try {
+		foundTeam = await Team.findOne({
+			teamName: homeTeam,
+			isCurrent: true,
+		})
+	} catch (err) {
+		const error = new HttpError('Could not find team to get their teamId', 404)
+	}
+
+	teamId = foundTeam._id
+	//
+	//Now that we have teamId, let's get the current sloths team roster
+	let foundRoster, rosterId
+	try {
+		foundRoster = await Roster.findOne({
+			teamId: teamId,
+		})
+	} catch (err) {
+		const error = new HttpError('Could not find team to get their teamId', 404)
+	}
+	rosterId = foundRoster._id
+
 	//
 	//If we dont find the itemId as a Game, let's check to see if it's an Event
 	if (!game) {
@@ -17187,7 +17213,7 @@ const removeEvent = async (req, res, next) => {
 			if (homePoints > visitorPoints) {
 				console.log('home team won')
 				try {
-					minusWinForHomeTeam = await Team.findById(homeTeam)
+					minusWinForHomeTeam = await Team.findById(teamId)
 				} catch (err) {
 					const error = new HttpError(
 						'Could not find homeTeam to delete their win.',
@@ -17196,7 +17222,7 @@ const removeEvent = async (req, res, next) => {
 					return next(error)
 				}
 
-				try {
+				/* try {
 					minusLossForVisitorTeam = await Team.findById(visitorTeam)
 				} catch (err) {
 					const error = new HttpError(
@@ -17204,9 +17230,9 @@ const removeEvent = async (req, res, next) => {
 						404
 					)
 					return next(error)
-				}
+				} */
 
-				try {
+				/* try {
 					minusOvertimeLossForVisitorTeam = await Team.findById(visitorTeam)
 				} catch (err) {
 					const error = new HttpError(
@@ -17214,9 +17240,9 @@ const removeEvent = async (req, res, next) => {
 						404
 					)
 					return next(error)
-				}
+				} */
 
-				try {
+				/* try {
 					minusShootoutLossForVisitorTeam = await Team.findById(visitorTeam)
 				} catch (err) {
 					const error = new HttpError(
@@ -17224,7 +17250,7 @@ const removeEvent = async (req, res, next) => {
 						404
 					)
 					return next(error)
-				}
+				} */
 				//
 				//
 				minusWinForHomeTeam.wins = Number(minusWinForHomeTeam.wins) - 1
@@ -17236,45 +17262,45 @@ const removeEvent = async (req, res, next) => {
 					Number(minusWinForHomeTeam.goalsAgainst) - visitorPoints
 				//
 				//
-				minusLossForVisitorTeam.goalsFor =
-					Number(minusLossForVisitorTeam.goalsFor) - visitorPoints
+				//minusLossForVisitorTeam.goalsFor =
+				//	Number(minusLossForVisitorTeam.goalsFor) - visitorPoints
 				//
-				minusLossForVisitorTeam.goalsAgainst =
-					Number(minusLossForVisitorTeam.goalsAgainst) - homePoints
+				/minusLossForVisitorTeam.goalsAgainst =
+				//	Number(minusLossForVisitorTeam.goalsAgainst) - homePoints
 
 				if (status === 'Overtime') {
 					console.log('visitor lost in overtime')
-					minusOvertimeLossForVisitorTeam.overtimeLosses =
-						Number(minusOvertimeLossForVisitorTeam.overtimeLosses) - 1
-					minusShootoutLossForVisitorTeam.shootoutLosses = Number(
-						minusShootoutLossForVisitorTeam.shootoutLosses
-					)
+					//minusOvertimeLossForVisitorTeam.overtimeLosses =
+					//	Number(minusOvertimeLossForVisitorTeam.overtimeLosses) - 1
+					//minusShootoutLossForVisitorTeam.shootoutLosses = Number(
+					//	minusShootoutLossForVisitorTeam.shootoutLosses
+					//)
 					//MATT TEST
-					minusOvertimeLossForVisitorTeam.goalsFor =
-						Number(minusOvertimeLossForVisitorTeam.goalsFor) - visitorPoints
-					minusOvertimeLossForVisitorTeam.goalsAgainst =
-						Number(minusOvertimeLossForVisitorTeam.goalsAgainst) - homePoints
+					//minusOvertimeLossForVisitorTeam.goalsFor =
+					//	Number(minusOvertimeLossForVisitorTeam.goalsFor) - visitorPoints
+					//minusOvertimeLossForVisitorTeam.goalsAgainst =
+					//	Number(minusOvertimeLossForVisitorTeam.goalsAgainst) - homePoints
 				} else if (status === 'Shootout') {
 					console.log('visitor lost in shootout')
-					minusShootoutLossForVisitorTeam.shootoutLosses =
-						Number(minusShootoutLossForVisitorTeam.shootoutLosses) - 1
-					minusOvertimeLossForVisitorTeam.overtimeLosses = Number(
-						minusOvertimeLossForVisitorTeam.overtimeLosses
-					)
-					minusShootoutLossForVisitorTeam.goalsFor =
-						Number(minusShootoutLossForVisitorTeam.goalsFor) - visitorPoints
-					minusShootoutLossForVisitorTeam.goalsAgainst =
-						Number(minusShootoutLossForVisitorTeam.goalsAgainst) - homePoints
+					//minusShootoutLossForVisitorTeam.shootoutLosses =
+					//	Number(minusShootoutLossForVisitorTeam.shootoutLosses) - 1
+					//minusOvertimeLossForVisitorTeam.overtimeLosses = Number(
+					//	minusOvertimeLossForVisitorTeam.overtimeLosses
+					//)
+					//minusShootoutLossForVisitorTeam.goalsFor =
+					//	Number(minusShootoutLossForVisitorTeam.goalsFor) - visitorPoints
+					//minusShootoutLossForVisitorTeam.goalsAgainst =
+					//	Number(minusShootoutLossForVisitorTeam.goalsAgainst) - homePoints
 				} else {
 					console.log('visitor lost in regulation')
-					minusLossForVisitorTeam.losses =
-						Number(minusLossForVisitorTeam.losses) - 1
-					minusOvertimeLossForVisitorTeam.overtimeLosses = Number(
-						minusOvertimeLossForVisitorTeam.overtimeLosses
-					)
-					minusShootoutLossForVisitorTeam.shootoutLosses = Number(
-						minusShootoutLossForVisitorTeam.shootoutLosses
-					)
+					//minusLossForVisitorTeam.losses =
+					//	Number(minusLossForVisitorTeam.losses) - 1
+					//minusOvertimeLossForVisitorTeam.overtimeLosses = Number(
+					//	minusOvertimeLossForVisitorTeam.overtimeLosses
+					//)
+					//minusShootoutLossForVisitorTeam.shootoutLosses = Number(
+					//	minusShootoutLossForVisitorTeam.shootoutLosses
+					//)
 				}
 
 				try {
@@ -17329,7 +17355,7 @@ const removeEvent = async (req, res, next) => {
 						)
 						return next(error)
 					}
-				}
+				} 
 				//
 				//
 				//
