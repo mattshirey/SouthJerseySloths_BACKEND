@@ -17265,7 +17265,7 @@ const removeEvent = async (req, res, next) => {
 				//minusLossForVisitorTeam.goalsFor =
 				//	Number(minusLossForVisitorTeam.goalsFor) - visitorPoints
 				//
-				/minusLossForVisitorTeam.goalsAgainst =
+				//minusLossForVisitorTeam.goalsAgainst =
 				//	Number(minusLossForVisitorTeam.goalsAgainst) - homePoints
 
 				if (status === 'Overtime') {
@@ -17315,7 +17315,7 @@ const removeEvent = async (req, res, next) => {
 				}
 				//
 				//
-				if (status === 'Overtime') {
+				/* if (status === 'Overtime') {
 					try {
 						console.log(
 							'saving visitor team after deleting their overtime loss...'
@@ -17355,7 +17355,7 @@ const removeEvent = async (req, res, next) => {
 						)
 						return next(error)
 					}
-				} 
+				} */
 				//
 				//
 				//
@@ -17395,7 +17395,7 @@ const removeEvent = async (req, res, next) => {
 				//
 			} else if (visitorPoints > homePoints) {
 				console.log('visitor team won 1')
-				try {
+				/* try {
 					minusWinForVisitorTeam = await Team.findById(visitorTeam)
 				} catch (err) {
 					const error = new HttpError(
@@ -17403,30 +17403,30 @@ const removeEvent = async (req, res, next) => {
 						404
 					)
 					return next(error)
-				}
+				} */
 
 				try {
-					minusOvertimeLossForHomeTeam = await Team.findById(homeTeam)
+					minusOvertimeLossForHomeTeam = await Team.findById(teamId)
 				} catch (err) {
 					const error = new HttpError(
-						'Could not find visitorTeam to delete their Overtime loss.',
+						'Could not find homeTeam to delete their Overtime loss.',
 						404
 					)
 					return next(error)
 				}
 
 				try {
-					minusShootoutLossForHomeTeam = await Team.findById(homeTeam)
+					minusShootoutLossForHomeTeam = await Team.findById(teamId)
 				} catch (err) {
 					const error = new HttpError(
-						'Could not find visitorTeam to delete their shootout loss.',
+						'Could not find homeTeam to delete their shootout loss.',
 						404
 					)
 					return next(error)
 				}
 
 				try {
-					minusLossForHomeTeam = await Team.findById(homeTeam)
+					minusLossForHomeTeam = await Team.findById(teamId)
 				} catch (err) {
 					const error = new HttpError(
 						'Could not find homeTeam to delete their loss.',
@@ -17435,15 +17435,15 @@ const removeEvent = async (req, res, next) => {
 					return next(error)
 				}
 				//
-				minusWinForVisitorTeam.wins = Number(minusWinForVisitorTeam.wins) - 1
+				//minusWinForVisitorTeam.wins = Number(minusWinForVisitorTeam.wins) - 1
 				//
 				//console.log(minusWinForVisitorTeam.goalsFor + ' ' + visitorPoints)
-				minusWinForVisitorTeam.goalsFor =
-					Number(minusWinForVisitorTeam.goalsFor) - visitorPoints
+				//minusWinForVisitorTeam.goalsFor =
+				//	Number(minusWinForVisitorTeam.goalsFor) - visitorPoints
 				//
 				//console.log(minusWinForVisitorTeam.goalsAgainst + ' ' + homePoints)
-				minusWinForVisitorTeam.goalsAgainst =
-					Number(minusWinForVisitorTeam.goalsAgainst) - homePoints
+				//minusWinForVisitorTeam.goalsAgainst =
+				//	Number(minusWinForVisitorTeam.goalsAgainst) - homePoints
 				//
 				minusLossForHomeTeam.losses = Number(minusLossForHomeTeam.losses) - 1
 				//
@@ -17486,7 +17486,7 @@ const removeEvent = async (req, res, next) => {
 					)
 				}
 
-				try {
+				/* try {
 					console.log('saving visitor team after removing their win...')
 					await minusWinForVisitorTeam.save()
 				} catch (err) {
@@ -17495,7 +17495,7 @@ const removeEvent = async (req, res, next) => {
 						500
 					)
 					return next(error)
-				}
+				} */
 				//
 				//
 				if (status === 'Overtime') {
@@ -17561,7 +17561,7 @@ const removeEvent = async (req, res, next) => {
 				//If it's a TIE
 			} else if (homePoints === visitorPoints) {
 				console.log('This game was a tie')
-				try {
+				/* try {
 					minusTieForVisitorTeam = await Team.findById(visitorTeam)
 				} catch (err) {
 					const error = new HttpError(
@@ -17569,10 +17569,10 @@ const removeEvent = async (req, res, next) => {
 						404
 					)
 					return next(error)
-				}
+				} */
 
 				try {
-					minusTieForHomeTeam = await Team.findById(homeTeam)
+					minusTieForHomeTeam = await Team.findById(teamId)
 				} catch (err) {
 					const error = new HttpError(
 						'Could not find homeTeam to delete their tie.',
@@ -17582,13 +17582,13 @@ const removeEvent = async (req, res, next) => {
 				}
 				//console.log('minusTieForVisitorTeam 2: ' + minusTieForVisitorTeam)
 				//
-				minusTieForVisitorTeam.ties = Number(minusTieForVisitorTeam.ties) - 1
+				//minusTieForVisitorTeam.ties = Number(minusTieForVisitorTeam.ties) - 1
 				//
-				minusTieForVisitorTeam.goalsFor =
-					Number(minusTieForVisitorTeam.goalsFor) - visitorPoints
+				//minusTieForVisitorTeam.goalsFor =
+				//	Number(minusTieForVisitorTeam.goalsFor) - visitorPoints
 				//
-				minusTieForVisitorTeam.goalsAgainst =
-					Number(minusTieForVisitorTeam.goalsAgainst) - homePoints
+				//minusTieForVisitorTeam.goalsAgainst =
+				//	Number(minusTieForVisitorTeam.goalsAgainst) - homePoints
 				//
 				minusTieForHomeTeam.ties = Number(minusTieForHomeTeam.ties) - 1
 				//
@@ -17598,7 +17598,7 @@ const removeEvent = async (req, res, next) => {
 				minusTieForHomeTeam.goalsAgainst =
 					Number(minusTieForHomeTeam.goalsAgainst) - visitorPoints
 
-				try {
+				/* try {
 					console.log('saving visitor team...')
 					await minusTieForVisitorTeam.save()
 				} catch (err) {
@@ -17607,7 +17607,7 @@ const removeEvent = async (req, res, next) => {
 						500
 					)
 					return next(error)
-				}
+				} */
 				//
 				//
 				try {
