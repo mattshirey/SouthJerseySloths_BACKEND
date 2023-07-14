@@ -16338,8 +16338,9 @@ const editGame = async (req, res, next) => {
 
 	//We're only getting gameId from the params, the rest come from the form
 	const {
-		leagueName1,
-		session1,
+		//leagueName1,
+		//session1,
+		teamName,
 		year1,
 		time1,
 		//endTime1,
@@ -16347,8 +16348,9 @@ const editGame = async (req, res, next) => {
 		tbd1IsChecked,
 		playoff1IsChecked,
 		championship1IsChecked,
-		homeTeam1,
-		visitorTeam1,
+		opponent,
+		//homeTeam1,
+		//visitorTeam1,
 		venue1,
 	} = req.body
 	const gameId = req.params.gameId
@@ -16372,7 +16374,7 @@ const editGame = async (req, res, next) => {
 	//7-6-2023  NBHL.  Got rid of session finder and replaced with isCurrent
 	//
 	//
-	try {
+	/* try {
 		foundLeague = await League.findOne({
 			leagueName: leagueName1,
 			//session: session1,
@@ -16385,7 +16387,7 @@ const editGame = async (req, res, next) => {
 	}
 
 	leagueId = foundLeague._id
-	divisionName = foundLeague.divisionName
+	divisionName = foundLeague.divisionName */
 
 	let game
 
@@ -16393,7 +16395,7 @@ const editGame = async (req, res, next) => {
 	//7-6-2023  NBHL.  Got rid of session finder and replaced with isCurrent
 	//
 	//
-	if (divisionName) {
+	/* if (divisionName) {
 		console.log('we have divisions here!')
 		try {
 			foundLeagueWithDivisions = await League.find({
@@ -16541,7 +16543,7 @@ const editGame = async (req, res, next) => {
 			)
 			return next(error)
 		}
-	}
+	} */
 	//
 	//
 	//
@@ -16551,122 +16553,117 @@ const editGame = async (req, res, next) => {
 	//
 	//
 	//
-	if (!divisionName) {
-		console.log('NO DIVISIONS FOUND')
-		//Next, I believe we need to find the homeTeamId, homeRosterId, visitorTeamId, and visitorRosterId
-		//To find them, we'll use leagueName, session, year, and teamName
-		let foundHomeTeamId, foundHomeRosterId, homeTeamId, homeRosterId
+	//Next, I believe we need to find the homeTeamId, homeRosterId, visitorTeamId, and visitorRosterId
+	//To find them, we'll use leagueName, session, year, and teamName
+	let foundHomeTeamId, foundHomeRosterId, homeTeamId, homeRosterId
 
-		if (homeTeam1 !== 'TBD') {
-			try {
-				foundHomeTeamId = await Team.findOne({
-					teamName: homeTeam1,
-					leagueId: leagueId,
-				})
-			} catch (err) {
-				const error = new HttpError('Cant find homeTeam id.  editGame', 500)
-				return next(error)
-			}
-			homeTeamId = foundHomeTeamId._id
-		}
-		//
-		//
-		// find home team roster id
-		//
-		if (homeTeam1 !== 'TBD') {
-			try {
-				foundHomeRosterId = await Roster.findOne({
-					teamId: homeTeamId,
-				})
-			} catch (err) {
-				const error = new HttpError(
-					'Cant find homeTeam rosterid.  editGame',
-					500
-				)
-				return next(error)
-			}
-			homeRosterId = foundHomeRosterId._id
-		}
-
-		//Now lets do the same for the visitor team:
-		let foundVisitorTeamId, foundVisitorRosterId, visitorTeamId, visitorRosterId
-		if (visitorTeam1 !== 'TBD') {
-			try {
-				foundVisitorTeamId = await Team.findOne({
-					teamName: visitorTeam1,
-					leagueId: leagueId,
-				})
-			} catch (err) {
-				const error = new HttpError('Cant find visitorTeam id.  editGame', 500)
-				return next(error)
-			}
-			visitorTeamId = foundVisitorTeamId._id
-		}
-		//
-		//
-		// find visitor team roster id
-		//
-		if (visitorTeam1 !== 'TBD') {
-			try {
-				foundVisitorRosterId = await Roster.findOne({
-					teamId: visitorTeamId,
-				})
-			} catch (err) {
-				const error = new HttpError(
-					'Cant find visitorTeam rosterid.  editGame',
-					500
-				)
-				return next(error)
-			}
-			visitorRosterId = foundVisitorRosterId._id
-		}
-		//
-		//
-		//
-		//
-		//let game
+	/* 	if (homeTeam1 !== 'TBD') {
 		try {
-			game = await Game.findById(gameId)
+			foundHomeTeamId = await Team.findOne({
+				teamName: homeTeam1,
+				leagueId: leagueId,
+			})
 		} catch (err) {
-			const error = new HttpError('Cant find game via gameId.  editGame', 500)
+			const error = new HttpError('Cant find homeTeam id.  editGame', 500)
 			return next(error)
 		}
-
-		console.log('homeTeamId: ' + homeTeamId)
-
-		game.leagueName = leagueName1.trim()
-		game.session = session1.trim()
-		game.year = year1
-		game.time = time1
-		//game.endTime = endTime1
-		game.date = MDYdate1
-		game.dayOfWeek = dayOfWeek1
-		game.timeTBD = tbd1IsChecked
-		game.playoff = playoff1IsChecked
-		game.championship = championship1IsChecked
-		game.homeTeamName = homeTeam1.trim()
-		if (homeTeam1 !== 'TBD') {
-			game.homeTeamId = homeTeamId
-			game.homeRosterId = homeRosterId
-		}
-		game.visitorTeamName = visitorTeam1.trim()
-		if (visitorTeam1 !== 'TBD') {
-			game.visitorTeamId = visitorTeamId
-			game.visitorRosterId = visitorRosterId
-		}
-		game.venueName = venue1.trim()
-
+		homeTeamId = foundHomeTeamId._id
+	} */
+	//
+	//
+	// find home team roster id
+	//
+	/* if (homeTeam1 !== 'TBD') {
 		try {
-			await game.save()
+			foundHomeRosterId = await Roster.findOne({
+				teamId: homeTeamId,
+			})
+		} catch (err) {
+			const error = new HttpError('Cant find homeTeam rosterid.  editGame', 500)
+			return next(error)
+		}
+		homeRosterId = foundHomeRosterId._id
+	} */
+
+	//Now lets do the same for the visitor team:
+	/* let foundVisitorTeamId, foundVisitorRosterId, visitorTeamId, visitorRosterId
+	if (visitorTeam1 !== 'TBD') {
+		try {
+			foundVisitorTeamId = await Team.findOne({
+				teamName: visitorTeam1,
+				leagueId: leagueId,
+			})
+		} catch (err) {
+			const error = new HttpError('Cant find visitorTeam id.  editGame', 500)
+			return next(error)
+		}
+		visitorTeamId = foundVisitorTeamId._id
+	} */
+	//
+	//
+	// find visitor team roster id
+	//
+	/* if (visitorTeam1 !== 'TBD') {
+		try {
+			foundVisitorRosterId = await Roster.findOne({
+				teamId: visitorTeamId,
+			})
 		} catch (err) {
 			const error = new HttpError(
-				err,
-				//'Something went wrong with saving the updated game.  editGame',
+				'Cant find visitorTeam rosterid.  editGame',
 				500
 			)
 			return next(error)
 		}
+		visitorRosterId = foundVisitorRosterId._id
+	} */
+	//
+	//
+	//
+	//
+	//let game
+	try {
+		game = await Game.findById(gameId)
+	} catch (err) {
+		const error = new HttpError('Cant find game via gameId.  editGame', 500)
+		return next(error)
 	}
+
+	//game.leagueName = leagueName1.trim()
+	//game.session = session1.trim()
+	game.teamName = teamName
+	game.year = year1
+	game.time = time1
+	//game.endTime = endTime1
+	game.date = MDYdate1
+	game.dayOfWeek = dayOfWeek1
+	game.timeTBD = tbd1IsChecked
+	game.playoff = playoff1IsChecked
+	game.championship = championship1IsChecked
+	/* game.homeTeamName = homeTeam1.trim()
+	if (homeTeam1 !== 'TBD') {
+		game.homeTeamId = homeTeamId
+		game.homeRosterId = homeRosterId
+	}
+	game.visitorTeamName = visitorTeam1.trim()
+	if (visitorTeam1 !== 'TBD') {
+		game.visitorTeamId = visitorTeamId
+		game.visitorRosterId = visitorRosterId
+	} */
+	game.opponent = opponent.trim()
+	game.venueName = venue1.trim()
+
+	try {
+		await game.save()
+	} catch (err) {
+		const error = new HttpError(
+			err,
+			//'Something went wrong with saving the updated game.  editGame',
+			500
+		)
+		return next(error)
+	}
+
 	//set it to 200 instead of 201 because we're not creating anything new
 	res.status(200).json({ game: game.toObject({ getters: true }) })
 }
