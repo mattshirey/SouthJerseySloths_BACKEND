@@ -1428,7 +1428,7 @@ const allGamesAndEvents = async (req, res, next) => {
 
 	//res.json({ allItemsThisWeek: allGamesAndEventsArrayFilteredByOneWeek })
 
-	console.log('allItems: ' + allItems)
+	console.log('allItems: ' + allGamesAndEventsArray)
 
 	res.json({
 		allItems: allGamesAndEventsArray,
