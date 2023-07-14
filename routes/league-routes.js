@@ -15,18 +15,20 @@ router.get(
 //
 //
 //
-router.get(
+/* router.get(
 	'/:leagueId/:session/:year/:teamName',
 	leagueControllers.getPlayersOnTeam
-)
+) */
+router.get('/rosterAndSchedule', leagueControllers.getPlayersOnTeam)
 //
 //
 
 //This one puts the team schedule on the teams stats and standings page, just for fun
-router.get(
+/* router.get(
 	'/schedule/:leagueId/:session/:year/:teamName',
 	leagueControllers.getTeamSchedule
-)
+) */
+router.get('/schedule/:teamName/:year', leagueControllers.getTeamSchedule)
 //This one below will be used to access team schedule from the main schedule page
 //via the 'search by league/team' dropdown
 router.get(

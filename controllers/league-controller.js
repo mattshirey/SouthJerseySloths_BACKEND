@@ -135,19 +135,19 @@ const getScoringLeadersByLeagueId = async (req, res, next) => {
 //
 //****************************************************************************************** */
 //
-// Get Players on a team. This is non-admin.
+// Get Players on a sloth team. This is non-admin.
 // this also returns wins, losses, overtime losses, and shootout losses
 //
 //****************************************************************************************** */
 const getPlayersOnTeam = async (req, res, next) => {
-	const leagueId = req.params.leagueId
-	const teamName = req.params.teamName
+	//const leagueId = req.params.leagueId
+	//const teamName = req.params.teamName
 	//const session = req.params.session
 	//const year = req.params.year
 	//
 	//
 	//Get the leagueName - we'll want this so it displays at the top of the players list page
-	let leagueName, divisionName, session, year
+	/* let leagueName, divisionName, session, year
 	try {
 		foundLeague = await League.findById(leagueId)
 	} catch (err) {
@@ -161,152 +161,66 @@ const getPlayersOnTeam = async (req, res, next) => {
 	divisionName = foundLeague.divisionName
 	session = foundLeague.session
 	year = foundLeague.year
-	console.log('divisionName: ' + divisionName)
+	console.log('divisionName: ' + divisionName) */
 	//
 	//
-	//GET THE TEAM ID
-	//We have the leagueId, and we have the teamName from the params.
-	//So lets get the teamId
-	//MATT:  I have no idea why this works differently than Players.js in the
-	//frontend, but whatever...
-	let teamId, rosterId, foundRoster, rosteredPlayers
+	//So, there should only be ONE current team - that's how Anthony wants this set up
+	//so let's go get that current team
+	let teamId, rosterId, foundRoster, rosteredPlayers, teamName, year
 	let foundTeam, foundLeagueWithDivisions
 	let wins
 	let losses, overtimeLosses, shootoutLosses, ties
 	//
-	if (divisionName) {
-		console.log('we have divisions here!  getPlayersOnTeam')
-		try {
-			foundLeagueWithDivisions = await League.find({
-				leagueName: leagueName,
-				session: session,
-				year: year,
-			}).orFail()
-		} catch (err) {
-			const error = new HttpError(
-				'Could not find league to obtain leagueId. WITH divisions. getPlayersOnTeam',
-				500
-			)
-			return next(error)
-		}
-		//
-		//
-		//So we have multiple leagues here.  Let's make an array of all teams
-		let allTeamsInThisLeague, teams
-		//MATT START
-		allTeamsInThisLeague = []
-		for (let i = 0; i < foundLeagueWithDivisions.length; i++) {
-			try {
-				teams = await Team.find({
-					leagueName: foundLeagueWithDivisions[i].leagueName,
-					divisionName: foundLeagueWithDivisions[i].divisionName,
-				}).orFail()
-			} catch {}
-			teams.forEach((team) => {
-				allTeamsInThisLeague.push(team)
-			})
-		}
-
-		allTeamsInThisLeague.forEach(async (team) => {
-			if (team.teamName === teamName) {
-				foundTeam = team
-			}
-		})
-
-		console.log('foundTeam: ' + foundTeam)
-
-		teamId = foundTeam.id
-		wins = foundTeam.wins
-		losses = foundTeam.losses
-		overtimeLosses = foundTeam.overtimeLosses
-		shootoutLosses = foundTeam.shootoutLosses
-		ties = foundTeam.ties
-		//
-		//
-		//
-		////GET THE ROSTER ID FOR THIS TEAMID
-		console.log('leagueId: ' + leagueId)
-		console.log('divisionName: ' + foundTeam.divisionName)
-		console.log('teamId: ' + foundTeam._id)
-		try {
-			foundRoster = await Roster.findOne({
-				leagueId: foundTeam.leagueId,
-				divisionName: foundTeam.divisionName,
-				teamId: foundTeam._id,
-			}).orFail()
-		} catch (err) {
-			const error = new HttpError(
-				'Could not find roster to obtain rosterId.  getPlayersOnTeam ' + err,
-				404
-			)
-			return next(error)
-		}
-		rosterId = foundRoster.id
-		//
-		//Get all players in that roster.  This is where player id's and jersey numbers will be
-		//let rosteredPlayers
-		try {
-			rosteredPlayers = await RosterPlayer.find({
-				rosterId: rosterId,
-			})
-		} catch (err) {
-			const error = new HttpError('Trouble finding players for this team', 404)
-			return next(error)
-		}
+	//
+	//
+	try {
+		foundTeam = await Team.findOne({
+			//leagueId: leagueId,
+			//teamName: teamName,
+			isCurrent: true,
+		}).orFail()
+	} catch (err) {
+		const error = new HttpError(
+			'Could not find team to obtain teamId 2.  getPlayersOnTeam',
+			404
+		)
+		return next(error)
 	}
+	teamName = foundTeam.teamName
+	yeaer = foundTeam.year
+	teamId = foundTeam.id
+	wins = foundTeam.wins
+	losses = foundTeam.losses
+	overtimeLosses = foundTeam.overtimeLosses
+	shootoutLosses = foundTeam.shootoutLosses
+	ties = foundTeam.ties
 	//
+	////GET THE ROSTER ID FOR THIS TEAMID
+	//let rosterId
+	//let foundRoster
+	try {
+		foundRoster = await Roster.findOne({
+			//leagueId: leagueId,
+			teamId: teamId,
+		}).orFail()
+	} catch (err) {
+		const error = new HttpError(
+			'Could not find roster to obtain rosterId.  getPlayersOnTeam',
+			404
+		)
+		return next(error)
+	}
+	rosterId = foundRoster.id
 	//
-	//  No divisions
-	//
-	//
-	if (!divisionName) {
-		console.log('NO divisions')
-		try {
-			foundTeam = await Team.findOne({
-				leagueId: leagueId,
-				teamName: teamName,
-			}).orFail()
-		} catch (err) {
-			const error = new HttpError(
-				'Could not find team to obtain teamId 2.  getPlayersOnTeam',
-				404
-			)
-			return next(error)
-		}
-		teamId = foundTeam.id
-		wins = foundTeam.wins
-		losses = foundTeam.losses
-		overtimeLosses = foundTeam.overtimeLosses
-		shootoutLosses = foundTeam.shootoutLosses
-		ties = foundTeam.ties
-		//
-		////GET THE ROSTER ID FOR THIS TEAMID
-		//let rosterId
-		//let foundRoster
-		try {
-			foundRoster = await Roster.findOne({
-				leagueId: leagueId,
-				teamId: teamId,
-			}).orFail()
-		} catch (err) {
-			const error = new HttpError(
-				'Could not find roster to obtain rosterId.  getPlayersOnTeam',
-				404
-			)
-			return next(error)
-		}
-		rosterId = foundRoster.id
-		//
-		//Get all players in that roster.  This is where player id's and jersey numbers will be
-		//let rosteredPlayers
-		try {
-			rosteredPlayers = await RosterPlayer.find({
-				rosterId: rosterId,
-			})
-		} catch (err) {
-			const error = new HttpError('Trouble finding players for this team', 404)
-			return next(error)
-		}
+	//Get all players in that roster.  This is where player id's and jersey numbers will be
+	//let rosteredPlayers
+	try {
+		rosteredPlayers = await RosterPlayer.find({
+			rosterId: rosterId,
+		})
+	} catch (err) {
+		const error = new HttpError('Trouble finding players for this team', 404)
+		return next(error)
 	}
 
 	rosteredPlayers.sort((a, b) =>
@@ -320,7 +234,9 @@ const getPlayersOnTeam = async (req, res, next) => {
 		overtimeLosses,
 		shootoutLosses,
 		ties,
-		leagueName,
+		teamName,
+		year,
+		//leagueName,
 	})
 }
 //****************************************************************************************** */
@@ -329,14 +245,14 @@ const getPlayersOnTeam = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const getTeamSchedule = async (req, res, next) => {
-	const leagueId = req.params.leagueId
+	//const leagueId = req.params.leagueId
 	const teamName = req.params.teamName
-	const session = req.params.session
+	//const session = req.params.session
 	const year = req.params.year
 	//
 	//
 	//Get the leagueName - we'll want this so it displays at the top of the players list page
-	let leagueName, divisionName, foundLeagueWithDivisions
+	/* let leagueName, divisionName, foundLeagueWithDivisions
 	try {
 		foundLeague = await League.findById(leagueId)
 	} catch (err) {
@@ -347,7 +263,7 @@ const getTeamSchedule = async (req, res, next) => {
 		return next(error)
 	}
 	leagueName = foundLeague.leagueName
-	divisionName = foundLeague.divisionName
+	divisionName = foundLeague.divisionName */
 	//
 	//
 	//GET THE TEAM ID
@@ -357,74 +273,20 @@ const getTeamSchedule = async (req, res, next) => {
 	let teamId
 	let foundTeam
 	//
-	//7/6/2023  For NBHL, I got rid of the session finder and replaced with isCurrent
-	//
-	//
-	if (divisionName) {
-		console.log('we have divisions here! getTeamSchedule')
-		try {
-			foundLeagueWithDivisions = await League.find({
-				leagueName: leagueName,
-				//session: session,
-				isCurrent: true,
-				year: year,
-			}).orFail()
-		} catch (err) {
-			const error = new HttpError(
-				'Could not find league to obtain leagueId. WITH divisions. getTeamSchedule',
-				500
-			)
-			return next(error)
-		}
-
-		//So we have multiple leagues here.  Let's make an array of all teams
-		let allTeamsInThisLeague, teams
-		//MATT START
-		allTeamsInThisLeague = []
-		for (let i = 0; i < foundLeagueWithDivisions.length; i++) {
-			try {
-				teams = await Team.find({
-					leagueName: foundLeagueWithDivisions[i].leagueName,
-					divisionName: foundLeagueWithDivisions[i].divisionName,
-				}).orFail()
-			} catch {}
-			teams.forEach((team) => {
-				allTeamsInThisLeague.push(team)
-			})
-		}
-
-		//let homeTeamId
-		//let foundHomeTeam
-		allTeamsInThisLeague.forEach(async (team) => {
-			if (team.teamName === teamName) {
-				foundTeam = team
-			}
-		})
-		//console.log('foundHomeTeam1: ' + foundHomeTeam1)
-		teamId = foundTeam.id
+	try {
+		foundTeam = await Team.findOne({
+			//leagueId: leagueId,
+			teamName: teamName,
+			year: year,
+		}).orFail()
+	} catch (err) {
+		const error = new HttpError(
+			'Could not find team to obtain teamId 4.  getTeamSchedule',
+			404
+		)
+		return next(error)
 	}
-
-	//
-	//
-	//
-	//
-	//
-	if (!divisionName) {
-		try {
-			foundTeam = await Team.findOne({
-				leagueId: leagueId,
-				teamName: teamName,
-			}).orFail()
-		} catch (err) {
-			const error = new HttpError(
-				'Could not find team to obtain teamId 4.  getTeamSchedule',
-				404
-			)
-			return next(error)
-		}
-		teamId = foundTeam.id
-	}
-
+	teamId = foundTeam.id
 	//
 	//
 	//
