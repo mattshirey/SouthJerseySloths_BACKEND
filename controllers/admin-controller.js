@@ -514,6 +514,8 @@ const getGameData = async (req, res, next) => {
 		winnerTeamName = foundGame.opponent
 	}
 
+	console.log('fucking winnerTeamName: ' + winnerTeamName)
+
 	//
 	//7-6-2023  NBHL.  Got rid of session finder and replaced with isCurrent
 	//
