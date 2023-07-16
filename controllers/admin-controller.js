@@ -8045,10 +8045,10 @@ const createPlayoffGameStats = async (req, res, next) => {
 		const error = new HttpError('Could not find game.  createGameStats', 404)
 		return next(error)
 	}
-	homeTeamName = foundGame.homeTeamName
-	visitorTeamName = foundGame.visitorTeamName
-	homeTeamId = foundGame.homeTeamId
-	visitorTeamId = foundGame.visitorTeamId
+	homeTeamName = foundGame.teamName
+	visitorTeamName = foundGame.opponent
+	//homeTeamId = foundGame.homeTeamId
+	//visitorTeamId = foundGame.visitorTeamId
 
 	console.log('home: ' + homeTeamName + ' ' + homePointsTotal)
 	console.log('visitor: ' + visitorTeamName + ' ' + visitorPointsTotal)
@@ -8058,14 +8058,14 @@ const createPlayoffGameStats = async (req, res, next) => {
 
 	if (homePointsTotal > visitorPointsTotal) {
 		winner = homeTeamName
-		winnerId = homeTeamId
+		//winnerId = homeTeamId
 		loser = visitorTeamName
-		loserId = visitorTeamId
+		//loserId = visitorTeamId
 	} else {
 		winner = visitorTeamName
-		winnerId = visitorTeamId
+		//winnerId = visitorTeamId
 		loser = homeTeamName
-		loserId = homeTeamId
+		//loserId = homeTeamId
 	}
 
 	console.log('And the winner is: ' + winner + '!!!')
@@ -8089,8 +8089,8 @@ const createPlayoffGameStats = async (req, res, next) => {
 		visitorGoalsTotal: visitorPointsTotal,
 		winner: winner,
 		loser: loser,
-		winnerTeamId: winnerId,
-		loserTeamId: loserId,
+		//winnerTeamId: winnerId,
+		//loserTeamId: loserId,
 		summary: gameSummary.trim(),
 	})
 	try {
@@ -8103,8 +8103,10 @@ const createPlayoffGameStats = async (req, res, next) => {
 	//So, we created playoff game stats, but I also want to go back and alter the game
 	//so that info shows up on the schedule screen
 	foundGame.status = 'FINAL'
-	foundGame.winner = winnerId
-	foundGame.loser = loserId
+	//foundGame.winner = winnerId
+	//foundGame.loser = loserId
+	foundGame.winner = winner
+	foundGame.loser = loser
 	foundGame.score = Number(homePointsTotal) + ' - ' + Number(visitorPointsTotal)
 	console.log('saving game - second')
 	try {
