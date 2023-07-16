@@ -497,7 +497,7 @@ const getGameData = async (req, res, next) => {
 	}
 
 	console.log('and the winner is: ' + winner)
-
+	let foundWinner
 	//So we got the game stats (if there are any) and we got the teamId of the winner
 	//Let's use that teamId to get the teamName
 	try {
