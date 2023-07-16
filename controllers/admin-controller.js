@@ -501,11 +501,13 @@ const getGameData = async (req, res, next) => {
 	//So we got the game stats (if there are any) and we got the teamId of the winner
 	//Let's use that teamId to get the teamName
 	try {
-		foundWinner = await Team.findById(winner).orFail()
+		foundWinner = await Team.findById(winner)
 	} catch (err) {
 		const error = new HttpError('error 4: ' + err)
 		return next(error)
 	}
+
+	console.log('foundWinner: ' + foundWinner)
 
 	if (foundWinner) {
 		winnerTeamName = foundWinner.teamName
