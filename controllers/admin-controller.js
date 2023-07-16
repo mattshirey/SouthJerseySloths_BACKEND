@@ -510,7 +510,9 @@ const getGameData = async (req, res, next) => {
 	if (foundWinner) {
 		winnerTeamName = foundWinner.teamName
 		console.log('winner: ' + winnerTeamName)
-	} else {
+	}
+
+	if (!foundWinner) {
 		winnerTeamName = foundGame.opponent
 	}
 
