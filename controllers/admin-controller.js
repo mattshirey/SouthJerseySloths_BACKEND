@@ -8149,7 +8149,7 @@ const createChampionshipGameStats = async (req, res, next) => {
 		const error = new HttpError('Could not find game.  createGameStats', 404)
 		return next(error)
 	}
-	homeTeamName = foundGameteamName
+	homeTeamName = foundGame.teamName
 	visitorTeamName = foundGame.opponent
 	//homeTeamId = foundGame.homeTeamId
 	//visitorTeamId = foundGame.visitorTeamId
