@@ -490,10 +490,10 @@ const getGameData = async (req, res, next) => {
 		winner = foundGameStats.winner
 	}
 	if (foundPlayoffGameStats) {
-		winner = foundPlayoffGameStats.winnerTeamId
+		winner = foundPlayoffGameStats.winner
 	}
 	if (foundChampionshipGameStats) {
-		winner = foundChampionshipGameStats.winnerTeamId
+		winner = foundChampionshipGameStats.winner
 	}
 
 	console.log('and the winner is HERE: ' + winner)
