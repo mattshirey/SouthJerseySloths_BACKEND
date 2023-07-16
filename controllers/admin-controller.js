@@ -496,12 +496,12 @@ const getGameData = async (req, res, next) => {
 		winner = foundChampionshipGameStats.winnerTeamId
 	}
 
-	console.log('and the winner is: ' + winner)
+	console.log('and the winner is HERE: ' + winner)
 	let foundWinner
 	//So we got the game stats (if there are any) and we got the teamId of the winner
 	//Let's use that teamId to get the teamName
 	try {
-		foundWinner = await Team.findById(winner)
+		foundWinner = await Team.findById(winner).orFail()
 	} catch (err) {
 		const error = new HttpError('error 4: ' + err)
 		return next(error)
