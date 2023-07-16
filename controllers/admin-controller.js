@@ -452,6 +452,7 @@ const getGameData = async (req, res, next) => {
 		foundChampionshipGameStats,
 		foundGameStats,
 		winner,
+		loser,
 		winnerTeamName
 	if (foundGame.playoff) {
 		console.log('this must be a playoff game')
@@ -474,7 +475,7 @@ const getGameData = async (req, res, next) => {
 			return next(error)
 		}
 	} else {
-		//If it's not a playoff game or championship game
+		//If it's NOT a playoff game or championship game
 		try {
 			foundGameStats = await GameStats.findOne({
 				gameId: gameId,
@@ -509,6 +510,8 @@ const getGameData = async (req, res, next) => {
 	if (foundWinner) {
 		winnerTeamName = foundWinner.teamName
 		console.log('winner: ' + winnerTeamName)
+	} else {
+		winnerTeamName = foundGAme.opponent
 	}
 
 	//
