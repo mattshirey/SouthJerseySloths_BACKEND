@@ -497,10 +497,10 @@ const getGameData = async (req, res, next) => {
 	}
 
 	console.log('and the winner is HERE: ' + winner)
-	let foundWinner
+	//let foundWinner
 	//So we got the game stats (if there are any) and we got the teamId of the winner
 	//Let's use that teamId to get the teamName
-	try {
+	/* try {
 		foundWinner = await Team.findById(winner)
 	} catch (err) {
 		const error = new HttpError('error 4: ' + err)
@@ -513,12 +513,11 @@ const getGameData = async (req, res, next) => {
 		winnerTeamName = foundWinner.teamName
 		console.log('winner: ' + winnerTeamName)
 	}
-
 	if (!foundWinner) {
 		winnerTeamName = foundGame.opponent
-	}
+	} */
 
-	console.log('fucking winnerTeamName: ' + winnerTeamName)
+	//console.log('fucking winnerTeamName: ' + winnerTeamName)
 
 	//
 	//7-6-2023  NBHL.  Got rid of session finder and replaced with isCurrent
@@ -576,21 +575,24 @@ const getGameData = async (req, res, next) => {
 			//leagueId: leagueId,
 			game: foundGame.toObject({ getters: true }),
 			gameStats: foundPlayoffGameStats,
-			winner: winnerTeamName,
+			//winner: winnerTeamName,
+			winner: winner,
 		})
 	} else if (foundChampionshipGameStats) {
 		res.json({
 			//leagueId: leagueId,
 			game: foundGame.toObject({ getters: true }),
 			gameStats: foundChampionshipGameStats,
-			winner: winnerTeamName,
+			//winner: winnerTeamName,
+			winner: winner,
 		})
 	} else {
 		res.json({
 			//leagueId: leagueId,
 			game: foundGame.toObject({ getters: true }),
 			gameStats: foundGameStats,
-			winner: winnerTeamName,
+			//winner: winnerTeamName,
+			winner: winner,
 		})
 	}
 }
