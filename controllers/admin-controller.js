@@ -17342,12 +17342,12 @@ const removeEvent = async (req, res, next) => {
 			return next(error)
 		}
 		//
-		if (gameStats.length > 0) {
+		/* if (gameStats.length > 0) {
 			console.log('gameStats: ' + gameStats)
 			gameStats.forEach((stat) => {
 				stat.deleteOne()
 			})
-		}
+		} */
 		//
 		//
 		//
@@ -17465,7 +17465,10 @@ const removeEvent = async (req, res, next) => {
 				//
 				try {
 					console.log('deleting game stats 1...')
-					await gameStats.deleteOne()
+					//await gameStats.deleteOne()
+					gameStats.forEach((stat) => {
+						stat.deleteOne()
+					})
 				} catch (err) {
 					const error = new HttpError(
 						'Could not delete game stats: ' + err,
@@ -17613,9 +17616,12 @@ const removeEvent = async (req, res, next) => {
 				}
 				//
 				//
+				//
 				try {
 					console.log('deleting game stats 2...')
-					await gameStats.deleteOne()
+					gameStats.forEach((stat) => {
+						stat.deleteOne()
+					})
 				} catch (err) {
 					const error = new HttpError(
 						'Could not delete game stats: ' + err,
@@ -17635,6 +17641,10 @@ const removeEvent = async (req, res, next) => {
 				}
 				//
 				//If it's a TIE
+				//
+				//
+				//
+				//
 			} else if (homePoints === visitorPoints) {
 				console.log('This game was a tie 1')
 
@@ -17672,7 +17682,9 @@ const removeEvent = async (req, res, next) => {
 				//
 				try {
 					console.log('deleting game stats...')
-					await gameStats.deleteOne()
+					gameStats.forEach((stat) => {
+						stat.deleteOne()
+					})
 				} catch (err) {
 					const error = new HttpError(
 						'Could not delete game stats: ' + err,
@@ -17745,7 +17757,9 @@ const removeEvent = async (req, res, next) => {
 				//
 				try {
 					console.log('deleting game stats 1...')
-					await playoffStats.deleteOne()
+					playoffStats.forEach((stat) => {
+						stat.deleteOne()
+					})
 				} catch (err) {
 					const error = new HttpError(
 						'Could not delete game stats: ' + err,
@@ -17815,7 +17829,9 @@ const removeEvent = async (req, res, next) => {
 				//
 				try {
 					console.log('deleting playoff game stats 2...')
-					await playoffStats.deleteOne()
+					playoffStats.forEach((stat) => {
+						stat.deleteOne()
+					})
 				} catch (err) {
 					const error = new HttpError(
 						'Could not delete game stats: ' + err,
@@ -17836,7 +17852,7 @@ const removeEvent = async (req, res, next) => {
 				//
 				//If it's a TIE
 			} else if (homePoints === visitorPoints) {
-				console.log('This game was a tie 2')
+				console.log('This playoff game was a tie')
 
 				try {
 					minusTieForHomeTeam = await Team.findById(teamId)
@@ -17872,7 +17888,9 @@ const removeEvent = async (req, res, next) => {
 				//
 				try {
 					console.log('deleting playoff game stats...')
-					await playoffStats.deleteOne()
+					playoffStats.forEach((stat) => {
+						stat.deleteOne()
+					})
 				} catch (err) {
 					const error = new HttpError(
 						'Could not delete game stats: ' + err,
