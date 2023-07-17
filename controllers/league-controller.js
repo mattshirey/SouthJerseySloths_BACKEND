@@ -245,6 +245,7 @@ const getPlayersOnTeam = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const getTeamSchedule = async (req, res, next) => {
+	console.log('inside getTeamSchedule')
 	//const leagueId = req.params.leagueId
 	const teamName = req.params.teamName
 	//const session = req.params.session
