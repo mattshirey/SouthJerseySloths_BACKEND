@@ -8210,7 +8210,7 @@ const createPlayoffGameStats = async (req, res, next) => {
 			//more kraly code here.  When changing game results back to TBP, we also want
 			//to wipe out any individual player stats as well
 			//
-			if (gameStatus === 'TBP' && previousStatus !== 'TBP') {
+			/* if (gameStatus === 'TBP' && previousStatus !== 'TBP') {
 				console.log('hello matthew, you are here now')
 				if (previousGoals) {
 					foundHomeRosterPlayer.goals =
@@ -8220,7 +8220,7 @@ const createPlayoffGameStats = async (req, res, next) => {
 					foundHomeRosterPlayer.assists =
 						Number(foundHomeRosterPlayer.assists) - Number(previousAssists)
 				}
-			}
+			} */
 
 			//writing changes to RosterPlayer
 			try {
@@ -8240,28 +8240,29 @@ const createPlayoffGameStats = async (req, res, next) => {
 			//this players statsPerGame.  If gameStatus is TBP, we want to wipe out
 			//anything previous.
 			//creating new RosterPlayerStatsPerGame
-			if (gameStatus !== 'TBP') {
-				rosterHomePlayerGameStats = new RosterPlayerStatsPerGame({
-					gameId: gameId,
-					rosterPlayerId: foundHomeRosterPlayer._id,
-					goals: rosterHomePlayerNewGoals,
-					assists: rosterHomePlayerNewAssists,
-				})
-				//Writing to GAME tally.  This is what will appear when we reload the form
-				try {
-					await rosterHomePlayerGameStats.save()
-				} catch (err) {
-					const error = new HttpError(
-						'could not create new instance of home RosterPlayerStatsPerGame',
-						500
-					)
-					return next(error)
-				}
-				//
-				//
-				//
-				//if game status = TBP
-			} else {
+			//if (gameStatus !== 'TBP') {
+			rosterHomePlayerGameStats = new RosterPlayerStatsPerGame({
+				gameId: gameId,
+				rosterPlayerId: foundHomeRosterPlayer._id,
+				goals: rosterHomePlayerNewGoals,
+				assists: rosterHomePlayerNewAssists,
+			})
+			//Writing to GAME tally.  This is what will appear when we reload the form
+			try {
+				await rosterHomePlayerGameStats.save()
+			} catch (err) {
+				const error = new HttpError(
+					'could not create new instance of home RosterPlayerStatsPerGame',
+					500
+				)
+				return next(error)
+			}
+			//
+			//
+			//
+			//if game status = TBP
+			//}
+			/*  else {
 				let rosterPlayerGameStatsToDelete
 				console.log(
 					'need to find then delete this home players rosterStatsPerGame from last time'
@@ -8288,7 +8289,7 @@ const createPlayoffGameStats = async (req, res, next) => {
 				if (rosterPlayerGameStatsToDelete) {
 					rosterPlayerGameStatsToDelete.deleteOne()
 				}
-			}
+			} */
 		}
 	}
 
