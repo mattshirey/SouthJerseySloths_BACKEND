@@ -17392,20 +17392,21 @@ const removeEvent = async (req, res, next) => {
 		//
 		//Let's determine the winner and loser of the game, and fix their records
 		//remember that homeTeam and visitorTeam are their teamId's
+		let homePoints,
+			visitorPoints,
+			minusWinForHomeTeam,
+			minusLossForHomeTeam,
+			minusOvertimeLossForHomeTeam,
+			minusShootoutLossForHomeTeam,
+			minusTieForHomeTeam,
+			//winner,
+			//loser,
+			tie
 
 		if (gameStats.length > 0) {
-			let homePoints,
-				visitorPoints,
-				minusWinForHomeTeam,
-				minusLossForHomeTeam,
-				minusOvertimeLossForHomeTeam,
-				minusShootoutLossForHomeTeam,
-				minusTieForHomeTeam,
-				//winner,
-				//loser,
-				tie
-			homePoints = gameStats.homeGoalsTotal
-			visitorPoints = gameStats.visitorGoalsTotal
+			let homePoints
+			homePoints = gameStats[0].homeGoalsTotal
+			visitorPoints = gameStats[0].visitorGoalsTotal
 			//If the home team was the winner, we need to tap into the team and remove a win from them
 			//as well as tap into the visiting team and remove a loss from them
 			//
