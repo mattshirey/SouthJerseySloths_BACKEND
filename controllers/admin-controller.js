@@ -17924,7 +17924,7 @@ const removeEvent = async (req, res, next) => {
 			return next(error)
 		}
 
-		//console.log('allPlayersWithGameStats: ' + allPlayersWithGameStats)
+		console.log('allPlayersWithGameStats: ' + allPlayersWithGameStats)
 
 		//for each player that has stats that game, we want to go find their rosterPlayer and
 		//remove any goals or assists that took place this game
@@ -17955,6 +17955,15 @@ const removeEvent = async (req, res, next) => {
 		})
 	}
 
+	if (allPlayersWithGameStats) {
+		try {
+			console.log('deleting allPlayersWithGameStats...')
+			await allPlayersWithGameStats.deleteOne()
+		} catch (err) {
+			const error = new HttpError(err, 404)
+			return next(error)
+		}
+	}
 	if (event) {
 		try {
 			console.log('deleting event...')
