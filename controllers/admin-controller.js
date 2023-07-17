@@ -8081,6 +8081,8 @@ const createPlayoffGameStats = async (req, res, next) => {
 		previousPlayoffWinner,
 		previousPlayoffLoser
 
+	//Lets look for previous playoff stats.  If they exist, let's log them so we can
+	//refer to them later, then let's delete whats out there...
 	if (foundStats) {
 		console.log('stats already exist for this game: ' + foundStats)
 		previousHomeGoalsTotal = foundStats[0].homeGoalsTotal
@@ -8100,8 +8102,6 @@ const createPlayoffGameStats = async (req, res, next) => {
 	console.log('NEW visitorGoalsTotal: ' + visitorPointsTotal)
 	console.log('NEW winner: ' + winner)
 	console.log('NEW loser: ' + loser)
-
-	//now let's delete the previous stats
 
 	playoffGame = new PlayoffGameStats({
 		gameId: gameId,
@@ -8283,12 +8283,28 @@ const createPlayoffGameStats = async (req, res, next) => {
 				return next(error)
 			}
 
-			if (winner === homeTeamName) {
-				console.log('lets add a win for sloths')
-				foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
-			} else {
-				foundHomeTeam.losses = Number(foundHomeTeam.losses) + 1
+			if (previousPlayoffWinner && previousPlayoffWinner === homeTeamName) {
+				console.log('looks like the sloths won last time.  did they win again?')
+				if (winner === homeTeamName) {
+					console.log('yes.  do nothing')
+				} else {
+					console.log('no.  so lets take away the previous win and add a loss')
+					foundHomeTeam.wins = Number(foundHomeTeam.wins) - 1
+					foundHomeTeam.losses = Number(foundHomeTeam.losses) + 1
+				}
 			}
+			if (previousPlayoffLoser && previousPlayoffLoser === homeTeamName) {
+				console.log(
+					'looks like the sloths lost last time.  did they lose again?'
+				)
+				if (loser === homeTeamName) {
+					console.log('yes.  do nothing')
+				} else {
+					console.log('no.  so lets take away the previous loss and add a win')
+					foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
+					foundHomeTeam.losses = Number(foundHomeTeam.losses) - 1
+				}
+			}			
 
 			try {
 				await foundHomeTeam.save()
