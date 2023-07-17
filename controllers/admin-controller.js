@@ -17418,6 +17418,11 @@ const removeEvent = async (req, res, next) => {
 			//    if home team won
 			//
 			//
+			console.log('homePoints: ' + homePoints)
+			console.log('visitorPoints: ' + visitorPoints)
+			console.log('homePoints: ' + Number(homePoints))
+			console.log('visitorPoints: ' + Number(visitorPoints))
+
 			if (homePoints > visitorPoints) {
 				console.log('home team won this game that is about to be deleted...')
 				try {
