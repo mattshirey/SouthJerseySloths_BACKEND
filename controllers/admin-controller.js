@@ -1436,10 +1436,12 @@ const allGamesAndEvents = async (req, res, next) => {
 			allGamesAndEventsArrayFilteredByOneWeek.push(allGamesAndEventsArray[i])
 		}
 	}
-
 	//res.json({ allItemsThisWeek: allGamesAndEventsArrayFilteredByOneWeek })
-
 	//console.log('allItems: ' + allGamesAndEventsArray)
+
+	//
+	//
+	//
 
 	res.json({
 		allItems: allGamesAndEventsArray,

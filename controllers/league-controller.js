@@ -350,179 +350,84 @@ const getTeamSchedule = async (req, res, next) => {
 }
 //****************************************************************************************** */
 //
-// Get Team Schedule to display main schedule page, via the 'search by team' dropdown.
+// Get Team Schedule to display main schedule page
 // This is non-admin.
+//
+//  For Sloths, we're only dealing with one team here.  So let's go out and get all their
+//  games and events.  If a game took place, put the score, show WON or LOST, and add
+//  a link to the game summary.
+//
 //
 //****************************************************************************************** */
 const getTeamSchedule2 = async (req, res, next) => {
 	console.log('inside getTeamSchedule2')
-	const leagueName = req.params.leagueName
-	const session = req.params.session
-	const year = req.params.year
-	const teamName = req.params.teamName
-	//
-	//
-	console.log('teamName: ' + teamName)
-	//
-	//
-	//First, let's find the leagueId
-	//7/6/2023  For NBHL, I got rid of the session finder and replaced with isCurrent
-	let leagueId, teamId, wins, losses, overtimeLosses, shootoutLosses, ties
-	let foundLeague, divisionName, foundLeagueWithDivisions
+	let foundTeam
 	try {
-		foundLeague = await League.findOne({
-			leagueName: leagueName,
-			//session: session,
+		foundTeam = await Team.findOne({
 			isCurrent: true,
-			year: year,
 			//teamName: teamName,
 		}).orFail()
 	} catch (err) {
 		const error = new HttpError(
-			'Could not find league to obtain leagueId.  getTeamSchedule2',
+			'Could not find team to obtain teamId 5.  getTeamSchedule2',
 			404
 		)
 		return next(error)
 	}
-	leagueId = foundLeague._id
-	divisionName = foundLeague.divisionName
-
-	//7/6/2023  For NBHL, I got rid of the session finder and replaced with isCurrent
-	if (divisionName) {
-		console.log('we have divisions!')
-		try {
-			foundLeagueWithDivisions = await League.find({
-				leagueName: leagueName,
-				//session: session,
-				isCurrent: true,
-				year: year,
-			}).orFail()
-		} catch (err) {
-			const error = new HttpError(
-				'Could not find league to obtain leagueId WITH divisions.  getTeamSchedule2',
-				500
-			)
-			return next(error)
-		}
-
-		console.log('foundLeagueWithDivisions: ' + foundLeagueWithDivisions)
-
-		//So we have multiple leagues here.  Let's make an array of all teams
-		let allTeamsInThisLeague, teams
-		//MATT START
-		allTeamsInThisLeague = []
-		for (let i = 0; i < foundLeagueWithDivisions.length; i++) {
-			try {
-				teams = await Team.find({
-					leagueName: foundLeagueWithDivisions[i].leagueName,
-					divisionName: foundLeagueWithDivisions[i].divisionName,
-				}).orFail()
-			} catch (err) {
-				const error = new HttpError(err + ' getTeamSchedule2', 404)
-				console.log(error)
-			}
-			console.log('teams: ' + teams)
-			teams.forEach((team) => {
-				allTeamsInThisLeague.push(team)
-			})
-		}
-		//
-		//
-		//let teamId
-		let foundHomeTeam
-		allTeamsInThisLeague.forEach(async (team) => {
-			if (team.teamName === teamName) {
-				foundHomeTeam = team
-			}
-		})
-		//console.log('foundHomeTeam WITH a division: ' + foundHomeTeam)
-		teamId = foundHomeTeam.id
-		wins = foundHomeTeam.wins
-		losses = foundHomeTeam.losses
-		overtimeLosses = foundHomeTeam.overtimeLosses
-		shootoutLosses = foundHomeTeam.shootoutLosses
-		ties = foundHomeTeam.ties
-	}
-
-	if (!divisionName) {
-		//
-		//GET THE TEAM ID
-		//We have the leagueId, and we have the teamName from the params.
-		//So lets get the teamId
-		//let teamId
-		let foundTeam
-		try {
-			foundTeam = await Team.findOne({
-				leagueId: leagueId,
-				teamName: teamName,
-			}).orFail()
-		} catch (err) {
-			const error = new HttpError(
-				'Could not find team to obtain teamId 5.  getTeamSchedule2',
-				404
-			)
-			return next(error)
-		}
-		teamId = foundTeam.id
-		wins = foundTeam.wins
-		losses = foundTeam.losses
-		overtimeLosses = foundTeam.overtimeLosses
-		shootoutLosses = foundTeam.shootoutLosses
-		ties = foundTeam.ties
-
-		console.log('foundHomeTeam WITHOUT a division: ' + foundTeam)
-		console.log('teamId: ' + teamId)
-	}
+	//teamId = foundTeam.id
+	teamName = foundTeam.teamName
+	year = foundTeam.year
+	wins = foundTeam.wins
+	losses = foundTeam.losses
+	overtimeLosses = foundTeam.overtimeLosses
+	shootoutLosses = foundTeam.shootoutLosses
+	ties = foundTeam.ties
 	//
 	//
 	//
-	//Now we should tap into the games table
-	let teamGamesHome
+	//
+	// Next, lets get all the games and events for this current Sloths team
+	//
+	//
+	//
+	let allEvents, allGames
+	let allGamesAndEventsArray
+	allGamesAndEventsArray = []
+
 	try {
-		teamGamesHome = await Game.find({
-			homeTeamId: teamId,
+		const filter = {}
+		allEvents = await Event.find(filter)
+	} catch (err) {
+		const error = new HttpError('Error getting all events', 500)
+		return next(error)
+	}
+
+	for (let i = 0; i < allEvents.length; i++) {
+		allGamesAndEventsArray.push(allEvents[i])
+	}
+	//
+	//
+	//
+	//getting all games THAT ARE CURRENT
+	try {
+		allGames = await Game.find({
+			isCurrent: true,
 		})
 	} catch (err) {
-		const error = new HttpError(
-			err,
-			// 'Trouble finding games for this team.  teamGamesHome',
-			404
-		)
+		const error = new HttpError('Error getting all (current) Games', 500)
 		return next(error)
 	}
-	console.log('teamGamesHome: ' + teamGamesHome)
 	//
 	//
 	//
 	//
-	let teamGamesVisitor
-	try {
-		teamGamesVisitor = await Game.find({
-			visitorTeamId: teamId,
-		})
-	} catch (err) {
-		const error = new HttpError(
-			'Trouble finding games for this team.  getTeamSchedule2',
-			404
-		)
-		return next(error)
-	}
-	console.log('teamGamesVisitor: ' + teamGamesVisitor)
-
-	let allTeamGamesArray
-	allTeamGamesArray = []
-
-	for (let i = 0; i < teamGamesHome.length; i++) {
-		allTeamGamesArray.push(teamGamesHome[i])
-	}
-
-	for (let i = 0; i < teamGamesVisitor.length; i++) {
-		allTeamGamesArray.push(teamGamesVisitor[i])
+	for (let i = 0; i < allGames.length; i++) {
+		allGamesAndEventsArray.push(allGames[i])
 	}
 
 	//This little algorithm will sort all games and events based on first the
 	//date, then the times
-	allTeamGamesArray.sort(function (a, b) {
+	allGamesAndEventsArray.sort(function (a, b) {
 		if (a.date === b.date) {
 			return a.time < b.time ? -1 : a.time > b.time ? 1 : 0
 		} else {
@@ -530,11 +435,10 @@ const getTeamSchedule2 = async (req, res, next) => {
 		}
 	})
 
-	//console.log('ALL GAMES ARRAY: ' + allTeamGamesArray)
-
 	res.json({
-		allTeamGamesArray: allTeamGamesArray,
-		teamId,
+		allGamesAndEventsArray: allGamesAndEventsArray,
+		teamName,
+		year,
 		wins,
 		losses,
 		ties,
