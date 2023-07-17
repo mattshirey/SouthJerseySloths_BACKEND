@@ -8083,10 +8083,10 @@ const createPlayoffGameStats = async (req, res, next) => {
 
 	if (foundStats) {
 		console.log('stats already exist for this game: ' + foundStats)
-		previousHomeGoalsTotal = foundStats.homeGoalsTotal
-		previousVisitorGoalsTotal = foundStats.visitorGoalsTotal
-		previousPlayoffWinner = foundStats.winner
-		previousPlayoffLoser = foundStats.loser
+		previousHomeGoalsTotal = foundStats[0].homeGoalsTotal
+		previousVisitorGoalsTotal = foundStats[0].visitorGoalsTotal
+		previousPlayoffWinner = foundStats[0].winner
+		previousPlayoffLoser = foundStats[0].loser
 		//foundStats.deleteOne()
 	}
 
