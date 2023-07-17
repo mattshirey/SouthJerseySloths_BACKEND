@@ -8265,7 +8265,7 @@ const createPlayoffGameStats = async (req, res, next) => {
 			//Last thing we want to do here is find the sloths team and assign them either
 			//a win or a loss
 			//
-			foundHomeTeam
+			let foundHomeTeam
 			try {
 				foundHomeTeam = await Team.findOne({
 					teamName: homeTeamName,
