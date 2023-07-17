@@ -17659,8 +17659,6 @@ const removeEvent = async (req, res, next) => {
 			minusOvertimeLossForHomeTeam,
 			minusShootoutLossForHomeTeam,
 			minusTieForHomeTeam,
-			//winner,
-			//loser,
 			tie
 
 		if (gameStats.length > 0) {
@@ -18170,6 +18168,212 @@ const removeEvent = async (req, res, next) => {
 				}
 			}
 		} else if (championshipStats.length > 0) {
+			console.log('looks like we want to delete a championship game!')
+			homePoints = championshipStats[0].homeGoalsTotal
+			visitorPoints = championshipStats[0].visitorGoalsTotal
+			//If the home team was the winner, we need to tap into the team and remove a win from them
+			//as well as tap into the visiting team and remove a loss from them
+			//
+			//
+			//    if home team won
+			//
+			//
+			if (homePoints > visitorPoints) {
+				console.log(
+					'home team won this championship game that is about to be deleted...'
+				)
+				try {
+					minusWinForHomeTeam = await Team.findById(teamId)
+				} catch (err) {
+					const error = new HttpError(
+						'Could not find homeTeam to delete their win.',
+						404
+					)
+					return next(error)
+				}
+				//
+				//
+				minusWinForHomeTeam.wins = Number(minusWinForHomeTeam.wins) - 1
+				//
+				minusWinForHomeTeam.goalsFor =
+					Number(minusWinForHomeTeam.goalsFor) - homePoints
+				//
+				minusWinForHomeTeam.goalsAgainst =
+					Number(minusWinForHomeTeam.goalsAgainst) - visitorPoints
+				//
+				//
+				//
+				try {
+					console.log('saving home team after removing their win...')
+					await minusWinForHomeTeam.save()
+				} catch (err) {
+					const error = new HttpError(
+						'could not edit home team to take away a win',
+						500
+					)
+					return next(error)
+				}
+				//
+				//
+				//
+				//
+				//
+				try {
+					console.log('deleting game stats 1...')
+					championshipStats.forEach((stat) => {
+						stat.deleteOne()
+					})
+				} catch (err) {
+					const error = new HttpError(
+						'Could not delete game stats: ' + err,
+						404
+					)
+					return next(error)
+				}
+				//
+				//
+				try {
+					console.log('deleting championship game...')
+					//await gameOrEvent.deleteOne()
+					await game.deleteOne()
+				} catch (err) {
+					const error = new HttpError(err, 404)
+					return next(error)
+				}
+				//
+				console.log('you are here 61')
+				//
+				//
+				// IF VISITING TEAM WINS
+				//
+				//
+			} else if (visitorPoints > homePoints) {
+				console.log(
+					'visitor team won in this championship game that were about to delete'
+				)
+
+				try {
+					minusLossForHomeTeam = await Team.findById(teamId)
+				} catch (err) {
+					const error = new HttpError(
+						'Could not find homeTeam to delete their loss.',
+						404
+					)
+					return next(error)
+				}
+				//
+				//
+				minusLossForHomeTeam.losses = Number(minusLossForHomeTeam.losses) - 1
+				//
+				minusLossForHomeTeam.goalsFor =
+					Number(minusLossForHomeTeam.goalsFor) - homePoints
+				//
+				minusLossForHomeTeam.goalsAgainst =
+					Number(minusLossForHomeTeam.goalsAgainst) - visitorPoints
+
+				console.log(
+					'home team lost in regulation in the championship game were about to delete...'
+				)
+
+				//
+				//
+				try {
+					console.log(
+						'saving home team after deleting their championship loss...'
+					)
+					await minusLossForHomeTeam.save()
+				} catch (err) {
+					const error = new HttpError(
+						'could not edit home team to take away a loss',
+						500
+					)
+					return next(error)
+				}
+				//
+				//
+				//
+				try {
+					console.log('deleting championship game stats 2...')
+					championshipStats.forEach((stat) => {
+						stat.deleteOne()
+					})
+				} catch (err) {
+					const error = new HttpError(
+						'Could not delete game stats: ' + err,
+						404
+					)
+					return next(error)
+				}
+				//
+				//
+				try {
+					console.log('deleting championship game 2...')
+					//await gameOrEvent.deleteOne()
+					await game.deleteOne()
+				} catch (err) {
+					const error = new HttpError(err, 404)
+					return next(error)
+				}
+				//
+				//If it's a TIE
+			} else if (homePoints === visitorPoints) {
+				console.log('This championship game was a tie')
+
+				try {
+					minusTieForHomeTeam = await Team.findById(teamId)
+				} catch (err) {
+					const error = new HttpError(
+						'Could not find homeTeam to delete their championship tie.',
+						404
+					)
+					return next(error)
+				}
+				//
+				minusTieForHomeTeam.ties = Number(minusTieForHomeTeam.ties) - 1
+				//
+				minusTieForHomeTeam.goalsFor =
+					Number(minusTieForHomeTeam.goalsFor) - homePoints
+				//
+				minusTieForHomeTeam.goalsAgainst =
+					Number(minusTieForHomeTeam.goalsAgainst) - visitorPoints
+
+				//
+				//
+				try {
+					console.log('saving home team...')
+					await minusTieForHomeTeam.save()
+				} catch (err) {
+					const error = new HttpError(
+						'could not edit home team to take away a tie',
+						500
+					)
+					return next(error)
+				}
+				//
+				//
+				try {
+					console.log('deleting championship game stats...')
+					championshipStats.forEach((stat) => {
+						stat.deleteOne()
+					})
+				} catch (err) {
+					const error = new HttpError(
+						'Could not delete game stats: ' + err,
+						404
+					)
+					return next(error)
+				}
+				//
+				//
+				try {
+					console.log('deleting game...')
+					//await gameOrEvent.deleteOne()
+					await game.deleteOne()
+				} catch (err) {
+					const error = new HttpError(err, 404)
+					return next(error)
+				}
+			}
 		}
 		//
 		//
