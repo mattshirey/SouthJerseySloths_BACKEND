@@ -17342,7 +17342,7 @@ const removeEvent = async (req, res, next) => {
 			return next(error)
 		}
 		//
-		if (gameStats) {
+		if (gameStats.length > 0) {
 			console.log('gameStats: ' + gameStats)
 			playoffStats.forEach((stat) => {
 				stat.deleteOne()
