@@ -8280,6 +8280,7 @@ const createPlayoffGameStats = async (req, res, next) => {
 			}
 
 			if (winner === homeTeamName) {
+				console.log('lets add a win for sloths')
 				foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
 			} else {
 				foundHomeTeam.losses = Number(foundHomeTeam.losses) + 1
