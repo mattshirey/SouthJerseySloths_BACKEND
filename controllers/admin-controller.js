@@ -17357,7 +17357,7 @@ const removeEvent = async (req, res, next) => {
 			playoffStats = await PlayoffGameStats.find({ gameId: itemId })
 		} catch {}
 
-		if (playoffStats.length > 0) {
+		if (playoffStats) {
 			console.log('playoffGameStats: ' + playoffStats)
 			playoffStats.forEach((stat) => {
 				stat.deleteOne()
@@ -17371,11 +17371,15 @@ const removeEvent = async (req, res, next) => {
 			championshipStats = await ChampionshipGameStats.find({ gameId: itemId })
 		} catch {}
 
-		if (championshipStats.length > 0) {
+		if (championshipStats) {
 			console.log('championshipStats: ' + championshipStats)
 			championshipStats.forEach((stat) => {
 				stat.deleteOne()
 			})
+		}
+
+		if (!gameStats && !playoffStats && !championshipStats) {
+			console.log('there are no stats at all for this game yet...')
 		}
 		//
 		//
