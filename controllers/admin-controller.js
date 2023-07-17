@@ -5042,6 +5042,7 @@ const createGameStats = async (req, res, next) => {
 			return next(error)
 		}
 		teamName = foundGame.teamName
+		opponent = foundGame.opponent
 		//
 		//
 		//Now, using teamName, let's get the current sloths team id
