@@ -17974,17 +17974,17 @@ const removeEvent = async (req, res, next) => {
 				return next(error)
 			}
 		})
-	}
 
-	if (allPlayersWithGameStats.length > 0) {
-		try {
-			console.log('deleting allPlayersWithGameStats...')
-			allPlayersWithGameStats.forEach((playerGameStats) => {
-				playerGameStats.deleteOne()
-			})
-		} catch (err) {
-			const error = new HttpError(err, 404)
-			return next(error)
+		if (allPlayersWithGameStats) {
+			try {
+				console.log('deleting allPlayersWithGameStats...')
+				allPlayersWithGameStats.forEach((playerGameStats) => {
+					playerGameStats.deleteOne()
+				})
+			} catch (err) {
+				const error = new HttpError(err, 404)
+				return next(error)
+			}
 		}
 	}
 	if (event) {
