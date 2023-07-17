@@ -17404,7 +17404,6 @@ const removeEvent = async (req, res, next) => {
 			tie
 
 		if (gameStats.length > 0) {
-			let homePoints
 			homePoints = gameStats[0].homeGoalsTotal
 			visitorPoints = gameStats[0].visitorGoalsTotal
 			//If the home team was the winner, we need to tap into the team and remove a win from them
@@ -17416,8 +17415,8 @@ const removeEvent = async (req, res, next) => {
 			//
 			console.log('homePoints: ' + homePoints)
 			console.log('visitorPoints: ' + visitorPoints)
-			console.log('homePoints: ' + Number(homePoints))
-			console.log('visitorPoints: ' + Number(visitorPoints))
+			//console.log('homePoints: ' + Number(homePoints))
+			//console.log('visitorPoints: ' + Number(visitorPoints))
 
 			if (homePoints > visitorPoints) {
 				console.log('home team won this game that is about to be deleted...')
@@ -17709,8 +17708,8 @@ const removeEvent = async (req, res, next) => {
 			//
 			//
 		} else if (playoffStats.length > 0) {
-			homePoints = playoffStats.homeGoalsTotal
-			visitorPoints = playoffStats.visitorGoalsTotal
+			homePoints = playoffStats[0].homeGoalsTotal
+			visitorPoints = playoffStats[0].visitorGoalsTotal
 			//If the home team was the winner, we need to tap into the team and remove a win from them
 			//as well as tap into the visiting team and remove a loss from them
 			//
@@ -17974,10 +17973,12 @@ const removeEvent = async (req, res, next) => {
 		})
 	}
 
-	if (allPlayersWithGameStats) {
+	if (allPlayersWithGameStats.length > 0) {
 		try {
 			console.log('deleting allPlayersWithGameStats...')
-			await allPlayersWithGameStats.deleteOne()
+			allPlayersWithGameStats.forEach((playerGameStats) => {
+				playerGameStats.deleteOne()
+			})
 		} catch (err) {
 			const error = new HttpError(err, 404)
 			return next(error)
