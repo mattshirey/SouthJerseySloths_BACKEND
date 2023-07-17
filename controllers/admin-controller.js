@@ -17408,7 +17408,7 @@ const removeEvent = async (req, res, next) => {
 			//loser,
 			tie
 
-		if (gameStats) {
+		if (gameStats.length > 0) {
 			homePoints = gameStats.homeGoalsTotal
 			visitorPoints = gameStats.visitorGoalsTotal
 			//If the home team was the winner, we need to tap into the team and remove a win from them
@@ -17695,7 +17695,7 @@ const removeEvent = async (req, res, next) => {
 			//  if playoffStats
 			//
 			//
-		} else if (playoffStats) {
+		} else if (playoffStats.length > 0) {
 			homePoints = playoffStats.homeGoalsTotal
 			visitorPoints = playoffStats.visitorGoalsTotal
 			//If the home team was the winner, we need to tap into the team and remove a win from them
@@ -17891,7 +17891,7 @@ const removeEvent = async (req, res, next) => {
 					return next(error)
 				}
 			}
-		} else if (championshipStats) {
+		} else if (championshipStats.length > 0) {
 		}
 		//
 		//
