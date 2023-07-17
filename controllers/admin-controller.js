@@ -8047,7 +8047,7 @@ const createPlayoffGameStats = async (req, res, next) => {
 	try {
 		foundGame = await Game.findById(gameId)
 	} catch (err) {
-		const error = new HttpError('Could not find game.  createGameStats', 404)
+		const error = new HttpError('Could not find game.  createPlayoffStats', 404)
 		return next(error)
 	}
 	homeTeamName = foundGame.teamName
@@ -8348,60 +8348,80 @@ const createPlayoffGameStats = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const createChampionshipGameStats = async (req, res, next) => {
-	console.log('welp, time to create championship stats...')
+	console.log('welp, time to create Championship stats...')
+
 	//These are coming to us from AdminGameResultsPlayoff.js
-	const { gameId, homePointsTotal, visitorPointsTotal, gameSummary } = req.body
+	const {
+		homeStats,
+		gameId,
+		homePointsTotal,
+		visitorPointsTotal,
+		gameSummary,
+	} = req.body
 
 	//Use the gameId to get the homeTeamName and the visitorTeamName
-	let homeTeamName,
-		homeTeamId,
-		visitorTeamName,
-		visitorTeamId,
-		championshipGame,
-		foundGame
+	let homeTeamName, visitorTeamName, championshipGame, year, foundGame
 	try {
 		foundGame = await Game.findById(gameId)
 	} catch (err) {
-		const error = new HttpError('Could not find game.  createGameStats', 404)
+		const error = new HttpError(
+			'Could not find game.  createChampionshipStats',
+			404
+		)
 		return next(error)
 	}
 	homeTeamName = foundGame.teamName
 	visitorTeamName = foundGame.opponent
-	//homeTeamId = foundGame.homeTeamId
-	//visitorTeamId = foundGame.visitorTeamId
+	year = foundGame.year
 
 	console.log('home: ' + homeTeamName + ' ' + homePointsTotal)
 	console.log('visitor: ' + visitorTeamName + ' ' + visitorPointsTotal)
 	console.log('game summary: ' + gameSummary)
 
-	let winner, winnerId, loser, loserId
+	let winner, loser
 
 	if (homePointsTotal > visitorPointsTotal) {
 		winner = homeTeamName
-		//winnerId = homeTeamId
 		loser = visitorTeamName
-		//loserId = visitorTeamId
 	} else {
 		winner = visitorTeamName
-		//winnerId = visitorTeamId
 		loser = homeTeamName
-		//loserId = homeTeamId
 	}
 
-	console.log('And the winner is: ' + winner + '!!!')
+	console.log('And the championship winner is: ' + winner + '!!!')
 
-	//Let's check to see if ChampionshipGameStats already exist for this:
+	//Let's check to see if PlayoffGameStats already exist for this:
 	//If so, we want to delete them.  Only need one set of stats per game
 	try {
 		foundStats = await ChampionshipGameStats.find({ gameId: gameId })
 	} catch {}
 
-	if (foundStats) {
-		//console.log('foundStats: ' + foundStats)
+	let previousHomeGoalsTotal,
+		previousVisitorGoalsTotal,
+		previousChampionshipWinner,
+		previousChampionshipLoser
+
+	//Lets look for previous playoff stats.  If they exist, let's log them so we can
+	//refer to them later, then let's delete whats out there...
+	if (foundStats.length > 0) {
+		console.log('stats already exist for this Championship game: ' + foundStats)
+		previousHomeGoalsTotal = foundStats[0].homeGoalsTotal
+		previousVisitorGoalsTotal = foundStats[0].visitorGoalsTotal
+		previousChampionshipWinner = foundStats[0].winner
+		previousChampionshipLoser = foundStats[0].loser
 		foundStats.forEach((stat) => {
 			stat.deleteOne()
 		})
 	}
+
+	console.log('previousHomeGoalsTotal: ' + previousHomeGoalsTotal)
+	console.log('previousVisitorGoalsTotal: ' + previousVisitorGoalsTotal)
+	console.log('previousChampionshipWinner: ' + previousChampionshipWinner)
+	console.log('previousChampionshipLoser: ' + previousChampionshipLoser)
+	console.log('NEW homeGoalsTotal: ' + homePointsTotal)
+	console.log('NEW visitorGoalsTotal: ' + visitorPointsTotal)
+	console.log('NEW winner: ' + winner)
+	console.log('NEW loser: ' + loser)
 
 	championshipGame = new ChampionshipGameStats({
 		gameId: gameId,
@@ -8409,8 +8429,6 @@ const createChampionshipGameStats = async (req, res, next) => {
 		visitorGoalsTotal: visitorPointsTotal,
 		winner: winner,
 		loser: loser,
-		//winnerTeamId: winnerId,
-		//loserTeamId: loserId,
 		summary: gameSummary.trim(),
 	})
 	try {
@@ -8423,18 +8441,220 @@ const createChampionshipGameStats = async (req, res, next) => {
 	//So, we created playoff game stats, but I also want to go back and alter the game
 	//so that info shows up on the schedule screen
 	foundGame.status = 'FINAL'
-	//foundGame.winner = winnerId
-	//foundGame.loser = loserId
 	foundGame.winner = winner
 	foundGame.loser = loser
 	foundGame.score = Number(homePointsTotal) + ' - ' + Number(visitorPointsTotal)
-	console.log('saving game - third')
+	console.log('saving game - second')
 	try {
 		await foundGame.save()
 	} catch (err) {
 		const error = new HttpError(err, 500)
 		return next(error)
 	}
+	//
+	//
+	//
+	//************************************************** */
+	//
+	//  Individual stats
+	//
+	//************************************************** */
+	let foundHomeRosterPlayer,
+		rosterHomePlayerId,
+		rosterHomePlayerNewGoals,
+		rosterHomePlayerNewAssists,
+		rosterHomePlayerGameStats
+	for (let i = 0; i < homeStats.length; i++) {
+		const split = homeStats[i].split('|')
+		rosterHomePlayerId = split[0]
+		rosterHomePlayerNewGoals = split[1]
+		rosterHomePlayerNewAssists = split[2]
+
+		if (rosterHomePlayerNewGoals || rosterHomePlayerNewAssists) {
+			try {
+				foundHomeRosterPlayer = await RosterPlayer.findById(rosterHomePlayerId)
+			} catch (err) {
+				const error = new HttpError(
+					'Could not find rosterPlayer.  createChampionshipGame ' +
+						rosterHomePlayerId,
+					404
+				)
+				return next(error)
+			}
+			console.log(rosterHomePlayerId)
+			//
+			//
+			//So, we also want to write this players stats, but before we do that, we want to
+			//see if they already exist.  If they do, we want to delete them and create anew
+			const rosterPlayerStatsPerGameExists =
+				await RosterPlayerStatsPerGame.findOne({
+					gameId: gameId,
+					rosterPlayerId: foundHomeRosterPlayer._id,
+				})
+			//
+			//
+			//
+			//So...right here, if we find that stats already exist for this player,
+			//if their number of goals or assists is the same as above, we don't want
+			//to write them.  If the are DIFFERENT, then we write the ABOVE value.
+			let previousGoals, previousAssists
+			if (rosterPlayerStatsPerGameExists) {
+				previousGoals = rosterPlayerStatsPerGameExists.goals
+				previousAssists = rosterPlayerStatsPerGameExists.assists
+				rosterPlayerStatsPerGameExists.deleteOne()
+			}
+			//
+			//
+			//
+			if (previousGoals) {
+				if (previousGoals === rosterHomePlayerNewGoals) {
+					foundHomeRosterPlayer.goals = Number(foundHomeRosterPlayer.goals)
+				} else {
+					foundHomeRosterPlayer.goals =
+						Number(foundHomeRosterPlayer.goals) -
+						Number(previousGoals) +
+						Number(rosterHomePlayerNewGoals)
+				}
+			} else {
+				foundHomeRosterPlayer.goals =
+					Number(foundHomeRosterPlayer.goals) + Number(rosterHomePlayerNewGoals)
+			}
+
+			if (previousAssists) {
+				if (previousAssists === rosterHomePlayerNewAssists) {
+					foundHomeRosterPlayer.assists = Number(foundHomeRosterPlayer.assists)
+				} else {
+					foundHomeRosterPlayer.assists =
+						Number(foundHomeRosterPlayer.assists) -
+						Number(previousAssists) +
+						Number(rosterHomePlayerNewAssists)
+				}
+			} else {
+				foundHomeRosterPlayer.assists =
+					Number(foundHomeRosterPlayer.assists) +
+					Number(rosterHomePlayerNewAssists)
+			}
+
+			//writing changes to RosterPlayer
+			try {
+				await foundHomeRosterPlayer.save()
+			} catch (err) {
+				const error = new HttpError(
+					'Something went wrong with saving the roster players goals.  addPlayerStats ' +
+						rosterHomePlayerId +
+						' ' +
+						foundHomeRosterPlayer.goals,
+					500
+				)
+				return next(error)
+			}
+
+			//If the game HASNT been switched back to TBP, lets record the new stats in
+			//this players statsPerGame.  If gameStatus is TBP, we want to wipe out
+			//anything previous.
+			//creating new RosterPlayerStatsPerGame
+			//if (gameStatus !== 'TBP') {
+			rosterHomePlayerGameStats = new RosterPlayerStatsPerGame({
+				gameId: gameId,
+				rosterPlayerId: foundHomeRosterPlayer._id,
+				goals: rosterHomePlayerNewGoals,
+				assists: rosterHomePlayerNewAssists,
+			})
+			//Writing to GAME tally.  This is what will appear when we reload the form
+			try {
+				await rosterHomePlayerGameStats.save()
+			} catch (err) {
+				const error = new HttpError(
+					'could not create new instance of home RosterPlayerStatsPerGame',
+					500
+				)
+				return next(error)
+			}
+		}
+	}
+	//******************************************************************* */
+	//
+	//  team stats (team wins, losses, goalsFor, goalsAgainst)
+	//
+	//******************************************************************* */
+	//
+	//Last thing we want to do here is find the sloths team and assign them either
+	//a win or a loss, and also goals for and against
+	//
+	let foundHomeTeam
+	try {
+		foundHomeTeam = await Team.findOne({
+			teamName: homeTeamName,
+			year: year,
+		})
+	} catch (err) {
+		const error = new HttpError(
+			'could not find home team.  createPlayoffStats',
+			500
+		)
+		return next(error)
+	}
+
+	if (
+		previousChampionshipWinner &&
+		previousChampionshipWinner === homeTeamName
+	) {
+		console.log('looks like the sloths won last time.  did they win again?')
+		if (winner === homeTeamName) {
+			console.log('yes.  do nothing')
+		} else {
+			console.log('no.  so lets take away the previous win and add a loss')
+			foundHomeTeam.wins = Number(foundHomeTeam.wins) - 1
+			foundHomeTeam.losses = Number(foundHomeTeam.losses) + 1
+		}
+	}
+	if (previousChampionshipLoser && previousChampionshipLoser === homeTeamName) {
+		console.log('looks like the sloths lost last time.  did they lose again?')
+		if (loser === homeTeamName) {
+			console.log('yes.  do nothing')
+		} else {
+			console.log('no.  so lets take away the previous loss and add a win')
+			foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
+			foundHomeTeam.losses = Number(foundHomeTeam.losses) - 1
+		}
+	}
+	if (!previousChampionshipLoser && !previousChampionshipWinner) {
+		console.log('no previous winner or loser.  lets do that now')
+		if (winner === homeTeamName) {
+			foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
+		} else {
+			foundHomeTeam.losses = Number(foundHomeTeam.losses) + 1
+		}
+	}
+
+	if (previousHomeGoalsTotal) {
+		foundHomeTeam.goalsFor =
+			Number(foundHomeTeam.goalsFor) - previousHomeGoalsTotal
+	}
+	if (previousVisitorGoalsTotal) {
+		foundHomeTeam.goalsAgainst =
+			Number(foundHomeTeam.goalsAgainst) - previousVisitorGoalsTotal
+	}
+	if (homePointsTotal) {
+		foundHomeTeam.goalsFor = Number(foundHomeTeam.goalsFor) + homePointsTotal
+	}
+
+	if (visitorPointsTotal) {
+		foundHomeTeam.goalsAgainst =
+			Number(foundHomeTeam.goalsAgainst) + visitorPointsTotal
+	}
+
+	try {
+		await foundHomeTeam.save()
+	} catch (err) {
+		const error = new HttpError(
+			'could not save a win or loss for the home team.  createPlayoffStats',
+			500
+		)
+		return next(error)
+	}
+
+	console.log('foundHomeTeam: ' + foundHomeTeam)
 
 	res.status(200).json({ message: 'Championship stats have been added' })
 }
