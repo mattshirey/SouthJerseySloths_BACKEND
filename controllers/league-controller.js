@@ -252,24 +252,9 @@ const getTeamSchedule = async (req, res, next) => {
 	const year = req.params.year
 	//
 	//
-	//Get the leagueName - we'll want this so it displays at the top of the players list page
-	/* let leagueName, divisionName, foundLeagueWithDivisions
-	try {
-		foundLeague = await League.findById(leagueId)
-	} catch (err) {
-		const error = new HttpError(
-			'Could not find league to obtain leagueName.  getPlayersOnTeam',
-			404
-		)
-		return next(error)
-	}
-	leagueName = foundLeague.leagueName
-	divisionName = foundLeague.divisionName */
-	//
-	//
-	//GET THE TEAM ID
-	//We have the leagueId, and we have the teamName from the params.
-	//So lets get the teamId
+
+	console.log('teamName: ' + teamName)
+	console.log('year: ' + year)
 
 	let teamId
 	let foundTeam
