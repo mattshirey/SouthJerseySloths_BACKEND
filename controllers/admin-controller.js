@@ -17331,7 +17331,7 @@ const removeEvent = async (req, res, next) => {
 		console.log('matt you are here to remove a game!!')
 		let gameStats, playoffStats, championshipStats
 		try {
-			gameStats = await GameStats.findOne({
+			gameStats = await GameStats.find({
 				gameId: itemId,
 			})
 		} catch (err) {
@@ -17344,7 +17344,7 @@ const removeEvent = async (req, res, next) => {
 		//
 		if (gameStats) {
 			console.log('gameStats: ' + gameStats)
-			playoffStats.forEach((stat) => {
+			gameStats.forEach((stat) => {
 				stat.deleteOne()
 			})
 		}
