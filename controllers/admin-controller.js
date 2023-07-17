@@ -8213,21 +8213,6 @@ const createPlayoffGameStats = async (req, res, next) => {
 					Number(foundHomeRosterPlayer.assists) +
 					Number(rosterHomePlayerNewAssists)
 			}
-			//
-			//more kraly code here.  When changing game results back to TBP, we also want
-			//to wipe out any individual player stats as well
-			//
-			/* if (gameStatus === 'TBP' && previousStatus !== 'TBP') {
-				console.log('hello matthew, you are here now')
-				if (previousGoals) {
-					foundHomeRosterPlayer.goals =
-						Number(foundHomeRosterPlayer.goals) - Number(previousGoals)
-				}
-				if (previousAssists) {
-					foundHomeRosterPlayer.assists =
-						Number(foundHomeRosterPlayer.assists) - Number(previousAssists)
-				}
-			} */
 
 			//writing changes to RosterPlayer
 			try {
@@ -8264,101 +8249,68 @@ const createPlayoffGameStats = async (req, res, next) => {
 				)
 				return next(error)
 			}
-			//
-			//
-			//Last thing we want to do here is find the sloths team and assign them either
-			//a win or a loss
-			//
-			let foundHomeTeam
-			try {
-				foundHomeTeam = await Team.findOne({
-					teamName: homeTeamName,
-					year: year,
-				})
-			} catch (err) {
-				const error = new HttpError(
-					'could not find home team.  createPlayoffStats',
-					500
-				)
-				return next(error)
-			}
-
-			if (previousPlayoffWinner && previousPlayoffWinner === homeTeamName) {
-				console.log('looks like the sloths won last time.  did they win again?')
-				if (winner === homeTeamName) {
-					console.log('yes.  do nothing')
-				} else {
-					console.log('no.  so lets take away the previous win and add a loss')
-					foundHomeTeam.wins = Number(foundHomeTeam.wins) - 1
-					foundHomeTeam.losses = Number(foundHomeTeam.losses) + 1
-				}
-			}
-			if (previousPlayoffLoser && previousPlayoffLoser === homeTeamName) {
-				console.log(
-					'looks like the sloths lost last time.  did they lose again?'
-				)
-				if (loser === homeTeamName) {
-					console.log('yes.  do nothing')
-				} else {
-					console.log('no.  so lets take away the previous loss and add a win')
-					foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
-					foundHomeTeam.losses = Number(foundHomeTeam.losses) - 1
-				}
-			}
-			if (!previousPlayoffLoser && !previousPlayoffWinner) {
-				console.log('no previous winner or loser.  lets do that now')
-				if (winner === homeTeamName) {
-					foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
-				} else {
-					foundHomeTeam.losses = Number(foundHomeTeam.losses) + 1
-				}
-			}
-
-			try {
-				await foundHomeTeam.save()
-			} catch (err) {
-				const error = new HttpError(
-					'could not save a win or loss for the home team.  createPlayoffStats',
-					500
-				)
-				return next(error)
-			}
-
-			console.log('foundHomeTeam: ' + foundHomeTeam)
-
-			//
-			//if game status = TBP
-			//}
-			/*  else {
-				let rosterPlayerGameStatsToDelete
-				console.log(
-					'need to find then delete this home players rosterStatsPerGame from last time'
-				)
-				console.log('gameId: ' + gameId)
-				console.log('rosterPlayerId: ' + foundHomeRosterPlayer._id)
-				try {
-					rosterPlayerGameStatsToDelete =
-						await RosterPlayerStatsPerGame.findOne({
-							gameId: gameId,
-							rosterPlayerId: foundHomeRosterPlayer._id,
-						})
-				} catch (err) {
-					const error = new HttpError(
-						'Trouble finding player stats for this game 001.',
-						404
-					)
-					return next(error)
-				}
-				console.log(
-					'rosterPlayerGameStatsToDelete: ' + rosterPlayerGameStatsToDelete
-				)
-				//Writing to GAME tally.  This is what will appear when we reload the form
-				if (rosterPlayerGameStatsToDelete) {
-					rosterPlayerGameStatsToDelete.deleteOne()
-				}
-			} */
 		}
 	}
+
+	//
+	//
+	//Last thing we want to do here is find the sloths team and assign them either
+	//a win or a loss
+	//
+	let foundHomeTeam
+	try {
+		foundHomeTeam = await Team.findOne({
+			teamName: homeTeamName,
+			year: year,
+		})
+	} catch (err) {
+		const error = new HttpError(
+			'could not find home team.  createPlayoffStats',
+			500
+		)
+		return next(error)
+	}
+
+	if (previousPlayoffWinner && previousPlayoffWinner === homeTeamName) {
+		console.log('looks like the sloths won last time.  did they win again?')
+		if (winner === homeTeamName) {
+			console.log('yes.  do nothing')
+		} else {
+			console.log('no.  so lets take away the previous win and add a loss')
+			foundHomeTeam.wins = Number(foundHomeTeam.wins) - 1
+			foundHomeTeam.losses = Number(foundHomeTeam.losses) + 1
+		}
+	}
+	if (previousPlayoffLoser && previousPlayoffLoser === homeTeamName) {
+		console.log('looks like the sloths lost last time.  did they lose again?')
+		if (loser === homeTeamName) {
+			console.log('yes.  do nothing')
+		} else {
+			console.log('no.  so lets take away the previous loss and add a win')
+			foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
+			foundHomeTeam.losses = Number(foundHomeTeam.losses) - 1
+		}
+	}
+	if (!previousPlayoffLoser && !previousPlayoffWinner) {
+		console.log('no previous winner or loser.  lets do that now')
+		if (winner === homeTeamName) {
+			foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
+		} else {
+			foundHomeTeam.losses = Number(foundHomeTeam.losses) + 1
+		}
+	}
+
+	try {
+		await foundHomeTeam.save()
+	} catch (err) {
+		const error = new HttpError(
+			'could not save a win or loss for the home team.  createPlayoffStats',
+			500
+		)
+		return next(error)
+	}
+
+	console.log('foundHomeTeam: ' + foundHomeTeam)
 
 	res.status(200).json({ message: 'Playoff stats have been added' })
 }
