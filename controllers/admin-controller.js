@@ -8279,11 +8279,11 @@ const createPlayoffGameStats = async (req, res, next) => {
 				return next(error)
 			}
 
-			if (winner === homeTeamName) {
+			/* if (winner === homeTeamName) {
 				foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
 			} else {
 				foundHomeTeam.losses = Number(foundHomeTeam.losses) + 1
-			}
+			} */
 
 			try {
 				await foundHomeTeam.save()
