@@ -140,28 +140,7 @@ const getScoringLeadersByLeagueId = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const getPlayersOnTeam = async (req, res, next) => {
-	//const leagueId = req.params.leagueId
-	//const teamName = req.params.teamName
-	//const session = req.params.session
-	//const year = req.params.year
-	//
-	//
-	//Get the leagueName - we'll want this so it displays at the top of the players list page
-	/* let leagueName, divisionName, session, year
-	try {
-		foundLeague = await League.findById(leagueId)
-	} catch (err) {
-		const error = new HttpError(
-			'Could not find league to obtain leagueName.  getPlayersOnTeam',
-			404
-		)
-		return next(error)
-	}
-	leagueName = foundLeague.leagueName
-	divisionName = foundLeague.divisionName
-	session = foundLeague.session
-	year = foundLeague.year
-	console.log('divisionName: ' + divisionName) */
+	console.log('inside getPlayersOnTeam')
 	//
 	//
 	//So, there should only be ONE current team - that's how Anthony wants this set up
@@ -187,7 +166,7 @@ const getPlayersOnTeam = async (req, res, next) => {
 		return next(error)
 	}
 	teamName = foundTeam.teamName
-	yeaer = foundTeam.year
+	year = foundTeam.year
 	teamId = foundTeam.id
 	wins = foundTeam.wins
 	losses = foundTeam.losses
