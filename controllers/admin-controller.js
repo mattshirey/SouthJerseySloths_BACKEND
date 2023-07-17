@@ -8251,11 +8251,14 @@ const createPlayoffGameStats = async (req, res, next) => {
 			}
 		}
 	}
-
+	//******************************************************************* */
 	//
+	//  team stats (team wins, losses, goalsFor, goalsAgainst)
+	//
+	//******************************************************************* */
 	//
 	//Last thing we want to do here is find the sloths team and assign them either
-	//a win or a loss
+	//a win or a loss, and also goals for and against
 	//
 	let foundHomeTeam
 	try {
@@ -8298,6 +8301,23 @@ const createPlayoffGameStats = async (req, res, next) => {
 		} else {
 			foundHomeTeam.losses = Number(foundHomeTeam.losses) + 1
 		}
+	}
+
+	if (previousHomeGoalsTotal) {
+		foundHomeTeam.goalsFor =
+			Number(foundHomeTeam.goalsFor) - previousHomeGoalsTotal
+	}
+	if (previousVisitorGoalsTotal) {
+		foundHomeTeam.goalsAgainst =
+			Number(foundHomeTeam.goalsAgainst) - previousVisitorGoalsTotal
+	}
+	if (homePointsTotal) {
+		foundHomeTeam.goalsFor = Number(foundHomeTeam.goalsFor) + homePointsTotal
+	}
+
+	if (visitorPointsTotal) {
+		foundHomeTeam.goalsAgainst =
+			Number(foundHomeTeam.goalsAgainst) + visitorPointsTotal
 	}
 
 	try {
