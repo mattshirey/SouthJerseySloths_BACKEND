@@ -8083,7 +8083,7 @@ const createPlayoffGameStats = async (req, res, next) => {
 
 	//Lets look for previous playoff stats.  If they exist, let's log them so we can
 	//refer to them later, then let's delete whats out there...
-	if (foundStats) {
+	if (foundStats.length > 0) {
 		console.log('stats already exist for this game: ' + foundStats)
 		previousHomeGoalsTotal = foundStats[0].homeGoalsTotal
 		previousVisitorGoalsTotal = foundStats[0].visitorGoalsTotal
@@ -8304,7 +8304,7 @@ const createPlayoffGameStats = async (req, res, next) => {
 					foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
 					foundHomeTeam.losses = Number(foundHomeTeam.losses) - 1
 				}
-			}			
+			}
 
 			try {
 				await foundHomeTeam.save()
