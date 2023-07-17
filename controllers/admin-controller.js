@@ -8306,6 +8306,7 @@ const createPlayoffGameStats = async (req, res, next) => {
 				}
 			}
 			if (!previousPlayoffLoser && !previousPlayoffWinner) {
+				console.log('no previous winner or loser.  lets do that now')
 				if (winner === homeTeamName) {
 					foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
 				} else {
