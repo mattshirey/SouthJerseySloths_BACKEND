@@ -17329,7 +17329,7 @@ const removeEvent = async (req, res, next) => {
 	//kraly 4
 	if (!event) {
 		console.log('matt you are here to remove a game!!')
-		let gameStats, playoffStats, championshipStats
+		//let gameStats, playoffStats, championshipStats
 		try {
 			gameStats = await GameStats.findOne({
 				gameId: itemId,
@@ -17342,7 +17342,7 @@ const removeEvent = async (req, res, next) => {
 			return next(error)
 		}
 		//
-		if (gameStats.length > 0) {
+		if (gameStats) {
 			console.log('gameStats: ' + gameStats)
 			playoffStats.forEach((stat) => {
 				stat.deleteOne()
