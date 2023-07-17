@@ -4786,7 +4786,7 @@ const createGameStats = async (req, res, next) => {
 					newHomeGoalsTotal
 			)
 			winner = opponent
-			loser = teamId
+			loser = teamName
 			homeShootoutLosses = Number(foundTeam.shootoutLosses) + 1
 			homeOvertimeLosses = Number(foundTeam.overtimeLosses)
 			//visitorShootoutLosses = Number(foundVisitorTeam.shootoutLosses)
@@ -4808,7 +4808,7 @@ const createGameStats = async (req, res, next) => {
 					newHomeGoalsTotal
 			)
 			winner = opponent
-			loser = teamId
+			loser = teamName
 			homeOvertimeLosses = Number(foundTeam.overtimeLosses) + 1
 			homeShootoutLosses = Number(foundTeam.shootoutLosses)
 			//visitorShootoutLosses = Number(foundVisitorTeam.shootoutLosses)
@@ -4827,7 +4827,7 @@ const createGameStats = async (req, res, next) => {
 					newHomeGoalsTotal
 			)
 			winner = opponent
-			loser = teamId
+			loser = teamName
 			homeLosses = Number(foundTeam.losses) + 1
 			homeWins = Number(foundTeam.wins)
 			homeTies = Number(foundTeam.ties)
@@ -4843,7 +4843,7 @@ const createGameStats = async (req, res, next) => {
 			gameStatus === 'Shootout'
 		) {
 			console.log('visitor team loses in shootout')
-			winner = teamId
+			winner = teamName
 			loser = opponent
 			homeWins = Number(foundTeam.wins) + 1
 			homeLosses = Number(foundTeam.losses)
@@ -4860,7 +4860,7 @@ const createGameStats = async (req, res, next) => {
 			gameStatus === 'Overtime'
 		) {
 			console.log('visitor team loses in overtime')
-			winner = teamId
+			winner = teamName
 			loser = opponent
 			homeWins = Number(foundTeam.wins) + 1
 			homeLosses = Number(foundTeam.losses)
@@ -4874,7 +4874,7 @@ const createGameStats = async (req, res, next) => {
 			homeOvertimeLosses = Number(foundTeam.overtimeLosses)
 		} else if (Number(newVisitorGoalsTotal) < Number(newHomeGoalsTotal)) {
 			console.log('visitor team loses in regulation')
-			winner = teamId
+			winner = teamName
 			loser = opponent
 			homeWins = Number(foundTeam.wins) + 1
 			homeLosses = Number(foundTeam.losses)
@@ -5250,12 +5250,12 @@ const createGameStats = async (req, res, next) => {
 		//
 		if (Number(newHomeGoalsTotal) > Number(newVisitorGoalsTotal)) {
 			console.log('HOME team wins!')
-			newWinner = teamId
+			newWinner = teamName
 			newLoser = opponent
 		} else if (Number(newVisitorGoalsTotal) > Number(newHomeGoalsTotal)) {
 			console.log('VISITOR team wins')
 			newWinner = opponent
-			newLoser = teamId
+			newLoser = teamName
 		} else {
 			console.log('WE HAVE A TIE')
 		}
