@@ -8087,7 +8087,9 @@ const createPlayoffGameStats = async (req, res, next) => {
 		previousVisitorGoalsTotal = foundStats[0].visitorGoalsTotal
 		previousPlayoffWinner = foundStats[0].winner
 		previousPlayoffLoser = foundStats[0].loser
-		//foundStats.deleteOne()
+		foundStats.forEach((stat) => {
+			stat.deleteOne()
+		})
 	}
 
 	console.log('previousHomeGoalsTotal: ' + previousHomeGoalsTotal)
