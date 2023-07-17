@@ -200,11 +200,11 @@ const getPlayersOnTeam = async (req, res, next) => {
 		return next(error)
 	}
 
-	let howManyPlayers
+	/* let howManyPlayers
 
 	if (rosteredPlayers.length > 0) {
 		howManyPlayers = rosteredPlayers.length
-	}
+	} */
 
 	rosteredPlayers.sort((a, b) =>
 		a.goals + a.assists < b.goals + b.assists ? 1 : -1
@@ -271,7 +271,7 @@ const getPlayersOnTeam = async (req, res, next) => {
 	res.json({
 		allGamesAndEventsArray: allGamesAndEventsArray,
 		rosteredPlayers,
-		howManyPlayers,
+		//howManyPlayers,
 		wins,
 		losses,
 		overtimeLosses,
