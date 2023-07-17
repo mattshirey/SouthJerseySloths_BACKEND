@@ -8043,13 +8043,7 @@ const createPlayoffGameStats = async (req, res, next) => {
 	} = req.body
 
 	//Use the gameId to get the homeTeamName and the visitorTeamName
-	let homeTeamName,
-		//homeTeamId,
-		visitorTeamName,
-		//visitorTeamId,
-		playoffGame,
-		year,
-		foundGame
+	let homeTeamName, visitorTeamName, playoffGame, year, foundGame
 	try {
 		foundGame = await Game.findById(gameId)
 	} catch (err) {
@@ -8059,25 +8053,19 @@ const createPlayoffGameStats = async (req, res, next) => {
 	homeTeamName = foundGame.teamName
 	visitorTeamName = foundGame.opponent
 	year = foundGame.year
-	//homeTeamId = foundGame.homeTeamId
-	//visitorTeamId = foundGame.visitorTeamId
 
 	console.log('home: ' + homeTeamName + ' ' + homePointsTotal)
 	console.log('visitor: ' + visitorTeamName + ' ' + visitorPointsTotal)
 	console.log('game summary: ' + gameSummary)
 
-	let winner, winnerId, loser, loserId
+	let winner, loser
 
 	if (homePointsTotal > visitorPointsTotal) {
 		winner = homeTeamName
-		//winnerId = homeTeamId
 		loser = visitorTeamName
-		//loserId = visitorTeamId
 	} else {
 		winner = visitorTeamName
-		//winnerId = visitorTeamId
 		loser = homeTeamName
-		//loserId = homeTeamId
 	}
 
 	console.log('And the winner is: ' + winner + '!!!')
@@ -8088,12 +8076,30 @@ const createPlayoffGameStats = async (req, res, next) => {
 		foundStats = await PlayoffGameStats.find({ gameId: gameId })
 	} catch {}
 
+	let previousHomeGoalsTotal,
+		previousVisitorGoalsTotal,
+		previousPlayoffWinner,
+		previousPlayoffLoser
+
 	if (foundStats) {
-		console.log('foundStats: ' + foundStats)
-		foundStats.forEach((stat) => {
-			stat.deleteOne()
-		})
+		console.log('stats already exist for this game: ' + foundStats)
+		previousHomeGoalsTotal = foundStats.homeGoalsTotal
+		previousVisitorGoalsTotal = foundStats.visitorGoalsTotal
+		previousPlayoffWinner = foundStats.winner
+		previousPlayoffLoser = foundStats.loser
+		foundStats.deleteOne()
 	}
+
+	console.log('previousHomeGoalsTotal: ' + previousHomeGoalsTotal)
+	console.log('previousVisitorGoalsTotal: ' + previousVisitorGoalsTotal)
+	console.log('previousPlayoffWinner: ' + previousPlayoffWinner)
+	console.log('previousPlayoffLoser: ' + previousPlayoffLoser)
+	console.log('NEW homeGoalsTotal: ' + homePointsTotal)
+	console.log('NEW visitorGoalsTotal: ' + visitorPointsTotal)
+	console.log('NEW winner: ' + winner)
+	console.log('NEW loser: ' + loser)
+
+	//now let's delete the previous stats
 
 	playoffGame = new PlayoffGameStats({
 		gameId: gameId,
@@ -8101,8 +8107,6 @@ const createPlayoffGameStats = async (req, res, next) => {
 		visitorGoalsTotal: visitorPointsTotal,
 		winner: winner,
 		loser: loser,
-		//winnerTeamId: winnerId,
-		//loserTeamId: loserId,
 		summary: gameSummary.trim(),
 	})
 	try {
@@ -8115,8 +8119,6 @@ const createPlayoffGameStats = async (req, res, next) => {
 	//So, we created playoff game stats, but I also want to go back and alter the game
 	//so that info shows up on the schedule screen
 	foundGame.status = 'FINAL'
-	//foundGame.winner = winnerId
-	//foundGame.loser = loserId
 	foundGame.winner = winner
 	foundGame.loser = loser
 	foundGame.score = Number(homePointsTotal) + ' - ' + Number(visitorPointsTotal)
@@ -8295,6 +8297,8 @@ const createPlayoffGameStats = async (req, res, next) => {
 				)
 				return next(error)
 			}
+
+			console.log('foundHomeTeam: ' + foundHomeTeam)
 
 			//
 			//if game status = TBP
