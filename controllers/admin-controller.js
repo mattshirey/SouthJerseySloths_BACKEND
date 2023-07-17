@@ -8305,19 +8305,20 @@ const createPlayoffGameStats = async (req, res, next) => {
 
 	if (previousHomeGoalsTotal) {
 		foundHomeTeam.goalsFor =
-			Number(foundHomeTeam.goalsFor) - previousHomeGoalsTotal
+			Number(foundHomeTeam.goalsFor) - Number(previousHomeGoalsTotal)
 	}
 	if (previousVisitorGoalsTotal) {
 		foundHomeTeam.goalsAgainst =
-			Number(foundHomeTeam.goalsAgainst) - previousVisitorGoalsTotal
+			Number(foundHomeTeam.goalsAgainst) - Number(previousVisitorGoalsTotal)
 	}
 	if (homePointsTotal) {
-		foundHomeTeam.goalsFor = Number(foundHomeTeam.goalsFor) + homePointsTotal
+		foundHomeTeam.goalsFor =
+			Number(foundHomeTeam.goalsFor) + Number(homePointsTotal)
 	}
 
 	if (visitorPointsTotal) {
 		foundHomeTeam.goalsAgainst =
-			Number(foundHomeTeam.goalsAgainst) + visitorPointsTotal
+			Number(foundHomeTeam.goalsAgainst) + Number(visitorPointsTotal)
 	}
 
 	try {
@@ -8629,19 +8630,20 @@ const createChampionshipGameStats = async (req, res, next) => {
 
 	if (previousHomeGoalsTotal) {
 		foundHomeTeam.goalsFor =
-			Number(foundHomeTeam.goalsFor) - previousHomeGoalsTotal
+			Number(foundHomeTeam.goalsFor) - Number(previousHomeGoalsTotal)
 	}
 	if (previousVisitorGoalsTotal) {
 		foundHomeTeam.goalsAgainst =
-			Number(foundHomeTeam.goalsAgainst) - previousVisitorGoalsTotal
+			Number(foundHomeTeam.goalsAgainst) - Number(previousVisitorGoalsTotal)
 	}
 	if (homePointsTotal) {
-		foundHomeTeam.goalsFor = Number(foundHomeTeam.goalsFor) + homePointsTotal
+		foundHomeTeam.goalsFor =
+			Number(foundHomeTeam.goalsFor) + Number(homePointsTotal)
 	}
 
 	if (visitorPointsTotal) {
 		foundHomeTeam.goalsAgainst =
-			Number(foundHomeTeam.goalsAgainst) + visitorPointsTotal
+			Number(foundHomeTeam.goalsAgainst) + Number(visitorPointsTotal)
 	}
 
 	try {
