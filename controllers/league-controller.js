@@ -154,8 +154,6 @@ const getPlayersOnTeam = async (req, res, next) => {
 	//
 	try {
 		foundTeam = await Team.findOne({
-			//leagueId: leagueId,
-			//teamName: teamName,
 			isCurrent: true,
 		}).orFail()
 	} catch (err) {
@@ -205,8 +203,67 @@ const getPlayersOnTeam = async (req, res, next) => {
 	rosteredPlayers.sort((a, b) =>
 		a.goals + a.assists < b.goals + b.assists ? 1 : -1
 	)
+	//
+	//
+	//  Ok so the next thing i want to do here is pretty much steal all the code from
+	//  getTeamSchedule2, and merge all that logic with this logic (getPlayersOnTeam),
+	//  then return all this info back to the RosterAndSchedulePage on the frontend
+	//
+	//
+	//
+	//
+	//
+	// Next, lets get all the games and events for this current Sloths team
+	//
+	//
+	//
+	let allEvents, allGames
+	let allGamesAndEventsArray
+	allGamesAndEventsArray = []
+
+	try {
+		const filter = {}
+		allEvents = await Event.find(filter)
+	} catch (err) {
+		const error = new HttpError('Error getting all events', 500)
+		return next(error)
+	}
+
+	for (let i = 0; i < allEvents.length; i++) {
+		allGamesAndEventsArray.push(allEvents[i])
+	}
+	//
+	//
+	//
+	//getting all games THAT ARE CURRENT
+	try {
+		allGames = await Game.find({
+			isCurrent: true,
+		})
+	} catch (err) {
+		const error = new HttpError('Error getting all (current) Games', 500)
+		return next(error)
+	}
+	//
+	//
+	//
+	//
+	for (let i = 0; i < allGames.length; i++) {
+		allGamesAndEventsArray.push(allGames[i])
+	}
+
+	//This little algorithm will sort all games and events based on first the
+	//date, then the times
+	allGamesAndEventsArray.sort(function (a, b) {
+		if (a.date === b.date) {
+			return a.time < b.time ? -1 : a.time > b.time ? 1 : 0
+		} else {
+			return new Date(b.date) < new Date(a.date) ? 1 : -1
+		}
+	})
 
 	res.json({
+		allGamesAndEventsArray: allGamesAndEventsArray,
 		rosteredPlayers,
 		wins,
 		losses,
@@ -215,7 +272,6 @@ const getPlayersOnTeam = async (req, res, next) => {
 		ties,
 		teamName,
 		year,
-		//leagueName,
 	})
 }
 //****************************************************************************************** */
