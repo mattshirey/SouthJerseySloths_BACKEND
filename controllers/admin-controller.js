@@ -17342,12 +17342,12 @@ const removeEvent = async (req, res, next) => {
 			return next(error)
 		}
 		//
-		/* if (gameStats.length > 0) {
+		if (gameStats.length > 0) {
 			console.log('gameStats: ' + gameStats)
-			gameStats.forEach((stat) => {
-				stat.deleteOne()
-			})
-		} */
+			//gameStats.forEach((stat) => {
+			//	stat.deleteOne()
+			//})
+		}
 		//
 		//
 		//
@@ -17359,9 +17359,9 @@ const removeEvent = async (req, res, next) => {
 
 		if (playoffStats.length > 0) {
 			console.log('playoffGameStats: ' + playoffStats)
-			playoffStats.forEach((stat) => {
-				stat.deleteOne()
-			})
+			//playoffStats.forEach((stat) => {
+			//	stat.deleteOne()
+			//})
 		}
 		//
 		//
@@ -17373,9 +17373,9 @@ const removeEvent = async (req, res, next) => {
 
 		if (championshipStats.length > 0) {
 			console.log('championshipStats: ' + championshipStats)
-			championshipStats.forEach((stat) => {
-				stat.deleteOne()
-			})
+			//championshipStats.forEach((stat) => {
+			//	stat.deleteOne()
+			//})
 		}
 
 		if (
