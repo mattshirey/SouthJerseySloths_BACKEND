@@ -200,7 +200,7 @@ const getPlayersOnTeam = async (req, res, next) => {
 		return next(error)
 	}
 
-	rosteredPlayers && console.log('how many players' + rosteredPlayers.length)
+	rosteredPlayers && console.log('how many players: ' + rosteredPlayers.length)
 
 	rosteredPlayers.sort((a, b) =>
 		a.goals + a.assists < b.goals + b.assists ? 1 : -1
