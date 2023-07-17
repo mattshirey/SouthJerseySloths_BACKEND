@@ -8305,6 +8305,13 @@ const createPlayoffGameStats = async (req, res, next) => {
 					foundHomeTeam.losses = Number(foundHomeTeam.losses) - 1
 				}
 			}
+			if (!previousPlayoffLoser && !previousPlayoffWinner) {
+				if (winner === homeTeamName) {
+					foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
+				} else {
+					foundHomeTeam.losses = Number(foundHomeTeam.losses) + 1
+				}
+			}
 
 			try {
 				await foundHomeTeam.save()
