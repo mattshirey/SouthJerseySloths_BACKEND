@@ -17943,6 +17943,9 @@ const removeEvent = async (req, res, next) => {
 		}
 
 		console.log('allPlayersWithGameStats: ' + allPlayersWithGameStats)
+		console.log(
+			'allPlayersWithGameStats LENGTH: ' + allPlayersWithGameStats.length
+		)
 
 		//for each player that has stats that game, we want to go find their rosterPlayer and
 		//remove any goals or assists that took place this game
