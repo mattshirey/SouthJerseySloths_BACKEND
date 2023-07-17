@@ -17896,6 +17896,7 @@ const removeEvent = async (req, res, next) => {
 
 		//Next, we want to delete any rosterPlayerStatsPerGame for this game, if any exist
 		let allPlayersWithGameStats
+		console.log('looking up rosterPlayerStatsPerGame to delete...')
 		try {
 			allPlayersWithGameStats = await rosterPlayerStatsPerGame.find({
 				gameId: itemId,
