@@ -17342,6 +17342,13 @@ const removeEvent = async (req, res, next) => {
 			return next(error)
 		}
 		//
+		if (gameStats.length > 0) {
+			console.log('gameStats: ' + gameStats)
+			playoffStats.forEach((stat) => {
+				stat.deleteOne()
+			})
+		}
+		//
 		//
 		//
 		//
@@ -17350,7 +17357,7 @@ const removeEvent = async (req, res, next) => {
 			playoffStats = await PlayoffGameStats.find({ gameId: itemId })
 		} catch {}
 
-		if (playoffStats) {
+		if (playoffStats.length > 0) {
 			console.log('playoffGameStats: ' + playoffStats)
 			playoffStats.forEach((stat) => {
 				stat.deleteOne()
@@ -17364,7 +17371,7 @@ const removeEvent = async (req, res, next) => {
 			championshipStats = await ChampionshipGameStats.find({ gameId: itemId })
 		} catch {}
 
-		if (championshipStats) {
+		if (championshipStats.length > 0) {
 			console.log('championshipStats: ' + championshipStats)
 			championshipStats.forEach((stat) => {
 				stat.deleteOne()
