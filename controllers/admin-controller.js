@@ -10851,8 +10851,6 @@ const addPlayerToTeam = async (req, res, next) => {
 					lastName: lastName3,
 					rosterId,
 					teamName,
-					//leagueName,
-					//session,
 					year,
 					number: playerNumber3,
 					goals: 0,
@@ -10898,8 +10896,6 @@ const addPlayerToTeam = async (req, res, next) => {
 					lastName: lastName3,
 					rosterId,
 					teamName,
-					//leagueName,
-					//session,
 					year,
 					number: playerNumber3,
 					goals: 0,
@@ -10969,11 +10965,11 @@ const addPlayerToTeam = async (req, res, next) => {
 		let existingPlayerName4
 		if (playerExists4) {
 			existingPlayerName4 = firstName4 + ' ' + middleInitial4 + ' ' + lastName4
-			console.log('Player4 Exists: ' + existingPlayerName4)
+			console.log('Player Exists: ' + existingPlayerName4)
 		}
 		//
 		//Should have everything we need now to create a new RosterPlayer item.
-		//let createdRosterPlayer4
+		//let createdRosterPlayer3
 		if (!middleInitial4) {
 			if (playerExists4) {
 				console.log('Player 4 already exists!')
@@ -10999,15 +10995,13 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else {
 				createdRosterPlayer4 = new RosterPlayer({
-					leagueId,
+					teamId,
 					playerId: playerId4,
 					firstName: firstName4,
 					middleInitial: ' ',
 					lastName: lastName4,
 					rosterId,
 					teamName,
-					leagueName,
-					session,
 					year,
 					number: playerNumber4,
 					goals: 0,
@@ -11017,10 +11011,7 @@ const addPlayerToTeam = async (req, res, next) => {
 			try {
 				await createdRosterPlayer4.save()
 			} catch (err) {
-				const error = new HttpError(
-					'Could not add player4 to team.  Maybe a missing Number?',
-					500
-				)
+				const error = new HttpError('Could not add player4 to team.', 500)
 				//const error = new HttpError(err, 500)
 				return next(error)
 			}
@@ -11051,15 +11042,13 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else {
 				createdRosterPlayer4 = new RosterPlayer({
-					leagueId,
+					teamId,
 					playerId: playerId4,
 					firstName: firstName4,
-					middleInitial: middleInitial4,
+					middleInitial: ' ',
 					lastName: lastName4,
 					rosterId,
 					teamName,
-					leagueName,
-					session,
 					year,
 					number: playerNumber4,
 					goals: 0,
@@ -11072,10 +11061,7 @@ const addPlayerToTeam = async (req, res, next) => {
 				createdRosterPlayer1 && createdRosterPlayer1.deleteOne()
 				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
 				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
-				const error = new HttpError(
-					'Could not add player4 to team.  Maybe a missing Number?',
-					500
-				)
+				const error = new HttpError('Could not add player4 to team.', 500)
 				//const error = new HttpError(err, 500)
 				return next(error)
 			}
