@@ -7789,7 +7789,7 @@ const createGameStats = async (req, res, next) => {
 				return next(error)
 			}
 
-			//If the game HASNT been switch back to TBP, lets record the new stats in
+			//If the game HASNT been switched back to TBP, lets record the new stats in
 			//this players statsPerGame.  If gameStatus is TBP, we want to wipe out
 			//anything previous.
 			//creating new RosterPlayerStatsPerGame
@@ -8023,8 +8023,9 @@ const createGameStats = async (req, res, next) => {
 //
 //	      createPlayoffGameStats
 //
-//	Here, we log all the stats from a playoff game.  Basically, all we need is
-//  a winner, a loser, and the score
+//	Here, we log all the stats from a playoff game.
+//  This is different for the Sloths, because we DO want to record player stats and I think
+//  we DO want to record a win or a loss...
 //
 //
 //****************************************************************************************** */
@@ -8032,13 +8033,19 @@ const createPlayoffGameStats = async (req, res, next) => {
 	console.log('welp, time to create playoff stats...')
 
 	//These are coming to us from AdminGameResultsPlayoff.js
-	const { gameId, homePointsTotal, visitorPointsTotal, gameSummary } = req.body
+	const {
+		homeStats,
+		gameId,
+		homePointsTotal,
+		visitorPointsTotal,
+		gameSummary,
+	} = req.body
 
 	//Use the gameId to get the homeTeamName and the visitorTeamName
 	let homeTeamName,
-		homeTeamId,
+		//homeTeamId,
 		visitorTeamName,
-		visitorTeamId,
+		//visitorTeamId,
 		playoffGame,
 		foundGame
 	try {
@@ -8116,6 +8123,173 @@ const createPlayoffGameStats = async (req, res, next) => {
 	} catch (err) {
 		const error = new HttpError(err, 500)
 		return next(error)
+	}
+	//
+	//
+	//
+	//************************************************** */
+	//
+	//  Individual stats
+	//
+	//************************************************** */
+	let foundHomeRosterPlayer,
+		rosterHomePlayerId,
+		rosterHomePlayerNewGoals,
+		rosterHomePlayerNewAssists,
+		rosterHomePlayerGameStats
+	for (let i = 0; i < homeStats.length; i++) {
+		const split = homeStats[i].split('|')
+		rosterHomePlayerId = split[0]
+		rosterHomePlayerNewGoals = split[1]
+		rosterHomePlayerNewAssists = split[2]
+
+		if (rosterHomePlayerNewGoals || rosterHomePlayerNewAssists) {
+			try {
+				foundHomeRosterPlayer = await RosterPlayer.findById(rosterHomePlayerId)
+			} catch (err) {
+				const error = new HttpError(
+					'Could not find rosterPlayer.  addPlayerStats ' + rosterHomePlayerId,
+					404
+				)
+				return next(error)
+			}
+			console.log(rosterHomePlayerId)
+			//
+			//
+			//So, we also want to write this players stats, but before we do that, we want to
+			//see if they already exist.  If they do, we want to delete them and create anew
+			const rosterPlayerStatsPerGameExists =
+				await RosterPlayerStatsPerGame.findOne({
+					gameId: gameId,
+					rosterPlayerId: foundHomeRosterPlayer._id,
+				})
+			//
+			//
+			//
+			//So...right here, if we find that stats already exist for this player,
+			//if their number of goals or assists is the same as above, we don't want
+			//to write them.  If the are DIFFERENT, then we write the ABOVE value.
+			let previousGoals, previousAssists
+			if (rosterPlayerStatsPerGameExists) {
+				previousGoals = rosterPlayerStatsPerGameExists.goals
+				previousAssists = rosterPlayerStatsPerGameExists.assists
+				rosterPlayerStatsPerGameExists.deleteOne()
+			}
+			//
+			//
+			//
+			if (previousGoals) {
+				if (previousGoals === rosterHomePlayerNewGoals) {
+					foundHomeRosterPlayer.goals = Number(foundHomeRosterPlayer.goals)
+				} else {
+					foundHomeRosterPlayer.goals =
+						Number(foundHomeRosterPlayer.goals) -
+						Number(previousGoals) +
+						Number(rosterHomePlayerNewGoals)
+				}
+			} else {
+				foundHomeRosterPlayer.goals =
+					Number(foundHomeRosterPlayer.goals) + Number(rosterHomePlayerNewGoals)
+			}
+
+			if (previousAssists) {
+				if (previousAssists === rosterHomePlayerNewAssists) {
+					foundHomeRosterPlayer.assists = Number(foundHomeRosterPlayer.assists)
+				} else {
+					foundHomeRosterPlayer.assists =
+						Number(foundHomeRosterPlayer.assists) -
+						Number(previousAssists) +
+						Number(rosterHomePlayerNewAssists)
+				}
+			} else {
+				foundHomeRosterPlayer.assists =
+					Number(foundHomeRosterPlayer.assists) +
+					Number(rosterHomePlayerNewAssists)
+			}
+			//
+			//more kraly code here.  When changing game results back to TBP, we also want
+			//to wipe out any individual player stats as well
+			//
+			if (gameStatus === 'TBP' && previousStatus !== 'TBP') {
+				console.log('hello matthew, you are here now')
+				if (previousGoals) {
+					foundHomeRosterPlayer.goals =
+						Number(foundHomeRosterPlayer.goals) - Number(previousGoals)
+				}
+				if (previousAssists) {
+					foundHomeRosterPlayer.assists =
+						Number(foundHomeRosterPlayer.assists) - Number(previousAssists)
+				}
+			}
+
+			//writing changes to RosterPlayer
+			try {
+				await foundHomeRosterPlayer.save()
+			} catch (err) {
+				const error = new HttpError(
+					'Something went wrong with saving the roster players goals.  addPlayerStats ' +
+						rosterHomePlayerId +
+						' ' +
+						foundHomeRosterPlayer.goals,
+					500
+				)
+				return next(error)
+			}
+
+			//If the game HASNT been switched back to TBP, lets record the new stats in
+			//this players statsPerGame.  If gameStatus is TBP, we want to wipe out
+			//anything previous.
+			//creating new RosterPlayerStatsPerGame
+			if (gameStatus !== 'TBP') {
+				rosterHomePlayerGameStats = new RosterPlayerStatsPerGame({
+					gameId: gameId,
+					rosterPlayerId: foundHomeRosterPlayer._id,
+					goals: rosterHomePlayerNewGoals,
+					assists: rosterHomePlayerNewAssists,
+				})
+				//Writing to GAME tally.  This is what will appear when we reload the form
+				try {
+					await rosterHomePlayerGameStats.save()
+				} catch (err) {
+					const error = new HttpError(
+						'could not create new instance of home RosterPlayerStatsPerGame',
+						500
+					)
+					return next(error)
+				}
+				//
+				//
+				//
+				//if game status = TBP
+			} else {
+				let rosterPlayerGameStatsToDelete
+				console.log(
+					'need to find then delete this home players rosterStatsPerGame from last time'
+				)
+				console.log('gameId: ' + gameId)
+				console.log('rosterPlayerId: ' + foundHomeRosterPlayer._id)
+				try {
+					rosterPlayerGameStatsToDelete =
+						await RosterPlayerStatsPerGame.findOne({
+							gameId: gameId,
+							rosterPlayerId: foundHomeRosterPlayer._id,
+						})
+				} catch (err) {
+					const error = new HttpError(
+						'Trouble finding player stats for this game 001.',
+						404
+					)
+					return next(error)
+				}
+				console.log(
+					'rosterPlayerGameStatsToDelete: ' + rosterPlayerGameStatsToDelete
+				)
+				//Writing to GAME tally.  This is what will appear when we reload the form
+				if (rosterPlayerGameStatsToDelete) {
+					rosterPlayerGameStatsToDelete.deleteOne()
+				}
+			}
+		}
 	}
 
 	res.status(200).json({ message: 'Playoff stats have been added' })
@@ -17154,8 +17328,8 @@ const removeEvent = async (req, res, next) => {
 	//
 	//kraly 4
 	if (!event) {
-		console.log('matt you are here!!')
-		let gameStats
+		console.log('matt you are here to remove a game!!')
+		let gameStats, playoffStats, championshipStats
 		try {
 			gameStats = await GameStats.findOne({
 				gameId: itemId,
@@ -17220,7 +17394,6 @@ const removeEvent = async (req, res, next) => {
 			tie
 
 		if (gameStats) {
-			//if (gameStats) {
 			homePoints = gameStats.homeGoalsTotal
 			visitorPoints = gameStats.visitorGoalsTotal
 			//If the home team was the winner, we need to tap into the team and remove a win from them
@@ -17231,7 +17404,7 @@ const removeEvent = async (req, res, next) => {
 			//
 			//
 			if (homePoints > visitorPoints) {
-				console.log('home team won')
+				console.log('home team won this game that is about to be deleted...')
 				try {
 					minusWinForHomeTeam = await Team.findById(teamId)
 				} catch (err) {
@@ -17241,36 +17414,6 @@ const removeEvent = async (req, res, next) => {
 					)
 					return next(error)
 				}
-
-				/* try {
-					minusLossForVisitorTeam = await Team.findById(visitorTeam)
-				} catch (err) {
-					const error = new HttpError(
-						'Could not find visitorTeam to delete their loss.',
-						404
-					)
-					return next(error)
-				} */
-
-				/* try {
-					minusOvertimeLossForVisitorTeam = await Team.findById(visitorTeam)
-				} catch (err) {
-					const error = new HttpError(
-						'Could not find visitorTeam to delete their Overtime loss.',
-						404
-					)
-					return next(error)
-				} */
-
-				/* try {
-					minusShootoutLossForVisitorTeam = await Team.findById(visitorTeam)
-				} catch (err) {
-					const error = new HttpError(
-						'Could not find visitorTeam to delete their shootout loss.',
-						404
-					)
-					return next(error)
-				} */
 				//
 				//
 				minusWinForHomeTeam.wins = Number(minusWinForHomeTeam.wins) - 1
@@ -17282,45 +17425,12 @@ const removeEvent = async (req, res, next) => {
 					Number(minusWinForHomeTeam.goalsAgainst) - visitorPoints
 				//
 				//
-				//minusLossForVisitorTeam.goalsFor =
-				//	Number(minusLossForVisitorTeam.goalsFor) - visitorPoints
-				//
-				//minusLossForVisitorTeam.goalsAgainst =
-				//	Number(minusLossForVisitorTeam.goalsAgainst) - homePoints
-
 				if (status === 'Overtime') {
 					console.log('visitor lost in overtime')
-					//minusOvertimeLossForVisitorTeam.overtimeLosses =
-					//	Number(minusOvertimeLossForVisitorTeam.overtimeLosses) - 1
-					//minusShootoutLossForVisitorTeam.shootoutLosses = Number(
-					//	minusShootoutLossForVisitorTeam.shootoutLosses
-					//)
-					//MATT TEST
-					//minusOvertimeLossForVisitorTeam.goalsFor =
-					//	Number(minusOvertimeLossForVisitorTeam.goalsFor) - visitorPoints
-					//minusOvertimeLossForVisitorTeam.goalsAgainst =
-					//	Number(minusOvertimeLossForVisitorTeam.goalsAgainst) - homePoints
 				} else if (status === 'Shootout') {
 					console.log('visitor lost in shootout')
-					//minusShootoutLossForVisitorTeam.shootoutLosses =
-					//	Number(minusShootoutLossForVisitorTeam.shootoutLosses) - 1
-					//minusOvertimeLossForVisitorTeam.overtimeLosses = Number(
-					//	minusOvertimeLossForVisitorTeam.overtimeLosses
-					//)
-					//minusShootoutLossForVisitorTeam.goalsFor =
-					//	Number(minusShootoutLossForVisitorTeam.goalsFor) - visitorPoints
-					//minusShootoutLossForVisitorTeam.goalsAgainst =
-					//	Number(minusShootoutLossForVisitorTeam.goalsAgainst) - homePoints
 				} else {
 					console.log('visitor lost in regulation')
-					//minusLossForVisitorTeam.losses =
-					//	Number(minusLossForVisitorTeam.losses) - 1
-					//minusOvertimeLossForVisitorTeam.overtimeLosses = Number(
-					//	minusOvertimeLossForVisitorTeam.overtimeLosses
-					//)
-					//minusShootoutLossForVisitorTeam.shootoutLosses = Number(
-					//	minusShootoutLossForVisitorTeam.shootoutLosses
-					//)
 				}
 
 				try {
@@ -17335,47 +17445,6 @@ const removeEvent = async (req, res, next) => {
 				}
 				//
 				//
-				/* if (status === 'Overtime') {
-					try {
-						console.log(
-							'saving visitor team after deleting their overtime loss...'
-						)
-						await minusOvertimeLossForVisitorTeam.save()
-					} catch (err) {
-						const error = new HttpError(
-							'could not edit visitor team to take away a loss 1',
-							500
-						)
-						return next(error)
-					}
-				} else if (status === 'Shootout') {
-					try {
-						console.log(
-							'saving visitor team after deleting their shootout loss...'
-						)
-						await minusShootoutLossForVisitorTeam.save()
-					} catch (err) {
-						const error = new HttpError(
-							'could not edit visitor team to take away a loss 2',
-							500
-						)
-						return next(error)
-					}
-				} else if (status !== 'Shootout' || 'Overtime') {
-					console.log('whats the status?? ' + status)
-					try {
-						console.log(
-							'saving visitor team after deleting their regulation loss...'
-						)
-						await minusLossForVisitorTeam.save()
-					} catch (err) {
-						const error = new HttpError(
-							'could not edit visitor team to take away a loss 3 ' + err,
-							500
-						)
-						return next(error)
-					}
-				} */
 				//
 				//
 				//
@@ -17404,10 +17473,6 @@ const removeEvent = async (req, res, next) => {
 				console.log('you are here 6')
 				//
 				//
-				//
-				//
-				//
-				//
 				// IF VISITING TEAM WINS
 				//
 				//
@@ -17415,15 +17480,6 @@ const removeEvent = async (req, res, next) => {
 				//
 			} else if (visitorPoints > homePoints) {
 				console.log('visitor team won 1')
-				/* try {
-					minusWinForVisitorTeam = await Team.findById(visitorTeam)
-				} catch (err) {
-					const error = new HttpError(
-						'Could not find visitorTeam to delete their win.',
-						404
-					)
-					return next(error)
-				} */
 
 				try {
 					minusOvertimeLossForHomeTeam = await Team.findById(teamId)
@@ -17455,15 +17511,6 @@ const removeEvent = async (req, res, next) => {
 					return next(error)
 				}
 				//
-				//minusWinForVisitorTeam.wins = Number(minusWinForVisitorTeam.wins) - 1
-				//
-				//console.log(minusWinForVisitorTeam.goalsFor + ' ' + visitorPoints)
-				//minusWinForVisitorTeam.goalsFor =
-				//	Number(minusWinForVisitorTeam.goalsFor) - visitorPoints
-				//
-				//console.log(minusWinForVisitorTeam.goalsAgainst + ' ' + homePoints)
-				//minusWinForVisitorTeam.goalsAgainst =
-				//	Number(minusWinForVisitorTeam.goalsAgainst) - homePoints
 				//
 				minusLossForHomeTeam.losses = Number(minusLossForHomeTeam.losses) - 1
 				//
@@ -17474,7 +17521,9 @@ const removeEvent = async (req, res, next) => {
 					Number(minusLossForHomeTeam.goalsAgainst) - visitorPoints
 
 				if (status === 'Overtime') {
-					console.log('home team lost in overtime')
+					console.log(
+						'home team lost in overtime in the game were about to delete...'
+					)
 					minusOvertimeLossForHomeTeam.overtimeLosses =
 						Number(minusOvertimeLossForHomeTeam.overtimeLosses) - 1
 					minusShootoutLossForHomeTeam.shootoutLosses = Number(
@@ -17496,7 +17545,9 @@ const removeEvent = async (req, res, next) => {
 					minusShootoutLossForHomeTeam.goalsAgainst =
 						Number(minusShootoutLossForHomeTeam.goalsAgainst) - visitorPoints
 				} else {
-					console.log('home team lost in regulation')
+					console.log(
+						'home team lost in regulation in the game were about to delete...'
+					)
 					//minusLossForHomeTeam.losses = Number(minusLossForHomeTeam.losses) - 1
 					minusOvertimeLossForHomeTeam.overtimeLosses = Number(
 						minusOvertimeLossForHomeTeam.overtimeLosses
@@ -17506,16 +17557,6 @@ const removeEvent = async (req, res, next) => {
 					)
 				}
 
-				/* try {
-					console.log('saving visitor team after removing their win...')
-					await minusWinForVisitorTeam.save()
-				} catch (err) {
-					const error = new HttpError(
-						'could not edit visitor team to take away a win',
-						500
-					)
-					return next(error)
-				} */
 				//
 				//
 				if (status === 'Overtime') {
@@ -17581,15 +17622,6 @@ const removeEvent = async (req, res, next) => {
 				//If it's a TIE
 			} else if (homePoints === visitorPoints) {
 				console.log('This game was a tie')
-				/* try {
-					minusTieForVisitorTeam = await Team.findById(visitorTeam)
-				} catch (err) {
-					const error = new HttpError(
-						'Could not find visitorTeam to delete their tie.',
-						404
-					)
-					return next(error)
-				} */
 
 				try {
 					minusTieForHomeTeam = await Team.findById(teamId)
@@ -17600,15 +17632,6 @@ const removeEvent = async (req, res, next) => {
 					)
 					return next(error)
 				}
-				//console.log('minusTieForVisitorTeam 2: ' + minusTieForVisitorTeam)
-				//
-				//minusTieForVisitorTeam.ties = Number(minusTieForVisitorTeam.ties) - 1
-				//
-				//minusTieForVisitorTeam.goalsFor =
-				//	Number(minusTieForVisitorTeam.goalsFor) - visitorPoints
-				//
-				//minusTieForVisitorTeam.goalsAgainst =
-				//	Number(minusTieForVisitorTeam.goalsAgainst) - homePoints
 				//
 				minusTieForHomeTeam.ties = Number(minusTieForHomeTeam.ties) - 1
 				//
@@ -17618,16 +17641,6 @@ const removeEvent = async (req, res, next) => {
 				minusTieForHomeTeam.goalsAgainst =
 					Number(minusTieForHomeTeam.goalsAgainst) - visitorPoints
 
-				/* try {
-					console.log('saving visitor team...')
-					await minusTieForVisitorTeam.save()
-				} catch (err) {
-					const error = new HttpError(
-						'could not edit visitor team to take away a tie',
-						500
-					)
-					return next(error)
-				} */
 				//
 				//
 				try {
@@ -17663,8 +17676,213 @@ const removeEvent = async (req, res, next) => {
 					return next(error)
 				}
 			}
-		}
+			//
+			//  if playoffStats
+			//
+			//
+		} else if (playoffStats) {
+			homePoints = playoffStats.homeGoalsTotal
+			visitorPoints = playoffStats.visitorGoalsTotal
+			//If the home team was the winner, we need to tap into the team and remove a win from them
+			//as well as tap into the visiting team and remove a loss from them
+			//
+			//
+			//    if home team won
+			//
+			//
+			if (homePoints > visitorPoints) {
+				console.log('home team won this game that is about to be deleted...')
+				try {
+					minusWinForHomeTeam = await Team.findById(teamId)
+				} catch (err) {
+					const error = new HttpError(
+						'Could not find homeTeam to delete their win.',
+						404
+					)
+					return next(error)
+				}
+				//
+				//
+				minusWinForHomeTeam.wins = Number(minusWinForHomeTeam.wins) - 1
+				//
+				minusWinForHomeTeam.goalsFor =
+					Number(minusWinForHomeTeam.goalsFor) - homePoints
+				//
+				minusWinForHomeTeam.goalsAgainst =
+					Number(minusWinForHomeTeam.goalsAgainst) - visitorPoints
+				//
+				//
+				//
+				try {
+					console.log('saving home team after removing their win...')
+					await minusWinForHomeTeam.save()
+				} catch (err) {
+					const error = new HttpError(
+						'could not edit home team to take away a win',
+						500
+					)
+					return next(error)
+				}
+				//
+				//
+				//
+				//
+				//
+				try {
+					console.log('deleting game stats 1...')
+					await playoffStats.deleteOne()
+				} catch (err) {
+					const error = new HttpError(
+						'Could not delete game stats: ' + err,
+						404
+					)
+					return next(error)
+				}
+				//
+				//
+				try {
+					console.log('deleting playoff game...')
+					//await gameOrEvent.deleteOne()
+					await game.deleteOne()
+				} catch (err) {
+					const error = new HttpError(err, 404)
+					return next(error)
+				}
+				//
+				console.log('you are here 6')
+				//
+				//
+				// IF VISITING TEAM WINS
+				//
+				//
+			} else if (visitorPoints > homePoints) {
+				console.log(
+					'visitor team won in this playoff game that were about to delete'
+				)
 
+				try {
+					minusLossForHomeTeam = await Team.findById(teamId)
+				} catch (err) {
+					const error = new HttpError(
+						'Could not find homeTeam to delete their loss.',
+						404
+					)
+					return next(error)
+				}
+				//
+				//
+				minusLossForHomeTeam.losses = Number(minusLossForHomeTeam.losses) - 1
+				//
+				minusLossForHomeTeam.goalsFor =
+					Number(minusLossForHomeTeam.goalsFor) - homePoints
+				//
+				minusLossForHomeTeam.goalsAgainst =
+					Number(minusLossForHomeTeam.goalsAgainst) - visitorPoints
+
+				console.log(
+					'home team lost in regulation in the playoff game were about to delete...'
+				)
+
+				//
+				//
+				try {
+					console.log('saving home team after deleting their playoff loss...')
+					await minusLossForHomeTeam.save()
+				} catch (err) {
+					const error = new HttpError(
+						'could not edit home team to take away a loss',
+						500
+					)
+					return next(error)
+				}
+				//
+				//
+				//
+				try {
+					console.log('deleting playoff game stats 2...')
+					await playoffStats.deleteOne()
+				} catch (err) {
+					const error = new HttpError(
+						'Could not delete game stats: ' + err,
+						404
+					)
+					return next(error)
+				}
+				//
+				//
+				try {
+					console.log('deleting playoff game 2...')
+					//await gameOrEvent.deleteOne()
+					await game.deleteOne()
+				} catch (err) {
+					const error = new HttpError(err, 404)
+					return next(error)
+				}
+				//
+				//If it's a TIE
+			} else if (homePoints === visitorPoints) {
+				console.log('This game was a tie')
+
+				try {
+					minusTieForHomeTeam = await Team.findById(teamId)
+				} catch (err) {
+					const error = new HttpError(
+						'Could not find homeTeam to delete their playoff tie.',
+						404
+					)
+					return next(error)
+				}
+				//
+				minusTieForHomeTeam.ties = Number(minusTieForHomeTeam.ties) - 1
+				//
+				minusTieForHomeTeam.goalsFor =
+					Number(minusTieForHomeTeam.goalsFor) - homePoints
+				//
+				minusTieForHomeTeam.goalsAgainst =
+					Number(minusTieForHomeTeam.goalsAgainst) - visitorPoints
+
+				//
+				//
+				try {
+					console.log('saving home team...')
+					await minusTieForHomeTeam.save()
+				} catch (err) {
+					const error = new HttpError(
+						'could not edit home team to take away a tie',
+						500
+					)
+					return next(error)
+				}
+				//
+				//
+				try {
+					console.log('deleting playoff game stats...')
+					await playoffStats.deleteOne()
+				} catch (err) {
+					const error = new HttpError(
+						'Could not delete game stats: ' + err,
+						404
+					)
+					return next(error)
+				}
+				//
+				//
+				try {
+					console.log('deleting game...')
+					//await gameOrEvent.deleteOne()
+					await game.deleteOne()
+				} catch (err) {
+					const error = new HttpError(err, 404)
+					return next(error)
+				}
+			}
+		} else if (championshipStats) {
+		}
+		//
+		//
+		//
+		//
+		//
 		//if a game was entered, but nothing was ever filled in for it, and we delete it,
 		//we still want it to delete
 		try {
@@ -17675,18 +17893,6 @@ const removeEvent = async (req, res, next) => {
 			const error = new HttpError(err, 404)
 			return next(error)
 		}
-
-		/* if (event) {
-		try {
-			console.log('deleting event...')
-			await event.deleteOne()
-		} catch (err) {
-			const error = new HttpError(err, 404)
-			return next(error)
-		}
-	} */
-		//}
-		//console.log('ok now we are here')
 
 		//Next, we want to delete any rosterPlayerStatsPerGame for this game, if any exist
 		let allPlayersWithGameStats

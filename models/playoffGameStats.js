@@ -9,8 +9,8 @@ const playoffGameStatsSchema = new Schema({
 	//score: { type: String },
 	winner: { type: String },
 	loser: { type: String },
-	winnerTeamId: { type: String },
-	loserTeamId: { type: String },
+	//winnerTeamId: { type: String },
+	//loserTeamId: { type: String },
 	//status: { type: String },
 	summary: { type: String },
 })
