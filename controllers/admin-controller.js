@@ -17628,7 +17628,7 @@ const removeEvent = async (req, res, next) => {
 				//
 				//If it's a TIE
 			} else if (homePoints === visitorPoints) {
-				console.log('This game was a tie')
+				console.log('This game was a tie 1')
 
 				try {
 					minusTieForHomeTeam = await Team.findById(teamId)
@@ -17828,7 +17828,7 @@ const removeEvent = async (req, res, next) => {
 				//
 				//If it's a TIE
 			} else if (homePoints === visitorPoints) {
-				console.log('This game was a tie')
+				console.log('This game was a tie 2')
 
 				try {
 					minusTieForHomeTeam = await Team.findById(teamId)
