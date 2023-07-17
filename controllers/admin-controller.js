@@ -10353,6 +10353,8 @@ const addPlayerToTeam = async (req, res, next) => {
 		)
 	}
 
+	console.log('adding player(s) to team')
+
 	/* const leagueName = req.params.leagueName
 	const session = req.params.session */
 	const year = req.params.year
