@@ -641,6 +641,7 @@ const getEventData = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const getPlayersOnTeam = async (req, res, next) => {
+	console.log('inside getPlayersOnTeam')
 	const teamName = req.params.teamName
 	//const session = req.params.session
 	const year = req.params.year
