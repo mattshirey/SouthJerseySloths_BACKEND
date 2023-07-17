@@ -8048,6 +8048,7 @@ const createPlayoffGameStats = async (req, res, next) => {
 		visitorTeamName,
 		//visitorTeamId,
 		playoffGame,
+		year,
 		foundGame
 	try {
 		foundGame = await Game.findById(gameId)
@@ -8057,6 +8058,7 @@ const createPlayoffGameStats = async (req, res, next) => {
 	}
 	homeTeamName = foundGame.teamName
 	visitorTeamName = foundGame.opponent
+	year = foundGame.year
 	//homeTeamId = foundGame.homeTeamId
 	//visitorTeamId = foundGame.visitorTeamId
 
@@ -8260,6 +8262,39 @@ const createPlayoffGameStats = async (req, res, next) => {
 			}
 			//
 			//
+			//Last thing we want to do here is find the sloths team and assign them either
+			//a win or a loss
+			//
+			foundHomeTeam
+			try {
+				foundHomeTeam = await Team.findOne({
+					teamName: homeTeamName,
+					year: year,
+				})
+			} catch (err) {
+				const error = new HttpError(
+					'could not find home team.  createPlayoffStats',
+					500
+				)
+				return next(error)
+			}
+
+			if (winner === homeTeamName) {
+				foundHomeTeam.wins = Number(foundHomeTeam.wins) + 1
+			} else {
+				foundHomeTeam.losses = Number(foundHomeTeam.losses) + 1
+			}
+
+			try {
+				await foundHomeTeam.save()
+			} catch (err) {
+				const error = new HttpError(
+					'could not save a win or loss for the home team.  createPlayoffStats',
+					500
+				)
+				return next(error)
+			}
+
 			//
 			//if game status = TBP
 			//}
