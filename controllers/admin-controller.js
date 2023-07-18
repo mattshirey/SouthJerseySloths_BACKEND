@@ -1580,21 +1580,11 @@ const createNewTeam = async (req, res, next) => {
 
 	//First, let's check to see if the team already exists...
 	let teamExists
-	/* if (divisionName) {
-		leagueExists = await League.findOne({
-			leagueName: leagueName,
-			year: year,
-			divisionName: divisionName,
-			session: session,
-		})
-	}
-	if (!divisionName) { */
+
 	teamExists = await Team.findOne({
 		teamName: teamName,
 		year: year,
-		//session: session,
 	})
-	//}
 
 	let createdTeam
 	if (teamExists) {
@@ -1603,7 +1593,6 @@ const createNewTeam = async (req, res, next) => {
 		return next(error)
 	} else {
 		createdTeam = new Team({
-			//id: uuidv4(),
 			teamName: teamName.trim(),
 			wins: 0,
 			losses: 0,
@@ -1613,11 +1602,8 @@ const createNewTeam = async (req, res, next) => {
 			goalsFor: 0,
 			goalsAgainst: 0,
 			assignedPlayers: 0,
-			//divisionName: divisionName,
 			year: year,
-			//session: session.trim(),
 			isCurrent: true,
-			//numberOfTeams: 0,
 		})
 	}
 
@@ -1628,6 +1614,7 @@ const createNewTeam = async (req, res, next) => {
 		return next(error)
 	}
 
+	console.log('now lets create a new roster ' + createdTeam.id)
 	const createdRoster1 = new Roster({
 		//id: uuidv4(),
 		//leagueId,
@@ -1640,6 +1627,8 @@ const createNewTeam = async (req, res, next) => {
 		const error = new HttpError(err, 500)
 		return next(error)
 	}
+
+	console.log('new roster created...')
 
 	//we created something new so conventionally, that'll be a 201
 	res.status(201).json({ team: createdTeam })
