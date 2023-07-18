@@ -10548,6 +10548,7 @@ const addPlayerToTeam = async (req, res, next) => {
 			)
 			return next(error)
 		} else {
+			console.log('ok lets create roster player 1')
 			createdRosterPlayer1 = new RosterPlayer({
 				teamId,
 				playerId: playerId1,
@@ -10563,6 +10564,7 @@ const addPlayerToTeam = async (req, res, next) => {
 			})
 		}
 
+		console.log('ok now lets save the new roster player 1')
 		try {
 			await createdRosterPlayer1.save()
 			console.log('new player has been saved')
@@ -10605,6 +10607,7 @@ const addPlayerToTeam = async (req, res, next) => {
 			const error = new HttpError(err, 500)
 			return next(error)
 		}
+		console.log('done creating player 1')
 	}
 
 	//**************************************************************************** */
