@@ -10363,31 +10363,9 @@ const addPlayerToTeam = async (req, res, next) => {
 			422
 		)
 	}
-
-	console.log('adding player(s) to team')
-
-	/* const leagueName = req.params.leagueName
-	const session = req.params.session */
 	const year = req.params.year
 	const teamName = req.params.teamName
-
-	//First, let's find the leagueId:
-	/* let leagueId
-	let foundLeague
-	try {
-		foundLeague = await League.findOne({
-			leagueName: leagueName,
-			session: session,
-			year: year,
-		}).orFail()
-	} catch (err) {
-		const error = new HttpError(
-			'Could not find league to obtain leagueId. addPlayerToTeam',
-			500
-		)
-		return next(error)
-	}
-	leagueId = foundLeague.id */
+	console.log('adding player(s) to team ' + teamName + ' - ' + year)
 	//
 	//
 	//First, let's find the teamId:
@@ -10395,7 +10373,6 @@ const addPlayerToTeam = async (req, res, next) => {
 	let foundTeam
 	try {
 		foundTeam = await Team.findOne({
-			//leagueId: leagueId,
 			teamName: teamName,
 			year: year,
 		}).orFail()
@@ -10406,6 +10383,7 @@ const addPlayerToTeam = async (req, res, next) => {
 		)
 		return next(error)
 	}
+	console.log('foundTeam: ' + foundTeam)
 	teamId = foundTeam.id
 	//
 	//
@@ -10414,7 +10392,6 @@ const addPlayerToTeam = async (req, res, next) => {
 	let foundRoster
 	try {
 		foundRoster = await Roster.findOne({
-			//leagueId: leagueId,
 			teamId: teamId,
 		}).orFail()
 	} catch (err) {
@@ -10423,6 +10400,7 @@ const addPlayerToTeam = async (req, res, next) => {
 		)
 		return next(error)
 	}
+	console.log('foundRoster: ' + foundRoster)
 	rosterId = foundRoster.id
 	//
 	//
@@ -10492,6 +10470,7 @@ const addPlayerToTeam = async (req, res, next) => {
 	//      WITH or WITHOUT middleInitial
 	//
 	//********************************************************************************* */
+	console.log('adding player 1')
 	let playerId1
 	let foundPlayer1
 	if (!middleInitial1) {
@@ -10574,8 +10553,6 @@ const addPlayerToTeam = async (req, res, next) => {
 				lastName: lastName1,
 				rosterId,
 				teamName,
-				//leagueName,
-				//session,
 				year,
 				number: playerNumber1,
 				goals: 0,
@@ -10611,8 +10588,6 @@ const addPlayerToTeam = async (req, res, next) => {
 				lastName: lastName1,
 				rosterId,
 				teamName,
-				//leagueName,
-				//session,
 				year,
 				number: playerNumber1,
 				goals: 0,
@@ -10636,6 +10611,7 @@ const addPlayerToTeam = async (req, res, next) => {
 	let playerId2
 	let foundPlayer2
 	if (firstName2) {
+		console.log('adding player 2')
 		if (!middleInitial2) {
 			try {
 				foundPlayer2 = await Player.findOne({
@@ -10785,6 +10761,7 @@ const addPlayerToTeam = async (req, res, next) => {
 	let playerId3
 	let foundPlayer3
 	if (firstName3) {
+		console.log('adding player 3')
 		if (!middleInitial3) {
 			try {
 				foundPlayer3 = await Player.findOne({
@@ -10934,6 +10911,7 @@ const addPlayerToTeam = async (req, res, next) => {
 	let playerId4
 	let foundPlayer4
 	if (firstName4) {
+		console.log('adding player 4')
 		if (!middleInitial4) {
 			try {
 				foundPlayer4 = await Player.findOne({
