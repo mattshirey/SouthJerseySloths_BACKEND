@@ -71,7 +71,10 @@ mongoose
 		//
 		//
 		//Shared Server:    USE THIS FOR PRODUCTION
-		`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.5uzmyz5.mongodb.net/?retryWrites=true&w=majority`
+		//Original database:
+		//`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.5uzmyz5.mongodb.net/?retryWrites=true&w=majority`
+		//New database that I made on 7/18/2023 to figure out if the old one sucked
+		`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}cluster0.qejtaia.mongodb.net/?retryWrites=true&w=majority`
 	)
 	.then(() => {
 		//console.log('process.env.PORT: ' + process.env.PORT)
