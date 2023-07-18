@@ -16933,6 +16933,8 @@ const editEvent = async (req, res, next) => {
 const removeTeam = async (req, res, next) => {
 	const teamId = req.params.teamId
 
+	console.log('inside removeTeam')
+
 	let team
 	try {
 		team = await Team.findById(teamId)
@@ -16944,309 +16946,92 @@ const removeTeam = async (req, res, next) => {
 		return next(error)
 	}
 	const teamName = team.teamName
-	//const session = league.session
 	const year = team.year
-	//const division = league.divisionName
 
-	/* if (division) {
-		console.log('division: ' + division.length)
-	} */
+	console.log('inside removeTeam for ' + teamName + ' ' + year)
 	//
 	//
-	//  League with DIVISIONS:
-	//
-	/* 	if (division && division.length > 0) {
-		console.log('we have a division here')
-
-		//Now we need to find any teams that are in this league and delete them
-		let teams
-		try {
-			teams = await Team.find({
-				leagueId: leagueId,
-				divisionName: division,
-			})
-		} catch (err) {
-			const error = new HttpError(
-				'Could not find any teams in this league and division',
-				404
-			)
-			return next(error)
-		}
-		console.log('teams: ' + teams.length)
-
-		//Now that we have all the teams in this division, lets collect all their teamId's
-		let teamIds
-		teamIds = []
-		for (let i = 0; i < teams.length; i++) {
-			teamIds.push(teams[i]._id)
-		}
-
-		console.log('teamIds: ' + teamIds)
-
-		//We found them all, so let's delete them all...
-		teams.forEach(async (team) => {
-			try {
-				await team.deleteOne()
-			} catch (err) {
-				const error = new HttpError(err, 500)
-				return next(error)
-			}
-		})
-
-		//Next, we need to delete the rosters for the teams that were deleted
-		//We can also do this using the leagueId
-		let rosters
-		try {
-			rosters = await Roster.find({
-				leagueId: leagueId,
-				divisionName: division,
-			})
-		} catch (err) {
-			const error = new HttpError(
-				'Could not find any rosters for this league',
-				404
-			)
-			return next(error)
-		}
-		console.log(rosters)
-
-		//We found all the rosters, so let's delete them all...
-		rosters.forEach(async (roster) => {
-			try {
-				await roster.deleteOne()
-			} catch (err) {
-				const error = new HttpError(err, 500)
-				return next(error)
-			}
-		})
-
-		//Next, we need to find all rosteredPlayers for this league and delete them
-		let rosterPlayers
-		try {
-			rosterPlayers = await RosterPlayer.find({
-				leagueId: leagueId,
-				divisionName: division,
-			})
-		} catch (err) {
-			const error = new HttpError(
-				'Could not find any rostered players for this league',
-				404
-			)
-			return next(error)
-		}
-		console.log(rosterPlayers)
-
-		//We found all the rostered players, so let's delete them all...
-		rosterPlayers.forEach(async (player) => {
-			try {
-				await player.deleteOne()
-			} catch (err) {
-				const error = new HttpError(err, 500)
-				return next(error)
-			}
-		})
-
-		//Finally, we need to find any and all scheduled games for this league/division and
-		//delete them as well
-		let leagueGames
-		leagueGames = []
-
-		console.log('teamIds length: ' + teamIds.length)
-		for (let i = 0; i < teamIds.length; i++) {
-			//search for all games where team is home team
-			try {
-				gamesWhereHomeTeam = await Game.find({
-					leagueName: leagueName,
-					session: session,
-					year: year,
-					homeTeamId: teamIds[i],
-				})
-			} catch (err) {
-				const error = new HttpError(
-					'Could not find any scheduled games for where this team is the home team',
-					404
-				)
-				return next(error)
-			}
-
-			try {
-				gamesWhereVisitorTeam = await Game.find({
-					leagueName: leagueName,
-					session: session,
-					year: year,
-					visitorTeamId: teamIds[i],
-				})
-			} catch (err) {
-				const error = new HttpError(
-					'Could not find any scheduled games for where this team is the home team',
-					404
-				)
-				return next(error)
-			}
-
-			for (let i = 0; i < gamesWhereHomeTeam.length; i++) {
-				leagueGames.push(gamesWhereHomeTeam[i])
-			}
-
-			for (let i = 0; i < gamesWhereVisitorTeam.length; i++) {
-				leagueGames.push(gamesWhereVisitorTeam[i])
-			}
-
-			//leagueGames.push(gamesWhereHomeTeam)
-			//leagueGames.push(gamesWhereVisitorTeam)
-
-			//teamIds.push(teams[i]._id)
-
-			console.log('gamesWhereHomeTeam: ' + gamesWhereHomeTeam)
-			console.log('gamesWhereVisitorTeam: ' + gamesWhereVisitorTeam)
-		}
-
-		console.log('leagueGames WITH divisions: ' + leagueGames)
-
-		leagueGames.forEach(async (game) => {
-			try {
-				await game.deleteOne()
-			} catch (err) {
-				const error = new HttpError(err, 500)
-				return next(error)
-			}
-		})
-		//
-		try {
-			await league.deleteOne()
-		} catch (err) {
-			const error = new HttpError(
-				'Cant find league to delete it (2).  removeLeague',
-				500
-			)
-			return next(error)
-		}
-		//
-	} else  */ {
-		//
-		//
-		//
-		//console.log('No divisions here!!')
-		//
-		//
-		//
-		//
-		//   NO DIVISIONS
-		//
-		//
-		//
-		try {
-			await team.deleteOne()
-		} catch (err) {
-			const error = new HttpError(
-				'Cant find team to delete it (2).  removeTeam',
-				500
-			)
-			return next(error)
-		}
-
-		//Now we need to find any teams that are in this league and delete them
-		/* let teams
-		try {
-			teams = await Team.find({
-				leagueId: leagueId,
-			})
-		} catch (err) {
-			const error = new HttpError(
-				'Could not find any teams in this league',
-				404
-			)
-			return next(error)
-		}
-		console.log(teams)
-
-		//We found them all, so let's delete them all...
-		teams.forEach(async (team) => {
-			try {
-				await team.deleteOne()
-			} catch (err) {
-				const error = new HttpError(err, 500)
-				return next(error)
-			}
-		}) */
-
-		//Next, we need to delete the rosters for the teams that were deleted
-		//We can also do this using the leagueId
-		let rosters
-		try {
-			rosters = await Roster.find({
-				teamId: teamId,
-			})
-		} catch (err) {
-			const error = new HttpError(
-				'Could not find any rosters for this team',
-				404
-			)
-			return next(error)
-		}
-		console.log(rosters)
-
-		//We found all the rosters, so let's delete them all...
-		rosters.forEach(async (roster) => {
-			try {
-				await roster.deleteOne()
-			} catch (err) {
-				const error = new HttpError(err, 500)
-				return next(error)
-			}
-		})
-
-		//Next, we need to find all rosteredPlayers for this team and delete them
-		let rosterPlayers
-		try {
-			rosterPlayers = await RosterPlayer.find({
-				teamId: teamId,
-			})
-		} catch (err) {
-			const error = new HttpError(
-				'Could not find any rostered players for this team',
-				404
-			)
-			return next(error)
-		}
-		console.log(rosterPlayers)
-
-		//We found all the rostered players, so let's delete them all...
-		rosterPlayers.forEach(async (player) => {
-			try {
-				await player.deleteOne()
-			} catch (err) {
-				const error = new HttpError(err, 500)
-				return next(error)
-			}
-		})
-
-		//Finally, we need to find any and all scheduled games for this league and
-		//delete them as well
-		let teamGames
-		try {
-			teamGames = await Game.find({
-				teamName: teamName,
-				//session: session,
-				year: year,
-			})
-		} catch (err) {
-			const error = new HttpError(
-				'Could not find any scheduled games for this team',
-				404
-			)
-			return next(error)
-		}
-
-		teamGames.forEach(async (game) => {
-			try {
-				await game.deleteOne()
-			} catch (err) {
-				const error = new HttpError(err, 500)
-				return next(error)
-			}
-		})
+	try {
+		await team.deleteOne()
+	} catch (err) {
+		const error = new HttpError(
+			'Cant find team to delete it (2).  removeTeam',
+			500
+		)
+		return next(error)
 	}
+	//Next, we need to delete the rosters for the teams that were deleted
+	//We can also do this using the leagueId
+	let rosters
+	try {
+		rosters = await Roster.find({
+			teamId: teamId,
+		})
+	} catch (err) {
+		const error = new HttpError('Could not find any rosters for this team', 404)
+		return next(error)
+	}
+	console.log(rosters)
+
+	//We found all the rosters, so let's delete them all...
+	rosters.forEach(async (roster) => {
+		try {
+			await roster.deleteOne()
+		} catch (err) {
+			const error = new HttpError(err, 500)
+			return next(error)
+		}
+	})
+
+	//Next, we need to find all rosteredPlayers for this team and delete them
+	let rosterPlayers
+	try {
+		rosterPlayers = await RosterPlayer.find({
+			teamId: teamId,
+		})
+	} catch (err) {
+		const error = new HttpError(
+			'Could not find any rostered players for this team',
+			404
+		)
+		return next(error)
+	}
+	console.log(rosterPlayers)
+
+	//We found all the rostered players, so let's delete them all...
+	rosterPlayers.forEach(async (player) => {
+		try {
+			await player.deleteOne()
+		} catch (err) {
+			const error = new HttpError(err, 500)
+			return next(error)
+		}
+	})
+
+	//Finally, we need to find any and all scheduled games for this league and
+	//delete them as well
+	let teamGames
+	try {
+		teamGames = await Game.find({
+			teamName: teamName,
+			year: year,
+		})
+	} catch (err) {
+		const error = new HttpError(
+			'Could not find any scheduled games for this team',
+			404
+		)
+		return next(error)
+	}
+
+	teamGames.forEach(async (game) => {
+		try {
+			await game.deleteOne()
+		} catch (err) {
+			const error = new HttpError(err, 500)
+			return next(error)
+		}
+	})
 
 	res.status(200).json({ message: 'Deleted the team' })
 }
