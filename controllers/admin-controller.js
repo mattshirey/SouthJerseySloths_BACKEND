@@ -693,6 +693,7 @@ const getPlayersOnTeam = async (req, res, next) => {
 		return next(error)
 	}
 	rosterId = foundRoster.id
+	console.log('rosterId is ' + rosterId)
 	//
 	//
 	//
