@@ -17515,7 +17515,7 @@ const removeEvent = async (req, res, next) => {
 
 	console.log('itemId: ' + itemId)
 	//First, we need to see if it is a game
-	let gameOrEvent, game, event
+	let gameOrEvent, game, event, teamId
 	try {
 		game = await Game.findById(itemId)
 	} catch (err) {
@@ -17534,7 +17534,7 @@ const removeEvent = async (req, res, next) => {
 
 		//Now that we have teamName, lets go get the current sloth team and
 		//get their teamId
-		let foundTeam, teamId
+		let foundTeam
 		try {
 			foundTeam = await Team.findOne({
 				teamName: homeTeam,
