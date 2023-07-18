@@ -17106,49 +17106,7 @@ const removePlayer = async (req, res, next) => {
 		return next(error)
 	}
 
-	//We have the leagueId, now let's delete the roster for this team.  We can look for both
-	//leagueId AND teamId when deleting this.
-	/* let roster
-	let rosterId
-	try {
-		roster = await Roster.findOne({
-			leagueId: leagueId,
-			teamId: teamId,
-		})
-	} catch (err) {
-		const error = new HttpError('Could not find roster for this team', 404)
-		return next(error)
-	}
-	rosterId = roster._id
-	try {
-		await roster.deleteOne()
-	} catch (err) {
-		const error = new HttpError(err, 404)
-		return next(error)
-	} */
-	//Next, we need to find all rosteredPlayers for this league and delete them
-	/* let rosterPlayers
-	try {
-		rosterPlayers = await RosterPlayer.find({
-			rosterId: rosterId,
-		})
-	} catch (err) {
-		const error = new HttpError(
-			'Could not find any rostered players for this league',
-			404
-		)
-		return next(error)
-	} */
-
-	//We found all the rostered players, so let's delete them all...
-	/* rosterPlayers.forEach(async (player) => {
-		try {
-			await player.deleteOne()
-		} catch (err) {
-			const error = new HttpError(err, 500)
-			return next(error)
-		}
-	}) */
+	console.log('player has been deleted...')
 
 	//Let's find the league, so that in the next step we can decrement numberOfTeams
 	let foundTeam
@@ -17161,6 +17119,7 @@ const removePlayer = async (req, res, next) => {
 
 	//Here's where, if we found the league, we decrement the numberOfTeams by 1
 	if (foundTeam) {
+		console.log('we found the team.  lets decrement assigned players then save')
 		foundTeam.assignedPlayers--
 		try {
 			await foundTeam.save()
@@ -17169,50 +17128,7 @@ const removePlayer = async (req, res, next) => {
 			return next(error)
 		}
 	}
-
-	//Finally, we want to find any games that this team is involved in and delete them
-	/* let homeGames, visitorGames
-	let allGames = []
-	try {
-		homeGames = await Game.find({
-			homeTeamId: teamId,
-		})
-	} catch (err) {
-		const error = new HttpError(
-			'Could not find games where this is the hometeam',
-			404
-		)
-	} */
-
-	/* for (let i = 0; i < homeGames.length; i++) {
-		allGames.push(homeGames[i])
-	} */
-
-	/* try {
-		visitorGames = await Game.find({
-			visitorTeamId: teamId,
-		})
-	} catch (err) {
-		const error = new HttpError(
-			'Could not find games where this is the visitor team',
-			404
-		)
-	}
-
-	for (let i = 0; i < visitorGames.length; i++) {
-		allGames.push(visitorGames[i])
-	} */
-
-	/* if (allGames.length !== 0) {
-		try {
-			await allGames.forEach((game) => {
-				game.deleteOne()
-			})
-		} catch (err) {
-			const error = new HttpError(err, 404)
-			return next(error)
-		}
-	} */
+	console.log('team has been saved...')
 
 	res.status(200).json({
 		message: 'Deleted the player',
