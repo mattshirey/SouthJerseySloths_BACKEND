@@ -17530,6 +17530,8 @@ const removeEvent = async (req, res, next) => {
 		homeTeam = game.teamName
 		status = game.status
 
+		console.log('homeTeam: ' + homeTeam)
+
 		//Now that we have teamName, lets go get the current sloth team and
 		//get their teamId
 		let foundTeam, teamId
