@@ -696,7 +696,7 @@ const getPlayersOnTeam = async (req, res, next) => {
 	let listOfPlayers
 	try {
 		listOfPlayers = await RosterPlayer.find({
-			rosterId: teamId,
+			rosterId: rosterId,
 		}).orFail()
 	} catch {}
 
