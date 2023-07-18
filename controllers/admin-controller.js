@@ -646,7 +646,7 @@ const getPlayersOnTeam = async (req, res, next) => {
 	const teamName = req.params.teamName
 	const year = req.params.year
 
-	console.log('inside getPlayersOnTeam for ' + teamName + ' ' + year)
+	//console.log('inside getPlayersOnTeam for ' + teamName + ' ' + year)
 	//Here, once we tapped into the params, we'll match the leagueName, session, and year
 	//against the LeagueDatabasTable and get the league id.
 	//We also want to know if the league is current so that, if so, we can edit a team name
@@ -668,7 +668,7 @@ const getPlayersOnTeam = async (req, res, next) => {
 		)
 		return next(error)
 	}
-	console.log('foundTeam: ' + foundTeam)
+	//console.log('foundTeam: ' + foundTeam)
 	//
 	teamId = foundTeam.id
 	isCurrent = foundTeam.isCurrent
@@ -680,7 +680,7 @@ const getPlayersOnTeam = async (req, res, next) => {
 	//that have that rosterId
 	let rosterId
 	let foundRoster
-	console.log('lets find roster using ' + teamId)
+	//console.log('lets find roster using ' + teamId)
 	try {
 		foundRoster = await Roster.findOne({
 			teamId: teamId,
@@ -693,7 +693,7 @@ const getPlayersOnTeam = async (req, res, next) => {
 		return next(error)
 	}
 	rosterId = foundRoster.id
-	console.log('rosterId is ' + rosterId)
+	//console.log('rosterId is ' + rosterId)
 	//
 	//
 	//
@@ -704,7 +704,7 @@ const getPlayersOnTeam = async (req, res, next) => {
 		})
 	} catch {}
 
-	console.log('listOfPlayers: ' + listOfPlayers)
+	//console.log('listOfPlayers: ' + listOfPlayers)
 
 	res.json({
 		isCurrent: isCurrent,
