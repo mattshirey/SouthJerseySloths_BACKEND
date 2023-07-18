@@ -17515,7 +17515,7 @@ const removeEvent = async (req, res, next) => {
 
 	console.log('itemId: ' + itemId)
 	//First, we need to see if it is a game
-	let gameOrEvent, game, event1
+	let gameOrEvent, game, event
 	try {
 		game = await Game.findById(itemId)
 	} catch (err) {
