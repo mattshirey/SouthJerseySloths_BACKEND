@@ -1,8 +1,8 @@
 {
 	"env": {
 		"DB_USER": "mattshirey",
-		"DB_PASSWORD": "qW8mvn7VlKokfQGt",
-		"DB_NAME": "Sloths Production 2",
+		"DB_PASSWORD": "GClwzxXrIBi2Y2ko",
+		"DB_NAME": "South Jersey Sloths Shared Server – Production",
 		"JWT_KEY": "supersecret_dont_share"
 	}
 }
