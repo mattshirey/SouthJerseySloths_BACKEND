@@ -644,8 +644,9 @@ const getEventData = async (req, res, next) => {
 const getPlayersOnTeam = async (req, res, next) => {
 	console.log('inside getPlayersOnTeam')
 	const teamName = req.params.teamName
-	//const session = req.params.session
 	const year = req.params.year
+
+	console.log('inside getPlayersOnTeam for ' + teamName + ' ' + year)
 	//Here, once we tapped into the params, we'll match the leagueName, session, and year
 	//against the LeagueDatabasTable and get the league id.
 	//We also want to know if the league is current so that, if so, we can edit a team name
@@ -672,14 +673,30 @@ const getPlayersOnTeam = async (req, res, next) => {
 	//console.log('leagueId: ' + leagueId)
 	//
 	//
-	//Now that we have the leagueId, we want to tap into the TeamsDatabaseTable and find all the
-	//teams with that leagueId
-	//I put an empty catch bracket here, because I don't want to throw an error if
-	//there are no teams.
+	//
+	//Now let's get the rosterId for that team.  We'll need it to find all the rosterPlayers
+	//that have that rosterId
+	let rosterId
+	let foundRoster
+	try {
+		foundRoster = await Roster.findOne({
+			teamId: teamId,
+		}).orFail()
+	} catch (err) {
+		const error = new HttpError(
+			'Could not find roster to obtain rosterId.  getPlayersOnTeam',
+			404
+		)
+		return next(error)
+	}
+	rosterId = foundRoster.id
+	//
+	//
+	//
 	let listOfPlayers
 	try {
 		listOfPlayers = await RosterPlayer.find({
-			teamId: teamId,
+			rosterId: teamId,
 		}).orFail()
 	} catch {}
 
