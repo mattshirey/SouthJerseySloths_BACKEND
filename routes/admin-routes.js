@@ -344,7 +344,7 @@ router.delete('/:playerId/removePlayer', adminControllers.removePlayer)
 
 router.delete('/:deletedVideoId/removeVideo', adminControllers.removeVideo)
 
-//router.delete('/:teamId/removeTeam', adminControllers.removeTeam)
+router.delete('/:teamId/removeTeam', adminControllers.removeTeam)
 
 //router.delete('/:rosterPlayerId/removePlayer', adminControllers.removePlayer)
 
