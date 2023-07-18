@@ -682,6 +682,8 @@ const getPlayersOnTeam = async (req, res, next) => {
 		}).orFail()
 	} catch {}
 
+	console.log('listOfPlayers: ' + listOfPlayers)
+
 	res.json({
 		isCurrent: isCurrent,
 		listOfPlayers,
