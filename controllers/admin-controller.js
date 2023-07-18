@@ -67,9 +67,10 @@ const getCurrentTeam = async (req, res, next) => {
 		)
 	}
 
-	teamName = currentTeam.teamName
-	year = currentTeam.year
-
+	if (currentTeam) {
+		teamName = currentTeam.teamName
+		year = currentTeam.year
+	}
 	/* 
 	currentLeagues &&
 		(currentLeaguesSorted = currentLeagues.sort((a, b) =>
