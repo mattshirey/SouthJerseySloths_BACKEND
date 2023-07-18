@@ -10515,6 +10515,7 @@ const addPlayerToTeam = async (req, res, next) => {
 		rosterId: rosterId,
 		//number: number,
 	})
+	console.log('does he exist already? ' + playerExists1)
 	//If the player exists, we want to display an error saying such, and include the player name
 	let existingPlayerName1
 	if (playerExists1) {
@@ -10564,6 +10565,7 @@ const addPlayerToTeam = async (req, res, next) => {
 
 		try {
 			await createdRosterPlayer1.save()
+			console.log('new player has been saved')
 		} catch (err) {
 			//const error = new HttpError('Could not add player1 to team (1)', 500)
 			const error = new HttpError(err, 500)
