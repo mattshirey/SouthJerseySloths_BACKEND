@@ -17078,6 +17078,8 @@ const removeVideo = async (req, res, next) => {
 const removePlayer = async (req, res, next) => {
 	const playerId = req.params.playerId
 
+	console.log('inside removePlayer')
+
 	//Before we go deleting, we need to obtain the teamId (so we can delete roster and rosterPlayers)
 	//So first, we need to find the team...
 	let teamId
