@@ -12768,6 +12768,7 @@ const addPlayerToTeam = async (req, res, next) => {
 	}
 	//Now, if we make it this far, let's increment assignedPlayers. One by one
 	if (createdRosterPlayer1) {
+		console.log('createdRosterPlayer1')
 		foundTeam.assignedPlayers++
 		try {
 			await foundTeam.save()
@@ -12934,6 +12935,8 @@ const addPlayerToTeamWithDivision = async (req, res, next) => {
 			422
 		)
 	}
+
+	console.log('inside addPlayerToTeamWithDivision')
 
 	const leagueName = req.params.leagueName
 	const divisionName = req.params.divisionName
