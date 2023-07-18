@@ -17513,20 +17513,17 @@ const removeEvent = async (req, res, next) => {
 	console.log('inside removeEvent')
 	const itemId = req.params.itemId
 
-	//First, we need to get the game
-	let gameOrEvent, game, event, homeRosterId, visitorRosterId
+	//First, we need to see if it is a game
+	let gameOrEvent, game, event1
 	try {
 		game = await Game.findById(itemId)
 	} catch (err) {
 		const error = new HttpError('Could not find game for this itemId', 404)
 	}
 	//If we find a game, let's grab the homeTeamRosterId and visitorTeamRosterId
-	let homeTeam, visitorTeam, status
+	let homeTeam, status
 	if (game) {
 		homeTeam = game.teamName
-		//visitorTeam = game.visitorTeamId
-		//homeRosterId = game.homeRosterId
-		//visitorRosterId = game.visitorRosterId
 		status = game.status
 
 		//Now that we have teamName, lets go get the current sloth team and
@@ -17543,6 +17540,8 @@ const removeEvent = async (req, res, next) => {
 				404
 			)
 		}
+
+		console.log('foundTeam: ' + foundTeam)
 
 		teamId = foundTeam.id
 		//
