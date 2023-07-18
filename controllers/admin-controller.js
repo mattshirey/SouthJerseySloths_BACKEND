@@ -17513,6 +17513,7 @@ const removeEvent = async (req, res, next) => {
 	console.log('inside removeEvent')
 	const itemId = req.params.itemId
 
+	console.log('itemId: ' + itemId)
 	//First, we need to see if it is a game
 	let gameOrEvent, game, event1
 	try {
@@ -17520,6 +17521,9 @@ const removeEvent = async (req, res, next) => {
 	} catch (err) {
 		const error = new HttpError('Could not find game for this itemId', 404)
 	}
+
+	console.log('game: ' + game)
+
 	//If we find a game, let's grab the homeTeamRosterId and visitorTeamRosterId
 	let homeTeam, status
 	if (game) {
