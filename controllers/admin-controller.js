@@ -17544,7 +17544,7 @@ const removeEvent = async (req, res, next) => {
 			)
 		}
 
-		teamId = foundTeam._id
+		teamId = foundTeam.id
 		//
 		//Now that we have teamId, let's get the current sloths team roster
 		let foundRoster, rosterId
