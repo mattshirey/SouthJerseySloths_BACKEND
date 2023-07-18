@@ -17094,6 +17094,8 @@ const removePlayer = async (req, res, next) => {
 		return next(error)
 	}
 
+	console.log('foundPlayer: ' + foundPlayer)
+
 	teamId = foundPlayer.teamId
 
 	try {
