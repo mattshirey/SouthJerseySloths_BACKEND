@@ -10506,6 +10506,8 @@ const addPlayerToTeam = async (req, res, next) => {
 		playerId1 = foundPlayer1.id
 	}
 	//
+	console.log('player 1 id is ' + playerId1)
+	//
 	//
 	//Before we add this player, let's make sure he doesnt already exist on the team
 	const playerExists1 = await RosterPlayer.findOne({
