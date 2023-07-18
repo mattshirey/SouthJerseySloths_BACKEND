@@ -1559,6 +1559,8 @@ const createNewTeam = async (req, res, next) => {
 
 	const { teamName, year } = req.body
 
+	console.log('inside createNewTeam for ' + teamName + ' ' + year)
+
 	//First, let's check to see if the team already exists...
 	let teamExists
 	/* if (divisionName) {
