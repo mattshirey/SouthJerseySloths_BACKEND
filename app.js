@@ -1,6 +1,9 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+//const cors = require('cors')
+//const { MongoClient, ServerApiVersion } = require('mongodb')
+
 //
 //
 //
@@ -11,7 +14,6 @@ const mongoose = require('mongoose')
 const adminRoutes = require('./routes/admin-routes')
 const leagueRoutes = require('./routes/league-routes')
 const playerRoutes = require('./routes/player-routes')
-const registrationRoutes = require('./routes/registration-routes')
 const HttpError = require('./models/http-error')
 
 const app = express()
@@ -34,7 +36,6 @@ app.use((req, res, next) => {
 app.use('/api/admin', adminRoutes)
 app.use('/api/league', leagueRoutes)
 app.use('/api/player', playerRoutes)
-app.use('/api/registration', registrationRoutes)
 
 //Here, if we get to this point, that means we haven't found the route, so
 //we'll throw an error and a 404 code
@@ -44,7 +45,7 @@ app.get('/', (req, res) => {
 //
 //
 app.use((req, res, next) => {
-	const error = new HttpError('Could not find this route. ', 404)
+	const error = new HttpError('Could not find this route.', 404)
 	throw error
 })
 
@@ -65,16 +66,13 @@ app.use((error, req, res, next) => {
 
 mongoose
 	.connect(
-		//
 		//Serverless Server:     USE THIS FOR TEST
-		//`mongodb+srv://mattshirey:Daisy24@cluster0.rxkldc8.mongodb.net/?retryWrites=true&w=majority`
+		//`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@serverlessinstance0.ek23b6e.mongodb.net/?retryWrites=true&w=majority`
 		//
 		//
 		//Shared Server:    USE THIS FOR PRODUCTION
-		//Original database:
+		//`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.xwcafss.mongodb.net/?retryWrites=true&w=majority`
 		`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.5uzmyz5.mongodb.net/?retryWrites=true&w=majority`
-		//New database that I made on 7/18/2023 to figure out if the old one sucked
-		//`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.qejtaia.mongodb.net/?retryWrites=true&w=majority`
 	)
 	.then(() => {
 		//console.log('process.env.PORT: ' + process.env.PORT)
