@@ -1629,7 +1629,7 @@ const createNewTeam = async (req, res, next) => {
 	}
 
 	const createdRoster1 = new Roster({
-		id: uuidv4(),
+		//id: uuidv4(),
 		//leagueId,
 		teamId: createdTeam.id,
 	})
