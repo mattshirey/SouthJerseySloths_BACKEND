@@ -668,6 +668,8 @@ const getPlayersOnTeam = async (req, res, next) => {
 		)
 		return next(error)
 	}
+	console.log('foundTeam: ' + foundTeam)
+	//
 	teamId = foundTeam.id
 	isCurrent = foundTeam.isCurrent
 	//console.log('leagueId: ' + leagueId)
@@ -678,6 +680,7 @@ const getPlayersOnTeam = async (req, res, next) => {
 	//that have that rosterId
 	let rosterId
 	let foundRoster
+	console.log('lets find roster using ' + teamId)
 	try {
 		foundRoster = await Roster.findOne({
 			teamId: teamId,
@@ -1633,10 +1636,6 @@ const createNewTeam = async (req, res, next) => {
 	//we created something new so conventionally, that'll be a 201
 	res.status(201).json({ team: createdTeam })
 }
-//
-//
-//
-//
 //
 //
 //
