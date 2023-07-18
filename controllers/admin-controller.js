@@ -10524,8 +10524,8 @@ const addPlayerToTeam = async (req, res, next) => {
 	}
 	//
 	//Should have everything we need now to create a new RosterPlayer item.
-	let createdRosterPlayer1
-	/* createdRosterPlayer2,
+	let createdRosterPlayer1,
+		createdRosterPlayer2,
 		createdRosterPlayer3,
 		createdRosterPlayer4,
 		createdRosterPlayer5,
@@ -10536,7 +10536,7 @@ const addPlayerToTeam = async (req, res, next) => {
 		createdRosterPlayer10,
 		createdRosterPlayer11,
 		createdRosterPlayer12,
-		createdRosterPlayer13 */
+		createdRosterPlayer13
 	if (!middleInitial1) {
 		if (playerExists1) {
 			console.log('Player1 already exists!')
@@ -12777,6 +12777,7 @@ const addPlayerToTeam = async (req, res, next) => {
 		}
 	}
 	if (createdRosterPlayer2) {
+		console.log('createdRosterPlayer2')
 		foundTeam.assignedPlayers++
 		try {
 			await foundTeam.save()
@@ -12786,6 +12787,7 @@ const addPlayerToTeam = async (req, res, next) => {
 		}
 	}
 	if (createdRosterPlayer3) {
+		console.log('createdRosterPlayer3')
 		foundTeam.assignedPlayers++
 		try {
 			await foundTeam.save()
