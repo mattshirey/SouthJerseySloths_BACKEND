@@ -17528,31 +17528,38 @@ const removeEvent = async (req, res, next) => {
 		//homeRosterId = game.homeRosterId
 		//visitorRosterId = game.visitorRosterId
 		status = game.status
-	}
-	//Now that we have teamName, lets go get the current sloth team and
-	//get their teamId
-	let foundTeam, teamId
-	try {
-		foundTeam = await Team.findOne({
-			teamName: homeTeam,
-			isCurrent: true,
-		})
-	} catch (err) {
-		const error = new HttpError('Could not find team to get their teamId', 404)
-	}
 
-	teamId = foundTeam._id
-	//
-	//Now that we have teamId, let's get the current sloths team roster
-	let foundRoster, rosterId
-	try {
-		foundRoster = await Roster.findOne({
-			teamId: teamId,
-		})
-	} catch (err) {
-		const error = new HttpError('Could not find team to get their teamId', 404)
+		//Now that we have teamName, lets go get the current sloth team and
+		//get their teamId
+		let foundTeam, teamId
+		try {
+			foundTeam = await Team.findOne({
+				teamName: homeTeam,
+				isCurrent: true,
+			})
+		} catch (err) {
+			const error = new HttpError(
+				'Could not find team to get their teamId',
+				404
+			)
+		}
+
+		teamId = foundTeam._id
+		//
+		//Now that we have teamId, let's get the current sloths team roster
+		let foundRoster, rosterId
+		try {
+			foundRoster = await Roster.findOne({
+				teamId: teamId,
+			})
+		} catch (err) {
+			const error = new HttpError(
+				'Could not find team to get their teamId',
+				404
+			)
+		}
+		rosterId = foundRoster._id
 	}
-	rosterId = foundRoster._id
 
 	//
 	//If we dont find the itemId as a Game, let's check to see if it's an Event
