@@ -10470,7 +10470,7 @@ const addPlayerToTeam = async (req, res, next) => {
 	//      WITH or WITHOUT middleInitial
 	//
 	//********************************************************************************* */
-	console.log('adding player 1')
+	console.log('adding player 1: ' + firstName1 + ' ' + lastName1)
 	let playerId1
 	let foundPlayer1
 	if (!middleInitial1) {
