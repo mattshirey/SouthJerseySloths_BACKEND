@@ -22,35 +22,9 @@ router.get('/venues', adminControllers.getVenues)
 router.get('/videos', adminControllers.getVideos)
 //
 //
-/* router.get(
-	'/:leagueName/:session/:year/teams',
-	adminControllers.getTeamsInLeague
-) */
 router.get('/:teamName/:year/roster', adminControllers.getPlayersOnTeam)
 //
 //
-router.get(
-	'/:leagueName/:divisionName/:session/:year/teams',
-	adminControllers.getTeamsInLeagueWithDivision
-)
-//
-//
-router.get(
-	'/allTeams/:leagueName/:leagueId/:session/:year',
-	adminControllers.getTeamsInLeagueByLeagueName
-)
-router.get('/:leagueId/teams', adminControllers.getTeamsInLeagueByLeagueId)
-
-//
-//
-router.get(
-	'/:leagueName/:divisionName/:session/:year/:teamName/players',
-	adminControllers.getPlayersOnTeamWithDivision
-)
-/* router.get(
-	'/:leagueName/:session/:year/:teamName/players',
-	adminControllers.getPlayersOnTeam
-) */
 //
 //
 router.get(
@@ -69,7 +43,6 @@ router.get('/venues/:venueId', adminControllers.getVenueData)
 router.get('/videos/:videoId', adminControllers.getVideoData)
 //
 //
-//router.get('/teams/:teamId', adminControllers.getTeamData)
 //
 //
 router.get('/:teamName/:year/:playerId', adminControllers.getPlayerNumber)
@@ -154,19 +127,6 @@ router.post(
 )
 //
 //
-/* router.post(
-	'/:leagueName/:session/:year/newTeam',
-	check('teamName1').not().isEmpty(),
-	adminControllers.createNewTeam
-) */
-//
-//
-//
-/* router.post(
-	'/:leagueName/:divisionName/:session/:year/newTeam',
-	check('teamName1').not().isEmpty(),
-	adminControllers.createNewTeamWithDivision
-) */
 //
 //
 //I commented this out on 7/18/23 to make sure it's not getting
@@ -202,12 +162,7 @@ router.post(
 //
 router.post(
 	'/createGames',
-	[
-		/* check('leagueName1').not().isEmpty(),
-		check('homeTeam1').not().isEmpty(),
-		check('visitorTeam1').not().isEmpty(), */
-		check('venue1').not().isEmpty(),
-	],
+	[check('venue1').not().isEmpty()],
 	adminControllers.createGames
 )
 //
@@ -340,17 +295,12 @@ router.patch(
 	[check('gameId').not().isEmpty()],
 	adminControllers.editEvent
 )
-//
-//
-//router.delete('/:teamId/removeTeam', adminControllers.removeTeam)
 
 router.delete('/:playerId/removePlayer', adminControllers.removePlayer)
 
 router.delete('/:deletedVideoId/removeVideo', adminControllers.removeVideo)
 
 router.delete('/:teamId/removeTeam', adminControllers.removeTeam)
-
-//router.delete('/:rosterPlayerId/removePlayer', adminControllers.removePlayer)
 
 router.delete('/:itemId/removeEvent', adminControllers.removeEvent) //deletes a game or event
 
