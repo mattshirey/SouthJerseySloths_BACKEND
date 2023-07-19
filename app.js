@@ -66,16 +66,9 @@ app.use((error, req, res, next) => {
 
 mongoose
 	.connect(
-		//Serverless Server:     USE THIS FOR TEST
-		//`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@serverlessinstance0.ek23b6e.mongodb.net/?retryWrites=true&w=majority`
-		//
-		//
-		//Shared Server:    USE THIS FOR PRODUCTION
-		//`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.xwcafss.mongodb.net/?retryWrites=true&w=majority`
 		`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.5uzmyz5.mongodb.net/?retryWrites=true&w=majority`
 	)
 	.then(() => {
-		//console.log('process.env.PORT: ' + process.env.PORT)
 		app.listen(process.env.PORT || 5000)
 	})
 	.catch((err) => {

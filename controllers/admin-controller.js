@@ -1219,7 +1219,7 @@ const createNewVideo = async (req, res, next) => {
 	try {
 		await createdVideo.save()
 	} catch (err) {
-		const error = new HttpError('Could not create new Video', 500)
+		const error = new HttpError('Could not create new Video ' + err, 500)
 		return next(error)
 	}
 
