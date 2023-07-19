@@ -149,15 +149,6 @@ router.post(
 )
 //
 //
-router.post(
-	'/:leagueName/:divisionName/:session/:year/:teamName/addPlayers',
-	[
-		check('lastName1').not().isEmpty(),
-		check('firstName1').not().isEmpty(),
-		check('playerNumber1').not().isEmpty(),
-	],
-	adminControllers.addPlayerToTeamWithDivision
-)
 //
 //
 router.post(
@@ -229,11 +220,6 @@ router.patch(
 //
 //
 //
-router.patch(
-	'/:leagueName/:session/:year/updateTeamWithDivision/:teamId',
-	check('teamName').not().isEmpty(),
-	adminControllers.editTeamNameWithDivision
-)
 //
 //
 router.patch(

@@ -3,14 +3,12 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 //const cors = require('cors')
 //const { MongoClient, ServerApiVersion } = require('mongodb')
-
 //
 //
 //
 //
 //
 //
-
 const adminRoutes = require('./routes/admin-routes')
 const leagueRoutes = require('./routes/league-routes')
 const playerRoutes = require('./routes/player-routes')
