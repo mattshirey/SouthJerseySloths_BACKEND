@@ -23,6 +23,8 @@ app.use(bodyParser.json())
 //app.use(cors())
 
 app.use((req, res, next) => {
+	console.log('req: ' + req)
+	console.log('res: ' + res)
 	res.setHeader('Access-Control-Allow-Origin', '*')
 	res.setHeader(
 		'Access-Control-Allow-Headers',
