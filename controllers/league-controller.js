@@ -145,7 +145,13 @@ const getPlayersOnTeam = async (req, res, next) => {
 	//
 	//So, there should only be ONE current team - that's how Anthony wants this set up
 	//so let's go get that current team
-	let teamId, rosterId, foundRoster, rosteredPlayers, teamName, year
+	let teamId,
+		rosterId,
+		foundRoster,
+		rosteredPlayers,
+		teamName,
+		year,
+		assignedPlayers
 	let foundTeam
 	let wins
 	let losses, overtimeLosses, shootoutLosses, ties
@@ -171,6 +177,7 @@ const getPlayersOnTeam = async (req, res, next) => {
 	overtimeLosses = foundTeam.overtimeLosses
 	shootoutLosses = foundTeam.shootoutLosses
 	ties = foundTeam.ties
+	assignedPlayers = foundTeam.assignedPlayers
 	//
 	////GET THE ROSTER ID FOR THIS TEAMID
 	try {
@@ -261,6 +268,7 @@ const getPlayersOnTeam = async (req, res, next) => {
 
 	res.json({
 		allGamesAndEventsArray: allGamesAndEventsArray,
+		assignedPlayers,
 		rosteredPlayers,
 		wins,
 		losses,
