@@ -14,6 +14,7 @@ const mongoose = require('mongoose')
 const adminRoutes = require('./routes/admin-routes')
 const leagueRoutes = require('./routes/league-routes')
 const playerRoutes = require('./routes/player-routes')
+const registrationRoutes = require('./routes/registration-routes')
 const HttpError = require('./models/http-error')
 
 const app = express()
@@ -36,6 +37,7 @@ app.use((req, res, next) => {
 app.use('/api/admin', adminRoutes)
 app.use('/api/league', leagueRoutes)
 app.use('/api/player', playerRoutes)
+app.use('/api/registration', registrationRoutes)
 
 //Here, if we get to this point, that means we haven't found the route, so
 //we'll throw an error and a 404 code
