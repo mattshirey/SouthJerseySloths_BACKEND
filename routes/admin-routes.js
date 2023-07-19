@@ -114,7 +114,7 @@ router.post(
 //
 //
 //
-//
+//for adding a new player to the system
 router.post(
 	'/newPlayer',
 	[
@@ -202,11 +202,11 @@ router.post(
 //
 //
 //
-router.patch(
+/* router.patch(
 	'/:leagueName/:session/:year/updateTeam/:teamId',
 	check('teamName').not().isEmpty(),
 	adminControllers.editTeamName
-)
+) */
 //
 //
 //

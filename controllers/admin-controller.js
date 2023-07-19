@@ -1908,7 +1908,7 @@ const createNewPlayer = async (req, res, next) => {
 //
 //
 //****************************************************************************************** */
-const newPlayerOnTeam = async (req, res, next) => {
+/* const newPlayerOnTeam = async (req, res, next) => {
 	console.log('inside newPlayerOnTeam')
 	const errors = validationResult(req)
 	if (!errors.isEmpty()) {
@@ -2331,7 +2331,7 @@ const newPlayerOnTeam = async (req, res, next) => {
 		player4: createdPlayer4,
 		player5: createdPlayer5,
 	})
-}
+} */
 //
 //
 //
@@ -9943,7 +9943,7 @@ const addPlayerToTeam = async (req, res, next) => {
 //This is a PATCH route to change the name of a team
 //
 //**************************************************************************************** */
-const editTeamName = async (req, res, next) => {
+/* const editTeamName = async (req, res, next) => {
 	console.log('inside editTeamName')
 	const errors = validationResult(req)
 	if (!errors.isEmpty()) {
@@ -10098,7 +10098,7 @@ const editTeamName = async (req, res, next) => {
 	})
 
 	res.status(200).json({ team: team.toObject({ getters: true }) })
-}
+} */
 //
 //
 //
@@ -11922,14 +11922,14 @@ exports.copyLeague = copyLeague
 exports.createNewVenue = createNewVenue
 exports.createNewVideo = createNewVideo
 exports.createNewPlayer = createNewPlayer
-exports.newPlayerOnTeam = newPlayerOnTeam
+//exports.newPlayerOnTeam = newPlayerOnTeam
 exports.createGames = createGames
 exports.createGameStats = createGameStats
 exports.createPlayoffGameStats = createPlayoffGameStats
 exports.createChampionshipGameStats = createChampionshipGameStats
 exports.createEvents = createEvents
 exports.addPlayerToTeam = addPlayerToTeam
-exports.editTeamName = editTeamName
+//exports.editTeamName = editTeamName
 exports.editPlayerNumber = editPlayerNumber
 exports.editTeam = editTeam
 exports.archiveCurrentToggleTeam = archiveCurrentToggleTeam
