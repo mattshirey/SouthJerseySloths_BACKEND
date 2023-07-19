@@ -7,7 +7,7 @@ const RosterPlayer = require('../models/rosterPlayer')
 const RosterPlayerStatsPerGame = require('../models/rosterPlayerStatsPerGame')
 
 const getPlayerHistoryByPlayerId = async (req, res, next) => {
-	//console.log('inside getPlayerHistoryByPlayer')
+	console.log('inside getPlayerHistoryByPlayer')
 	const playerId = req.params.playerId
 
 	//First, we need to find how many different rosters this player has been on

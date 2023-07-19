@@ -72,7 +72,6 @@ router.get('/getAllPlayers', adminControllers.getAllPlayers)
 router.get('/allGamesAndEvents', adminControllers.allGamesAndEvents)
 //
 //
-router.get('/allGamesAndEventsWeek', adminControllers.allGamesAndEventsWeek)
 //
 //
 //changed this from league/new to team/new for Sloths
@@ -159,15 +158,6 @@ router.post(
 //
 //
 //
-router.post(
-	'/uploadGames',
-	[
-		check('data').not().isEmpty(),
-		check('columnArray').not().isEmpty(),
-		check('values').not().isEmpty(),
-	],
-	adminControllers.uploadGames
-)
 //
 //
 router.patch('/gameStats/:gameId', adminControllers.createGameStats)

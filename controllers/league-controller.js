@@ -19,6 +19,7 @@ const Venue = require('../models/venue')
 //
 //****************************************************************************************** */
 const getStandings = async (req, res, next) => {
+	console.log('inside getStandings')
 	const leagueId = req.params.leagueId
 	let leagueName
 	let session
@@ -78,6 +79,7 @@ const getStandings = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const getScoringLeadersByLeagueId = async (req, res, next) => {
+	console.log('inside getScoringLeadersByLeagueId')
 	const leagueId = req.params.leagueId
 	let leagueName
 	let session
@@ -739,7 +741,7 @@ const getAdminLeagueSchedule = async (req, res, next) => {
 const getVenueSchedule = async (req, res, next) => {
 	const venueId = req.params.venueId
 
-	console.log('INSIDE getVenueSchedule ' + venueId)
+	console.log('INSIDE getVenueSchedule')
 	//
 	//
 	//Get the leagueName - we'll want this so it displays at the top of the players list page
@@ -917,6 +919,7 @@ const getAllCurrentTeams = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const getPreviousLeagues = async (req, res, next) => {
+	console.log('inside getPreviousLeagues')
 	let previousLeagues
 	try {
 		previousLeagues = await League.find({

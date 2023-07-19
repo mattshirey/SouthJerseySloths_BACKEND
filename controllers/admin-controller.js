@@ -26,6 +26,7 @@ const jwt = require('jsonwebtoken')
 //
 //****************************************************************************************** */
 const getArchivedTeams = async (req, res, next) => {
+	console.log('inside getArchivedTeams')
 	let archivedTeams
 	try {
 		archivedTeams = await Team.find({
@@ -53,6 +54,7 @@ const getArchivedTeams = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const getCurrentTeam = async (req, res, next) => {
+	console.log('inside getCurrentTeam')
 	let currentTeam, teamName, year
 	try {
 		currentTeam = await Team.findOne({
@@ -81,6 +83,7 @@ const getCurrentTeam = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const getVenues = async (req, res, next) => {
+	console.log('inside getVenues')
 	let allVenues
 	try {
 		const filter = {}
@@ -101,6 +104,7 @@ const getVenues = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const getVideos = async (req, res, next) => {
+	console.log('inside getAllVideos')
 	let allVideos
 	try {
 		const filter = {}
@@ -120,11 +124,10 @@ const getVideos = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const getTeamData = async (req, res, next) => {
+	console.log('inside getTeamData')
 	const teamId = req.params.teamId
 	let teamName
 	let year
-
-	//console.log('You are here 1')
 
 	try {
 		foundTeam = await Team.findById(teamId)
@@ -153,6 +156,7 @@ const getTeamData = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const getVenueData = async (req, res, next) => {
+	console.log('inside getVenueData')
 	const venueId = req.params.venueId
 	let venueName
 	let venueAddress
@@ -182,6 +186,7 @@ const getVenueData = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const getVideoData = async (req, res, next) => {
+	console.log('inside getVideoData')
 	const videoId = req.params.videoId
 	let videoTitle
 	let videoURL
@@ -216,6 +221,7 @@ const getPlayerNumber = async (req, res, next) => {
 	const teamName = req.params.teamName
 	const playerId = req.params.playerId
 
+	console.log('inside getPlayerNumber')
 	console.log('teamName: ' + teamName)
 
 	let number
@@ -251,6 +257,7 @@ const getPlayerNumber = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const getPlayerData = async (req, res, next) => {
+	console.log('inside getPlayerData')
 	const playerId = req.params.playerId
 	let playerName
 
@@ -277,6 +284,7 @@ const getPlayerData = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const getPlayerDataByRosterId = async (req, res, next) => {
+	console.log('inside getPlayerDataByRosterId')
 	const rosterPlayerId = req.params.rosterPlayerId
 	let foundPlayer
 
@@ -411,6 +419,7 @@ const getGameData = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const getEventData = async (req, res, next) => {
+	console.log('inside getEventData')
 	const gameId = req.params.gameId
 	let event
 
@@ -524,6 +533,7 @@ const getPlayersOnTeam = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const getGameRostersAndPointsPerPeriod = async (req, res, next) => {
+	console.log('inside getGameRosterAndPointsPerPeriod')
 	const gameId = req.params.gameId
 
 	let teamName, dayOfWeek, date, time, venue, opponent
@@ -685,6 +695,7 @@ const getGameRostersAndPointsPerPeriod = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const getAllRosters = async (req, res, next) => {
+	console.log('inside getAllRosters')
 	try {
 		const filter = {}
 		const all = await Roster.find(filter)
@@ -698,6 +709,7 @@ const getAllRosters = async (req, res, next) => {
 //
 //This list is not sorted.  Might need to do that eventually
 const getAllPlayers = async (req, res, next) => {
+	console.log('inside getAllPlayers')
 	try {
 		const filter = {}
 		const allPlayers = await Player.find(filter)
@@ -715,6 +727,7 @@ const getAllPlayers = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const allGamesAndEvents = async (req, res, next) => {
+	console.log('inside allGamesAndEvents')
 	let allEvents, allGames
 	let allGamesAndEventsArray
 	allGamesAndEventsArray = []
@@ -789,96 +802,6 @@ const allGamesAndEvents = async (req, res, next) => {
 	})
 }
 //
-//
-//
-//****************************************************************************************** */
-//
-// Get All Games and Events This Week
-// Just like allGamesAndEvents, but just for this week
-//
-//
-//****************************************************************************************** */
-const allGamesAndEventsWeek = async (req, res, next) => {
-	let allEvents, allGames
-	let allGamesAndEventsArray
-	allGamesAndEventsArray = []
-
-	try {
-		//console.log('getting all events')
-		const filter = {}
-		allEvents = await Event.find(filter)
-	} catch (err) {
-		const error = new HttpError('Error getting all events', 500)
-		return next(error)
-	}
-
-	for (let i = 0; i < allEvents.length; i++) {
-		allGamesAndEventsArray.push(allEvents[i])
-	}
-	//
-	//
-	//
-	//getting all games THAT ARE CURRENT
-	try {
-		allGames = await Game.find({
-			isCurrent: true,
-		})
-	} catch (err) {
-		const error = new HttpError('Error getting all (current) Games', 500)
-		return next(error)
-	}
-	//
-	//
-	//
-	//
-	for (let i = 0; i < allGames.length; i++) {
-		allGamesAndEventsArray.push(allGames[i])
-	}
-
-	//This little algorithm will sort all games and events based on first the
-	//date, then the times
-	allGamesAndEventsArray.sort(function (a, b) {
-		if (a.date === b.date) {
-			return a.time < b.time ? -1 : a.time > b.time ? 1 : 0
-		} else {
-			return new Date(b.date) < new Date(a.date) ? 1 : -1
-		}
-	})
-
-	//Here, I want to return all games and events just from the previous 5 days on.
-	//No need to go back in time forever...
-
-	let today = new Date()
-	let currentDate = new Date()
-	const sevenDaysLater = new Date(
-		currentDate.setDate(currentDate.getDate() + 7)
-	)
-	let allGamesAndEventsArrayFilteredByOneWeek
-	allGamesAndEventsArrayFilteredByOneWeek = []
-
-	for (let i = 0; i < allGamesAndEventsArray.length; i++) {
-		const split = allGamesAndEventsArray[i].date.split('-')
-		const month = split[0]
-		const day = split[1]
-		const year = split[2]
-		const stringDate = '"' + year + '-' + month + '-' + day + '"'
-		const convertedDate = new Date(stringDate)
-
-		//console.log('currentDate: ' + today)
-		//console.log('sevenDaysLater: ' + sevenDaysLater)
-
-		if (
-			(convertedDate > today || convertedDate === today) &&
-			(convertedDate < sevenDaysLater || convertedDate === sevenDaysLater)
-		) {
-			allGamesAndEventsArrayFilteredByOneWeek.push(allGamesAndEventsArray[i])
-		}
-	}
-
-	res.json({ allItems: allGamesAndEventsArrayFilteredByOneWeek })
-
-	//res.json({ allItems: allGamesAndEventsArray })
-}
 //
 //
 //
@@ -1213,6 +1136,7 @@ const copyLeague = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const createNewVenue = async (req, res, next) => {
+	console.log('inside createNewVenue')
 	const errors = validationResult(req)
 	if (!errors.isEmpty()) {
 		throw new HttpError(
@@ -1261,6 +1185,7 @@ const createNewVenue = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const createNewVideo = async (req, res, next) => {
+	console.log('inside createNewVideo')
 	const errors = validationResult(req)
 	if (!errors.isEmpty()) {
 		throw new HttpError(
@@ -1311,6 +1236,7 @@ const createNewVideo = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const createNewPlayer = async (req, res, next) => {
+	console.log('inside createNewPlayer - adding brand new player to system')
 	const errors = validationResult(req)
 	if (!errors.isEmpty()) {
 		throw new HttpError('Invalid inputs - something is empty', 422)
@@ -1983,6 +1909,7 @@ const createNewPlayer = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const newPlayerOnTeam = async (req, res, next) => {
+	console.log('inside newPlayerOnTeam')
 	const errors = validationResult(req)
 	if (!errors.isEmpty()) {
 		throw new HttpError(JSON.stringify(errors), 422)
@@ -2417,6 +2344,7 @@ const newPlayerOnTeam = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const createGames = async (req, res, next) => {
+	console.log('inside createGames')
 	const errors = validationResult(req)
 	if (!errors.isEmpty()) {
 		const error = new HttpError(
@@ -3286,208 +3214,6 @@ const createGames = async (req, res, next) => {
 //
 //
 //
-//
-//****************************************************************************************** */
-//
-//	      uploadGames
-//
-//
-//
-//****************************************************************************************** */
-const uploadGames = async (req, res, next) => {
-	const { data, columnArray, values } = req.body
-
-	const formatted = values.toString().trim().split(',,,,,,,').join('\n')
-
-	let arrayOfGames
-	arrayOfGames = []
-	const splitByWeek = formatted.split('\n')
-
-	arrayOfWeeks = Array.from(splitByWeek)
-	let year, createdGame
-	year = new Date().getFullYear()
-
-	//This shifts the array one space, essentially deleting the first element, which is our header.
-	//We dont really want the header
-	//arrayOfWeeks.shift()
-	//formatted.shift()
-	//console.log('_________')
-	//console.log('_________')
-	//console.log('_________')
-	//console.log('arrayOfWeeks: ' + arrayOfWeeks)
-	//console.log('_________')
-	//console.log('_________')
-	//console.log('_________')
-
-	let individualGames
-	individualGames = []
-
-	/* console.log('arrayOfWeeks week 1: ' + arrayOfWeeks[0])
-	console.log('_________')
-	console.log('_________')
-	console.log('arrayOfWeeks week 2: ' + arrayOfWeeks[1])
-	console.log('_________')
-	console.log('_________')
-	console.log('arrayOfWeeks week 3: ' + arrayOfWeeks[2])
-	console.log('_________')
-	console.log('_________')
-	console.log('arrayOfWeeks week 4: ' + arrayOfWeeks[3])
-	console.log('_________')
-	console.log('_________')
-	console.log('arrayOfWeeks week 5: ' + arrayOfWeeks[4])
-	console.log('_________')
-	console.log('_________')
-	console.log('arrayOfWeeks week 6: ' + arrayOfWeeks[5])
-	console.log('_________')
-	console.log('_________')
-	console.log('arrayOfWeeks week 7: ' + arrayOfWeeks[6])
-	console.log('_________')
-	console.log('_________')
-	console.log('arrayOfWeeks week 8: ' + arrayOfWeeks[7])
-	console.log('_________')
-	console.log('_________')
-	console.log('arrayOfWeeks week 9: ' + arrayOfWeeks[8])
-	console.log('_________')
-	console.log('_________')
-	console.log('arrayOfWeeks week 10: ' + arrayOfWeeks[9])
-	console.log('_________')
-	console.log('_________')
-	console.log('arrayOfWeeks length: ' + arrayOfWeeks.length) */
-
-	let arrayOfIndividualGames
-	arrayOfIndividualGames = []
-
-	arrayOfWeeks.forEach((week) => {
-		console.log('week: ' + week)
-		//lets turn week into an array, then split it on the comma:
-		weekArray = Array.from(week)
-		const splitWeek = week.split(',')
-		console.log('splitWeek[2]: ' + splitWeek[2])
-		//now lets split it again into individual games - after the 6th element
-		for (let i = 0; i < splitWeek.length; i += 6) {
-			const chunk = splitWeek.slice(i, i + 6)
-			arrayOfIndividualGames.push(chunk)
-		}
-	})
-
-	arrayOfIndividualGames.forEach((game) => {
-		console.log('GAME: ' + game)
-		console.log('____________________________')
-	})
-	//console.log('arrayOfIndividualGames: ' + arrayOfIndividualGames[0])
-
-	/*   for each week, split into individual games */
-	arrayOfIndividualGames.forEach(async (game) => {
-		//const split = week.split(',,')
-		//const howManyGamesThisWeek = split.length
-		// called it possibleLeagueName because it could also be a number:
-		let leagueName,
-			venue,
-			date,
-			time,
-			homeTeamName,
-			visitorTeamName,
-			homeTeamId,
-			homeRosterId,
-			visitorTeamId,
-			visitorRosterId
-		//
-		//console.log('matt youre in the first one ' + gameParameters[2])
-		//First, we need to look up the team names and get their teamId's and rosterId's
-		//homeTeamId:
-		let foundHomeTeam
-		try {
-			foundHomeTeam = await Team.findOne({
-				teamName: game[4].trim(),
-			})
-		} catch (err) {
-			const error = new HttpError(
-				'Home Team that was given is not found in the system 1.',
-				404
-			)
-			return next(error)
-		}
-		homeTeamId = foundHomeTeam._id
-		//console.log('whats the fucking home team id: ' + homeTeamId)
-		//
-		//
-		//Now that we have the homeTeamId, we need to grab that teams rosterId
-		let foundHomeRoster
-		try {
-			foundHomeRoster = await Roster.findOne({
-				teamId: homeTeamId,
-			})
-		} catch (err) {
-			const error = new HttpError('Cant find rosterId 1.', 404)
-			return next(error)
-		}
-		homeRosterId = foundHomeRoster._id
-		//
-		//
-		//visitorTeamId:
-		let foundVisitorTeam
-		try {
-			foundVisitorTeam = await Team.findOne({
-				teamName: game[5].trim(),
-			})
-		} catch (err) {
-			const error = new HttpError(
-				'Visitor Team that was given is not found in the system 1.',
-				404
-			)
-			return next(error)
-		}
-		//console.log('foundVisitorTeam: ' + foundVisitorTeam)
-		visitorTeamId = foundVisitorTeam._id
-		//Now that we have the visitorTeamId, we need to grab that teams rosterId
-		let foundVisitorRoster
-		try {
-			foundVisitorRoster = await Roster.findOne({
-				teamId: visitorTeamId,
-			})
-		} catch (err) {
-			const error = new HttpError('Cant find rosterId 2.', 404)
-			return next(error)
-		}
-		visitorRosterId = foundVisitorRoster._id
-		//console.log('visitorTeamId is ' + visitorTeamId)
-
-		leagueName = game[0]
-		venue = game[1]
-		date = game[2]
-		time = game[3]
-		homeTeamName = game[4]
-		homeTeamId = homeTeamId
-		homeRosterId = homeRosterId
-		visitorTeamName = game[5]
-		visitorTeamId = visitorTeamId
-		visitorRosterId = visitorRosterId
-
-		createdGame = new Game({
-			leagueName: leagueName,
-			year: year,
-			session: 'test session',
-			venueName: venue,
-			date: date,
-			time: time,
-			homeTeamName: homeTeamName,
-			homeTeamId: homeTeamId,
-			homeRosterId: homeRosterId,
-			visitorTeamName: visitorTeamName,
-			visitorTeamId: visitorTeamId,
-			visitorRosterId: visitorRosterId,
-			isCurrent: true,
-		})
-		try {
-			await createdGame.save()
-		} catch (err) {
-			const error = new HttpError('uploaded game ERROR: ' + err, 500)
-			return next(error)
-		}
-	})
-
-	res.status(200).json({ message: 'Games have been uploaded' })
-}
 //****************************************************************************************** */
 //
 //	      createGameStats
@@ -3525,7 +3251,7 @@ const createGameStats = async (req, res, next) => {
 		newHomeGoalsTotal = split[4]
 	}
 
-	console.log('inside createGameStats: ' + gameStatus)
+	console.log('inside createGameStats')
 
 	if (!gameStatus) {
 		const error = new HttpError('Please enter a game status')
@@ -6362,6 +6088,7 @@ const createChampionshipGameStats = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const createEvents = async (req, res, next) => {
+	console.log('inside createEvents')
 	const errors = validationResult(req)
 	if (!errors.isEmpty()) {
 		const error = new HttpError(
@@ -7652,6 +7379,7 @@ const createEvents = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const addPlayerToTeam = async (req, res, next) => {
+	console.log('inside addPlayerToTeam')
 	const errors = validationResult(req)
 	if (!errors.isEmpty()) {
 		console.log(errors)
@@ -10216,6 +9944,7 @@ const addPlayerToTeam = async (req, res, next) => {
 //
 //**************************************************************************************** */
 const editTeamName = async (req, res, next) => {
+	console.log('inside editTeamName')
 	const errors = validationResult(req)
 	if (!errors.isEmpty()) {
 		throw new HttpError(
@@ -10382,6 +10111,7 @@ const editTeamName = async (req, res, next) => {
 //
 //**************************************************************************************** */
 const editPlayerNumber = async (req, res, next) => {
+	console.log('inside editPlayerNumber')
 	const errors = validationResult(req)
 	if (!errors.isEmpty()) {
 		throw new HttpError('Invalid inputs - something is empty', 422)
@@ -10438,6 +10168,7 @@ const editPlayerNumber = async (req, res, next) => {
 //
 //******************************************************************************************* */
 const editTeam = async (req, res, next) => {
+	console.log('inside editTeam')
 	const errors = validationResult(req)
 	if (!errors.isEmpty()) {
 		throw new HttpError('Invalid inputs - something is empty', 422)
@@ -10598,6 +10329,7 @@ const archiveCurrentToggleTeam = async (req, res, next) => {
 //
 //******************************************************************************************* */
 const editVenue = async (req, res, next) => {
+	console.log('inside editVenue')
 	const errors = validationResult(req)
 	if (!errors.isEmpty()) {
 		throw new HttpError('Invalid inputs - something is empty.   editVenue', 422)
@@ -10847,6 +10579,7 @@ const editGame = async (req, res, next) => {
 //
 //******************************************************************************************* */
 const editEvent = async (req, res, next) => {
+	console.log('inside editEvent')
 	const errors = validationResult(req)
 	if (!errors.isEmpty()) {
 		throw new HttpError('Invalid inputs - something is empty', 422)
@@ -12184,7 +11917,6 @@ exports.getGameRostersAndPointsPerPeriod = getGameRostersAndPointsPerPeriod
 exports.getAllRosters = getAllRosters
 exports.getAllPlayers = getAllPlayers
 exports.allGamesAndEvents = allGamesAndEvents //This is the full schedule
-exports.allGamesAndEventsWeek = allGamesAndEventsWeek //This is this weeks schedule
 exports.createNewTeam = createNewTeam
 exports.copyLeague = copyLeague
 exports.createNewVenue = createNewVenue
@@ -12192,7 +11924,6 @@ exports.createNewVideo = createNewVideo
 exports.createNewPlayer = createNewPlayer
 exports.newPlayerOnTeam = newPlayerOnTeam
 exports.createGames = createGames
-exports.uploadGames = uploadGames
 exports.createGameStats = createGameStats
 exports.createPlayoffGameStats = createPlayoffGameStats
 exports.createChampionshipGameStats = createChampionshipGameStats

@@ -16,6 +16,7 @@ const LeagueRegistration = require('../models/leagueRegistration')
 //
 //************************************************************************ */
 const playerRegistration = async (req, res, next) => {
+	console.log('inside playerRegistration')
 	const {
 		type,
 		registeredForWhat,
@@ -115,7 +116,7 @@ const playerRegistration = async (req, res, next) => {
 //
 //************************************************************************ */
 const adminRegistrationLeagueSetup = async (req, res, next) => {
-	console.log('you are here!!!')
+	console.log('inside adminRegistrationLeagueSetup')
 	const { type, leagueNameAndDesc, leagueRegistrationCloseDate, leaguePrice } =
 		req.body
 
@@ -144,6 +145,7 @@ const adminRegistrationLeagueSetup = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const getRegistrationLeagues = async (req, res, next) => {
+	console.log('inside getRegistrationLeagues')
 	let allRegistrationLeagues
 	try {
 		const filter = {}
@@ -171,6 +173,7 @@ const getRegistrationLeagues = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const getRegisteredPlayersInLeague = async (req, res, next) => {
+	console.log('inside getRegisteredPlayersInLeague')
 	const modalFor = req.params.modalFor
 
 	console.log('modalFor: ' + modalFor)
@@ -195,6 +198,7 @@ const getRegisteredPlayersInLeague = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const getRegistrationLeagueData = async (req, res, next) => {
+	console.log('inside getRegistrationLeagueData')
 	const regLeagueId = req.params.regLeagueId
 	let leagueNameAndDesc, leagueRegistrationCloseDate, leaguePrice
 	let foundRegLeague
@@ -226,6 +230,7 @@ const getRegistrationLeagueData = async (req, res, next) => {
 //
 //******************************************************************************************* */
 const editLeagueRegistration = async (req, res, next) => {
+	console.log('inside editLeagueRegistration')
 	/* const errors = validationResult(req)
 	if (!errors.isEmpty()) {
 		throw new HttpError(
