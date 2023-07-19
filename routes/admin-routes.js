@@ -167,11 +167,15 @@ router.post(
 	check('teamName1').not().isEmpty(),
 	adminControllers.createNewTeamWithDivision
 ) */
-router.post(
+//
+//
+//I commented this out on 7/18/23 to make sure it's not getting
+//confused with addPlayerToTeam
+/* router.post(
 	'/:teamName/:year/newPlayer',
 	check('playerFirstName1').not().isEmpty(),
 	adminControllers.newPlayerOnTeam
-)
+) */
 //
 //
 router.post(

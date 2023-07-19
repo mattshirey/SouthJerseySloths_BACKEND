@@ -79,8 +79,6 @@ const getStandings = async (req, res, next) => {
 //****************************************************************************************** */
 const getScoringLeadersByLeagueId = async (req, res, next) => {
 	const leagueId = req.params.leagueId
-	//First, find the leagueName, session, and year via the leagueId in the params.
-	//Make sure it is current league
 	let leagueName
 	let session
 	let year
@@ -140,13 +138,13 @@ const getScoringLeadersByLeagueId = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const getPlayersOnTeam = async (req, res, next) => {
-	console.log('inside getPlayersOnTeam')
+	console.log('inside getPlayersOnTeam in league-controller')
 	//
 	//
 	//So, there should only be ONE current team - that's how Anthony wants this set up
 	//so let's go get that current team
 	let teamId, rosterId, foundRoster, rosteredPlayers, teamName, year
-	let foundTeam, foundLeagueWithDivisions
+	let foundTeam
 	let wins
 	let losses, overtimeLosses, shootoutLosses, ties
 	//
@@ -173,11 +171,8 @@ const getPlayersOnTeam = async (req, res, next) => {
 	ties = foundTeam.ties
 	//
 	////GET THE ROSTER ID FOR THIS TEAMID
-	//let rosterId
-	//let foundRoster
 	try {
 		foundRoster = await Roster.findOne({
-			//leagueId: leagueId,
 			teamId: teamId,
 		}).orFail()
 	} catch (err) {
@@ -199,12 +194,6 @@ const getPlayersOnTeam = async (req, res, next) => {
 		const error = new HttpError('Trouble finding players for this team', 404)
 		return next(error)
 	}
-
-	/* let howManyPlayers
-
-	if (rosteredPlayers.length > 0) {
-		howManyPlayers = rosteredPlayers.length
-	} */
 
 	rosteredPlayers.sort((a, b) =>
 		a.goals + a.assists < b.goals + b.assists ? 1 : -1
@@ -271,7 +260,6 @@ const getPlayersOnTeam = async (req, res, next) => {
 	res.json({
 		allGamesAndEventsArray: allGamesAndEventsArray,
 		rosteredPlayers,
-		//howManyPlayers,
 		wins,
 		losses,
 		overtimeLosses,
@@ -288,9 +276,7 @@ const getPlayersOnTeam = async (req, res, next) => {
 //****************************************************************************************** */
 const getTeamSchedule = async (req, res, next) => {
 	console.log('inside getTeamSchedule')
-	//const leagueId = req.params.leagueId
 	const teamName = req.params.teamName
-	//const session = req.params.session
 	const year = req.params.year
 	//
 	//
@@ -303,7 +289,6 @@ const getTeamSchedule = async (req, res, next) => {
 	//
 	try {
 		foundTeam = await Team.findOne({
-			//leagueId: leagueId,
 			teamName: teamName,
 			year: year,
 		}).orFail()
@@ -393,7 +378,6 @@ const getTeamSchedule2 = async (req, res, next) => {
 	try {
 		foundTeam = await Team.findOne({
 			isCurrent: true,
-			//teamName: teamName,
 		}).orFail()
 	} catch (err) {
 		const error = new HttpError(
@@ -402,7 +386,6 @@ const getTeamSchedule2 = async (req, res, next) => {
 		)
 		return next(error)
 	}
-	//teamId = foundTeam.id
 	teamName = foundTeam.teamName
 	year = foundTeam.year
 	wins = foundTeam.wins
@@ -658,8 +641,6 @@ const getLeagueSchedule = async (req, res, next) => {
 				return new Date(b.date) < new Date(a.date) ? 1 : -1
 			}
 		})
-
-		//console.log('ALL GAMES ARRAY: ' + allLeagueGamesArray)
 	}
 
 	res.json({
@@ -682,7 +663,7 @@ const getAdminLeagueSchedule = async (req, res, next) => {
 	//
 	//
 	//Get the leagueName - we'll want this so it displays at the top of the players list page
-	let leagueName, session, year, divisionName
+	let leagueName, year, divisionName
 	try {
 		foundLeague = await League.findById(leagueId)
 	} catch (err) {
@@ -694,7 +675,6 @@ const getAdminLeagueSchedule = async (req, res, next) => {
 		return next(error)
 	}
 	leagueName = foundLeague.leagueName
-	//session = foundLeague.session
 	year = foundLeague.year
 	divisionName = foundLeague.divisionName
 
@@ -808,16 +788,7 @@ const getVenueSchedule = async (req, res, next) => {
 		allVenueEvents = await Event.find({
 			venueName: venueName,
 		}).orFail()
-	} catch {} /* (err) {
-		const error = new HttpError(
-			'Could not find events in this venue.  getVenueSchedule ' + err,
-			404
-		)
-		return next(error)
-	} */
-
-	//let allVenueEventsArray
-	//allVenueEventsArray = []
+	} catch {}
 
 	if (allVenueEvents) {
 		for (let i = 0; i < allVenueEvents.length; i++) {
@@ -884,6 +855,7 @@ const getVenueSchedule = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const getAllCurrentTeams = async (req, res, next) => {
+	console.log('inside getAllCurrentTeams')
 	let currentLeagues
 	try {
 		currentLeagues = await League.find({
@@ -896,8 +868,6 @@ const getAllCurrentTeams = async (req, res, next) => {
 		)
 		return next(error)
 	}
-
-	//console.log('currentLeagues: ' + JSON.stringify(currentLeagues))
 
 	//Now let's get a list of ALL teams
 	let allTeams
