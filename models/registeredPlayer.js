@@ -16,12 +16,6 @@ const registeredPlayerSchema = new Schema({
 	email2: { type: String, required: false },
 	dateOfBirth: { type: String, required: true },
 	parentName: { type: String, required: false },
-	//teeShirtSize: { type: String, required: false },
-	//goalie: { type: String, required: false },
-	//jerseyNumber: { type: String, required: false },
-	//position: { type: String, required: false },
-	//country: { type: String, required: false },
-	//gender: { type: String, required: false },
 })
 
 module.exports = mongoose.model('RegisteredPlayer', registeredPlayerSchema)

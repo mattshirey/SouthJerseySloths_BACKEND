@@ -3,11 +3,8 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const teamSchema = new Schema({
-	//id: { type: String, required: true },
 	teamName: { type: String, required: true },
 	year: { type: Number, required: true },
-	//leagueId: { type: String, required: true },
-	//divisionName: { type: String, required: false },
 	wins: { type: Number },
 	losses: { type: Number },
 	ties: { type: Number },

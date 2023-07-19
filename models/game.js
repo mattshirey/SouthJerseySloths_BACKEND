@@ -19,16 +19,6 @@ const gameSchema = new Schema({
 	opponent: { type: String, required: true },
 	venueName: { type: String, required: true },
 	isCurrent: { type: Boolean },
-	//session: { type: String, required: true },
-	//endTime: { type: String },
-	//homeTeamName: { type: String, required: true },
-	//homeTeamId: { type: String, required: false },
-	//homeRosterId: { type: String, required: false },
-	//homeTeamSeed: { type: String },
-	//visitorTeamName: { type: String, required: true },
-	//visitorTeamId: { type: String, required: false },
-	//visitorRosterId: { type: String, required: false },
-	//visitorTeamSeed: { type: String },
 })
 
 module.exports = mongoose.model('Game', gameSchema)

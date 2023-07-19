@@ -15,10 +15,8 @@ const PlayoffGameStats = require('../models/playoffGameStats')
 const RosterPlayerStatsPerGame = require('../models/rosterPlayerStatsPerGame')
 const rosterPlayerStatsPerGame = require('../models/rosterPlayerStatsPerGame')
 const Video = require('../models/video')
-const gameFromCSV = require('../models/gameFromCSV')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const league = require('../models/league')
 //
 //
 //
@@ -12157,6 +12155,8 @@ const login = async (req, res, next) => {
 		)
 		return next(error)
 	}
+
+	console.log('someone has just logged in')
 
 	res.json({ message: 'Logged in successfully', token: token })
 }
