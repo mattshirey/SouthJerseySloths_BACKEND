@@ -1209,7 +1209,7 @@ const createNewVideo = async (req, res, next) => {
 		return next(error)
 	} else {
 		createdVideo = new Video({
-			id: uuidv4(),
+			//id: uuidv4(),
 			videoTitle: videoTitle.trim(),
 			videoURL: videoURL.trim(),
 			videoCaption: videoCaption.trim(),
