@@ -10236,7 +10236,7 @@ const editTeam = async (req, res, next) => {
 
 	if (games) {
 		games.forEach(async (game) => {
-			game.homeTeamName = teamName.trim()
+			game.teamName = teamName.trim()
 			game.year = year
 			try {
 				await game.save()
@@ -10879,7 +10879,7 @@ const removeEvent = async (req, res, next) => {
 
 	console.log('game: ' + game)
 
-	//If we find a game, let's grab the homeTeamRosterId and visitorTeamRosterId
+	//If we find a game, let's grab the homeTeam (sloths)
 	let homeTeam, status
 	if (game) {
 		homeTeam = game.teamName
