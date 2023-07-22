@@ -10226,10 +10226,9 @@ const editTeam = async (req, res, next) => {
 	//Next, we want to find all GAMES for this team that just got its name
 	//changed and be sure to change the team name in there too.
 	let games
-
 	try {
 		games = await Game.find({
-			homeTeamName: previousTeamName,
+			teamName: previousTeamName,
 			year: previousYear,
 		}).orFail()
 	} catch {}
