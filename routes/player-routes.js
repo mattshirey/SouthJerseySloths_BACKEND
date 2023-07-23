@@ -9,5 +9,7 @@ router.get(
 )
 //
 //
-
+router.post('/:playerId/photo', playerControllers.uploadPhoto)
+//
+//
 module.exports = router

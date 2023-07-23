@@ -34,7 +34,11 @@ const getPlayerHistoryByPlayerId = async (req, res, next) => {
 //
 //
 //
+const uploadPhoto = async (req, res, next) => {
+	console.log('inside uploadPhoto')
+}
 //
 //
 //
 exports.getPlayerHistoryByPlayerId = getPlayerHistoryByPlayerId
+exports.uploadPhoto = uploadPhoto
