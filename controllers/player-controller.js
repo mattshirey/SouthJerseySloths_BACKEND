@@ -5,6 +5,7 @@ const Roster = require('../models/roster')
 const Player = require('../models/player')
 const RosterPlayer = require('../models/rosterPlayer')
 const RosterPlayerStatsPerGame = require('../models/rosterPlayerStatsPerGame')
+const fileUpload = require('../middleware/file-upload')
 
 const getPlayerHistoryByPlayerId = async (req, res, next) => {
 	console.log('inside getPlayerHistoryByPlayer')
