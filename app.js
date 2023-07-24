@@ -44,7 +44,10 @@ app.get('/', (req, res) => {
 //
 //
 app.use((req, res, next) => {
-	const error = new HttpError('Could not find this route.', 404)
+	const error = new HttpError(
+		'Could not find this route. ' + JSON.stringify(req),
+		404
+	)
 	throw error
 })
 
