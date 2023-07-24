@@ -41,6 +41,9 @@ const uploadPhoto = async (req, res, next) => {
 	const photo = req.file
 	const newUserData = photo
 
+	console.log('playerId: ' + playerId)
+	console.log('photo: ' + photo)
+
 	const newPhoto = new Photo(newUserData)
 
 	newPhoto
