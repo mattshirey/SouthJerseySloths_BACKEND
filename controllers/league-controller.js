@@ -281,6 +281,148 @@ const getPlayersOnTeam = async (req, res, next) => {
 }
 //****************************************************************************************** */
 //
+// Get Players on a sloth team. This is non-admin.
+// this also returns wins, losses, overtime losses, and shootout losses
+//
+//****************************************************************************************** */
+const getPlayersOnOldTeam = async (req, res, next) => {
+	console.log('inside getPlayersOnOldTeam in league-controller')
+	const teamId = req.params.teamId
+	//
+	//
+	//So, there should only be ONE current team - that's how Anthony wants this set up
+	//so let's go get that current team
+	let rosterId, foundRoster, rosteredPlayers, teamName, year, assignedPlayers
+	let foundTeam
+	let wins
+	let losses, overtimeLosses, shootoutLosses, ties
+	//
+	//
+	//
+	try {
+		foundTeam = await Team.findById(teamId)
+	} catch (err) {
+		const error = new HttpError(
+			'Could not find team to obtain teamId 2.  getPlayersOnTeam',
+			404
+		)
+		return next(error)
+	}
+	teamName = foundTeam.teamName
+	year = foundTeam.year
+	wins = foundTeam.wins
+	losses = foundTeam.losses
+	overtimeLosses = foundTeam.overtimeLosses
+	shootoutLosses = foundTeam.shootoutLosses
+	ties = foundTeam.ties
+	assignedPlayers = foundTeam.assignedPlayers
+	//
+	////GET THE ROSTER ID FOR THIS TEAMID
+	try {
+		foundRoster = await Roster.findOne({
+			teamId: teamId,
+		}).orFail()
+	} catch (err) {
+		const error = new HttpError(
+			'Could not find roster to obtain rosterId.  getPlayersOnTeam',
+			404
+		)
+		return next(error)
+	}
+	rosterId = foundRoster.id
+	//
+	//Get all players in that roster.  This is where player id's and jersey numbers will be
+	//let rosteredPlayers
+	try {
+		rosteredPlayers = await RosterPlayer.find({
+			rosterId: rosterId,
+		})
+	} catch (err) {
+		const error = new HttpError('Trouble finding players for this team', 404)
+		return next(error)
+	}
+
+	rosteredPlayers.sort((a, b) =>
+		a.goals + a.assists < b.goals + b.assists ? 1 : -1
+	)
+	//
+	//
+	//  Ok so the next thing i want to do here is pretty much steal all the code from
+	//  getTeamSchedule2, and merge all that logic with this logic (getPlayersOnTeam),
+	//  then return all this info back to the RosterAndSchedulePage on the frontend
+	//
+	//
+	//
+	//
+	//
+	// Next, lets get all the games and events for this current Sloths team
+	//
+	//
+	//
+	//let allEvents,
+	let allGames
+	let allGamesAndEventsArray
+	allGamesAndEventsArray = []
+
+	//I dont think we need to find old events...
+	/* try {
+		const filter = {}
+		allEvents = await Event.find(filter)
+	} catch (err) {
+		const error = new HttpError('Error getting all events', 500)
+		return next(error)
+	}
+
+	for (let i = 0; i < allEvents.length; i++) {
+		allGamesAndEventsArray.push(allEvents[i])
+	} */
+	//
+	//
+	//
+	//getting all games THAT ARE CURRENT
+	try {
+		allGames = await Game.find({
+			teamName: teamName,
+			year: year,
+			isCurrent: false,
+		})
+	} catch (err) {
+		const error = new HttpError('Error getting all (old) Games', 500)
+		return next(error)
+	}
+	//
+	//
+	//
+	//
+	for (let i = 0; i < allGames.length; i++) {
+		allGamesAndEventsArray.push(allGames[i])
+	}
+
+	//This little algorithm will sort all games and events based on first the
+	//date, then the times
+	allGamesAndEventsArray.sort(function (a, b) {
+		if (a.date === b.date) {
+			return a.time < b.time ? -1 : a.time > b.time ? 1 : 0
+		} else {
+			return new Date(b.date) < new Date(a.date) ? 1 : -1
+		}
+	})
+
+	res.json({
+		allGamesAndEventsArray: allGamesAndEventsArray,
+		assignedPlayers,
+		rosteredPlayers,
+		wins,
+		losses,
+		overtimeLosses,
+		shootoutLosses,
+		ties,
+		teamName,
+		year,
+	})
+}
+//****************************************************************************************** */
+//
 // Get Team Schedule to display on the RosterAndSchedulePage. This is non-admin.
 //
 //****************************************************************************************** */
@@ -952,6 +1094,7 @@ const getPreviousLeagues = async (req, res, next) => {
 exports.getStandings = getStandings
 exports.getScoringLeadersByLeagueId = getScoringLeadersByLeagueId
 exports.getPlayersOnTeam = getPlayersOnTeam
+exports.getPlayersOnOldTeam = getPlayersOnOldTeam
 exports.getTeamSchedule = getTeamSchedule
 exports.getTeamSchedule2 = getTeamSchedule2
 exports.getLeagueSchedule = getLeagueSchedule

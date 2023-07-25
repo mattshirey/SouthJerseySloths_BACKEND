@@ -25,6 +25,13 @@ router.get('/rosterAndSchedule', leagueControllers.getPlayersOnTeam)
 //
 //
 //
+router.get(
+	'/oldRosterAndSchedule/:teamId',
+	leagueControllers.getPlayersOnOldTeam
+)
+//
+//
+//
 //
 router.get('/schedule/:teamName/:year', leagueControllers.getTeamSchedule)
 //This one below will be used to access team schedule from the main schedule page
