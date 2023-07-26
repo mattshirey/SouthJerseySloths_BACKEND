@@ -1170,7 +1170,7 @@ const createNewVenue = async (req, res, next) => {
 	try {
 		await createdVenue.save()
 	} catch (err) {
-		const error = new HttpError('Could not create new Venue', 500)
+		const error = new HttpError('Could not create new Venue ' + err, 500)
 		return next(error)
 	}
 
