@@ -529,7 +529,7 @@ const getPlayersOnTeam = async (req, res, next) => {
 //
 //****************************************************************************************** */
 //
-//  Get both rosters (home and visitor) and points per period for a specific game
+//  Get sloth roster (either current or old) and return game stats for the gameSummary screen
 //
 //
 //****************************************************************************************** */
@@ -537,7 +537,7 @@ const getGameRostersAndPointsPerPeriod = async (req, res, next) => {
 	console.log('inside getGameRosterAndPointsPerPeriod')
 	const gameId = req.params.gameId
 
-	let teamName, dayOfWeek, date, time, venue, opponent
+	let teamName, dayOfWeek, date, time, venue, opponent, year, isCurrent
 	let foundGame
 	try {
 		foundGame = await Game.findById(gameId)
@@ -556,29 +556,49 @@ const getGameRostersAndPointsPerPeriod = async (req, res, next) => {
 	date = foundGame.date
 	time = foundGame.time
 	venue = foundGame.venueName
+	year = foundGame.year
+	isCurrent = foundGame.isCurrent
 	//leagueName = foundGame.leagueName
 	//
 	//
 	//let's get the most current Sloth team's id
 	let foundTeam, teamNameId
-	try {
-		foundTeam = await Team.findOne({
-			teamName: teamName,
-			isCurrent: true,
-		})
-	} catch (err) {
-		const error = new HttpError(
-			'Trouble finding teamName.  getGameRostersAndPointsPerPeriod',
-			404
-		)
-		return next(error)
+	if (isCurrent) {
+		console.log('looking up info for the CURRENT sloths team')
+		try {
+			foundTeam = await Team.findOne({
+				teamName: teamName,
+				isCurrent: true,
+			})
+		} catch (err) {
+			const error = new HttpError(
+				'Trouble finding teamName.  getGameRostersAndPointsPerPeriod',
+				404
+			)
+			return next(error)
+		}
+	} else {
+		console.log('looking up info for a PREVIOUS sloths team')
+		try {
+			foundTeam = await Team.findOne({
+				teamName: teamName,
+				year: year,
+				isCurrent: false,
+			})
+		} catch (err) {
+			const error = new HttpError(
+				'Trouble finding teamName.  getGameRostersAndPointsPerPeriod',
+				404
+			)
+			return next(error)
+		}
 	}
 	foundTeam && console.log('foundTeam: ' + foundTeam)
 	teamNameId = foundTeam._id
 	console.log('foundTeam.id: ' + teamNameId)
 	//
 	//
-	//Next, using this current sloths team teamId, let's get their rosterId
+	//Next, using this (old or current) sloths team teamId, let's get their rosterId
 	//
 	let foundRoster, rosterId
 	try {
@@ -599,9 +619,9 @@ const getGameRostersAndPointsPerPeriod = async (req, res, next) => {
 	//let homeTeamId, foundHomeRoster
 	//
 	//Get all players on current sloths team.  This is where player id's and jersey numbers will be
-	let currentSlothPlayers
+	let slothPlayers
 	try {
-		currentSlothPlayers = await RosterPlayer.find({
+		slothPlayers = await RosterPlayer.find({
 			rosterId: rosterId,
 		})
 	} catch (err) {
@@ -672,11 +692,11 @@ const getGameRostersAndPointsPerPeriod = async (req, res, next) => {
 		}
 	}
 
-	currentSlothPlayers.sort((a, b) => a.lastName.localeCompare(b.lastName))
+	slothPlayers.sort((a, b) => a.lastName.localeCompare(b.lastName))
 	//visitorRosteredPlayers.sort((a, b) => a.lastName.localeCompare(b.lastName))
 
 	res.json({
-		homeRoster: currentSlothPlayers,
+		homeRoster: slothPlayers,
 		teamName,
 		rosterPlayerGameStats,
 		gameStats,
