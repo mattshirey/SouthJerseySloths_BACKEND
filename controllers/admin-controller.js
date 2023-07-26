@@ -1161,7 +1161,7 @@ const createNewVenue = async (req, res, next) => {
 		return next(error)
 	} else {
 		createdVenue = new Venue({
-			id: uuidv4(),
+			// id: uuidv4(),
 			venueName: venueName.trim(),
 			venueAddress: venueAddress.trim(),
 		})
