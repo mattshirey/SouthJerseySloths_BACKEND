@@ -8099,6 +8099,7 @@ const addPlayerToTeam = async (req, res, next) => {
 	let playerId5
 	let foundPlayer5
 	if (firstName5) {
+		console.log('adding player 5')
 		if (!middleInitial5) {
 			try {
 				foundPlayer5 = await Player.findOne({
@@ -8143,7 +8144,7 @@ const addPlayerToTeam = async (req, res, next) => {
 		let existingPlayerName5
 		if (playerExists5) {
 			existingPlayerName5 = firstName5 + ' ' + middleInitial5 + ' ' + lastName5
-			console.log('Player5 Exists: ' + existingPlayerName5)
+			console.log('Player Exists: ' + existingPlayerName5)
 		}
 		//
 		//Should have everything we need now to create a new RosterPlayer item.
@@ -8175,15 +8176,13 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else {
 				createdRosterPlayer5 = new RosterPlayer({
-					leagueId,
+					teamId,
 					playerId: playerId5,
 					firstName: firstName5,
 					middleInitial: ' ',
 					lastName: lastName5,
 					rosterId,
 					teamName,
-					leagueName,
-					session,
 					year,
 					number: playerNumber5,
 					goals: 0,
@@ -8193,10 +8192,7 @@ const addPlayerToTeam = async (req, res, next) => {
 			try {
 				await createdRosterPlayer5.save()
 			} catch (err) {
-				const error = new HttpError(
-					'Could not add player5 to team.  Maybe a missing Number?',
-					500
-				)
+				const error = new HttpError('Could not add player5 to team.', 500)
 				//const error = new HttpError(err, 500)
 				return next(error)
 			}
@@ -8229,15 +8225,13 @@ const addPlayerToTeam = async (req, res, next) => {
 				return next(error)
 			} else {
 				createdRosterPlayer5 = new RosterPlayer({
-					leagueId,
+					teamId,
 					playerId: playerId5,
 					firstName: firstName5,
-					middleInitial: middleInitial5,
+					middleInitial: ' ',
 					lastName: lastName5,
 					rosterId,
 					teamName,
-					leagueName,
-					session,
 					year,
 					number: playerNumber5,
 					goals: 0,
@@ -8251,10 +8245,7 @@ const addPlayerToTeam = async (req, res, next) => {
 				createdRosterPlayer2 && createdRosterPlayer2.deleteOne()
 				createdRosterPlayer3 && createdRosterPlayer3.deleteOne()
 				createdRosterPlayer4 && createdRosterPlayer4.deleteOne()
-				const error = new HttpError(
-					'Could not add player5 to team.  Maybe a missing Number?',
-					500
-				)
+				const error = new HttpError('Could not add player5 to team.', 500)
 				//const error = new HttpError(err, 500)
 				return next(error)
 			}
