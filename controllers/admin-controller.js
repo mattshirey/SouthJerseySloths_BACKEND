@@ -769,6 +769,9 @@ const allGamesAndEvents = async (req, res, next) => {
 	//
 	//
 	//getting all games THAT ARE CURRENT
+	//Also here, I wish to grab the teamName and year, because I want to
+	//eventually display it on the AdminMasterSchedule page
+	let teamName, year
 	try {
 		allGames = await Game.find({
 			isCurrent: true,
@@ -777,6 +780,8 @@ const allGamesAndEvents = async (req, res, next) => {
 		const error = new HttpError('Error getting all (current) Games', 500)
 		return next(error)
 	}
+	teamName = allGames[0].teamName
+	year = allGames[0].year
 	//
 	//
 	//
@@ -818,6 +823,8 @@ const allGamesAndEvents = async (req, res, next) => {
 	}
 
 	res.json({
+		teamName,
+		year,
 		allItems: allGamesAndEventsArray,
 		allItemsThisWeek: allGamesAndEventsArrayFilteredByOneWeek,
 	})
