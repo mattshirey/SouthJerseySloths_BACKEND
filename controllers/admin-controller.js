@@ -17,6 +17,7 @@ const rosterPlayerStatsPerGame = require('../models/rosterPlayerStatsPerGame')
 const Video = require('../models/video')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const registeredPlayer = require('../models/registeredPlayer')
 //const fileUpload = require('../middleware/file-upload')
 //
 //
@@ -11839,6 +11840,38 @@ const removeEvent = async (req, res, next) => {
 		message: 'Deleted the game or event',
 	})
 }
+//****************************************************************************************** */
+//
+//   Remove a registeredPlayer from the registration list.
+//   This does NOT remove a rostered player though, just their registration info
+//
+//
+//****************************************************************************************** */
+const removeRegistrant = async (req, res, next) => {
+	const deletedRegistrantId = req.params.registrantId
+
+	//First, we need to get the roster player id from RosterPlayers
+	console.log('inside removeRegistrant')
+	let registrantToDelete
+	try {
+		registrantToDelete = await registeredPlayer.findById(deletedRegistrantId)
+	} catch (err) {
+		const error = new HttpError('Could not find registramt to delete them', 404)
+		return next(error)
+	}
+	//
+	//
+	try {
+		await registrantToDelete.deleteOne()
+	} catch (err) {
+		const error = new HttpError(err, 404)
+		return next(error)
+	}
+	//
+	res.status(200).json({
+		message: 'Registrant has been deleted',
+	})
+}
 //************************************************************************************ */
 //
 //
@@ -11960,5 +11993,6 @@ exports.removeTeam = removeTeam
 exports.removeVideo = removeVideo
 exports.removePlayer = removePlayer
 exports.removeEvent = removeEvent
+exports.removeRegistrant = removeRegistrant
 exports.deleteAllRosterPlayerStatsPerGame = deleteAllRosterPlayerStatsPerGame
 exports.login = login

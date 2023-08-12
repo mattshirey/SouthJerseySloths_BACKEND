@@ -280,6 +280,11 @@ router.delete('/:teamId/removeTeam', adminControllers.removeTeam)
 
 router.delete('/:itemId/removeEvent', adminControllers.removeEvent) //deletes a game or event
 
+router.delete(
+	'/:registrantId/removeRegistrant',
+	adminControllers.removeRegistrant
+) //deletes a registered player
+
 //For testing purposes (use in PostMan):
 router.delete(
 	'/delete/deleteAllRosterPlayerStatsPerGame',
