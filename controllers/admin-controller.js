@@ -17,7 +17,7 @@ const rosterPlayerStatsPerGame = require('../models/rosterPlayerStatsPerGame')
 const Video = require('../models/video')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const registeredPlayer = require('../models/registeredPlayer')
+const RegisteredPlayer = require('../models/registeredPlayer')
 //const fileUpload = require('../middleware/file-upload')
 //
 //
@@ -464,7 +464,6 @@ const getRegistrantData = async (req, res, next) => {
 	console.log('inside getRegistrantData')
 	const registrantId = req.params.registrantId
 	console.log('registrantId: ' + registrantId)
-	let registrant
 
 	try {
 		foundRegistrant = await RegisteredPlayer.findById(registrantId)
