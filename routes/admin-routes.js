@@ -256,7 +256,7 @@ router.patch(
 //
 //
 router.patch(
-	'/updateRegistrant/:registrantId',
+	'/updateRegistrant/:modalFor/:registrantId',
 	/* [
 		check('videoURL').not().isEmpty(),
 		check('videoTitle').not().isEmpty(),
