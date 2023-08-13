@@ -488,6 +488,8 @@ const getRegistrantData = async (req, res, next) => {
 	dateOfBirth = foundRegistrant.dateOfBirth
 	parentName = foundRegistrant.parentName
 
+	console.log('you are here: ' + parentName)
+
 	res.json({ registrant: foundRegistrant.toObject({ getters: true }) })
 }
 //****************************************************************************************** */
