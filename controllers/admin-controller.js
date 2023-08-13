@@ -452,6 +452,43 @@ const getEventData = async (req, res, next) => {
 
 	res.json({ event: foundEvent.toObject({ getters: true }) })
 }
+//
+//****************************************************************************************** */
+//
+// Get Registrant data (date, start time, end time, TBD, eventName, venue).
+// I'll use this for when/if I need to edit a person that has registered for something and
+// maybe they spelled something wrong like their email address or something...
+//
+//****************************************************************************************** */
+const getRegistrantData = async (req, res, next) => {
+	console.log('inside getRegistrantData')
+	const registrantId = req.params.registrantId
+	let registrant
+
+	try {
+		foundRegistrant = await RegisteredPlayer.findById(registrantId)
+	} catch (err) {
+		const error = new HttpError(
+			'Could not find registrant to obtain data.  getRegistrantData',
+			404
+		)
+		return next(error)
+	}
+
+	firstName = foundRegistrant.firstName
+	lastName = foundRegistrant.lastName
+	phoneNumber = foundRegistrant.phoneNumber
+	address = foundRegistrant.address
+	city = foundRegistrant.city
+	state = foundRegistrant.state
+	zip = foundRegistrant.zip
+	email = foundRegistrant.email
+	email2 = foundRegistrant.email2
+	dateOfBirth = foundRegistrant.dateOfBirth
+	parentName = foundRegistrant.parentName
+
+	res.json({ registrant: foundRegistrant.toObject({ getters: true }) })
+}
 //****************************************************************************************** */
 //
 //  Get all players on a sloth team
@@ -10429,6 +10466,52 @@ const editVideo = async (req, res, next) => {
 	res.status(200).json({ video: video.toObject({ getters: true }) })
 }
 //
+//****************************************************************************************** */
+//
+//PATCH request where we can edit a registerd players info in the registration section
+//
+//******************************************************************************************* */
+const editRegistrant = async (req, res, next) => {
+	const errors = validationResult(req)
+	if (!errors.isEmpty()) {
+		throw new HttpError(
+			'Invalid inputs - something is empty.   editRegistrant',
+			422
+		)
+	}
+
+	console.log('inside editRegistrant')
+
+	const { videoTitle, videoURL, videoCaption } = req.body
+
+	const videoId = req.params.videoId
+
+	let video
+	try {
+		video = await Video.findById(videoId)
+	} catch (err) {
+		const error = new HttpError(err, 500)
+		return next(error)
+	}
+
+	video.videoTitle = videoTitle
+	video.videoURL = videoURL
+	video.videoCaption = videoCaption
+
+	try {
+		await video.save()
+	} catch (err) {
+		const error = new HttpError(
+			//'Something went wrong with saving the updated league.',
+			err,
+			500
+		)
+		return next(error)
+	}
+
+	//set it to 200 instead of 201 because we're not creating anything new
+	res.status(200).json({ video: video.toObject({ getters: true }) })
+}
 //
 //
 //****************************************************************************************** */
@@ -11963,6 +12046,7 @@ exports.getPlayerData = getPlayerData
 exports.getPlayerDataByRosterId = getPlayerDataByRosterId //< - - - used for testing
 exports.getGameData = getGameData
 exports.getEventData = getEventData
+exports.getRegistrantData = getRegistrantData
 exports.getPlayersOnTeam = getPlayersOnTeam
 exports.getGameRostersAndPointsPerPeriod = getGameRostersAndPointsPerPeriod
 exports.getAllRosters = getAllRosters
@@ -11986,6 +12070,7 @@ exports.editTeam = editTeam
 exports.archiveCurrentToggleTeam = archiveCurrentToggleTeam
 exports.editVenue = editVenue
 exports.editVideo = editVideo
+exports.editRegistrant = editRegistrant
 exports.editPlayerName = editPlayerName
 exports.editGame = editGame
 exports.editEvent = editEvent

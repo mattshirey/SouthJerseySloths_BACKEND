@@ -63,6 +63,9 @@ router.get('/game/:gameId', adminControllers.getGameData)
 router.get('/event/:gameId', adminControllers.getEventData)
 //
 //
+router.get('/registrant/:registrantId', adminControllers.getRegistrantData)
+//
+//
 router.get('/getAllRosters', adminControllers.getAllRosters)
 //
 //
@@ -249,6 +252,17 @@ router.patch(
 		check('videoCaption').not().isEmpty(),
 	],
 	adminControllers.editVideo
+)
+//
+//
+router.patch(
+	'/updateRegistrant/:registrantId',
+	/* [
+		check('videoURL').not().isEmpty(),
+		check('videoTitle').not().isEmpty(),
+		check('videoCaption').not().isEmpty(),
+	], */
+	adminControllers.editRegistrant
 )
 //
 //
