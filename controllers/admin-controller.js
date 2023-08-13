@@ -476,6 +476,8 @@ const getRegistrantData = async (req, res, next) => {
 		return next(error)
 	}
 
+	console.log('you are here..........')
+
 	firstName = foundRegistrant.firstName
 	lastName = foundRegistrant.lastName
 	phoneNumber = foundRegistrant.phoneNumber
