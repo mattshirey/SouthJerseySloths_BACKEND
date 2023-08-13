@@ -10486,24 +10486,44 @@ const editRegistrant = async (req, res, next) => {
 
 	console.log('inside editRegistrant')
 
-	const { videoTitle, videoURL, videoCaption } = req.body
+	const {
+		firstName,
+		lastName,
+		phoneNumber,
+		address,
+		city,
+		state,
+		zip,
+		email,
+		email2,
+		dateOfBirth,
+		parentName,
+	} = req.body
 
-	const videoId = req.params.videoId
+	const registrantId = req.params.registrantId
 
-	let video
+	let registrant
 	try {
-		video = await Video.findById(videoId)
+		registrant = await RegisteredPlayer.findById(registrantId)
 	} catch (err) {
 		const error = new HttpError(err, 500)
 		return next(error)
 	}
 
-	video.videoTitle = videoTitle
-	video.videoURL = videoURL
-	video.videoCaption = videoCaption
+	registrant.firstName = firstName
+	registrant.lastName = lastName
+	registrant.phoneNumber = phoneNumber
+	registrant.address = address
+	registrant.city = city
+	registrant.state = state
+	registrant.zip = zip
+	registrant.email = email
+	registrant.email2 = email2
+	registrant.dateOfBirth = dateOfBirth
+	registrant.parentName = parentName
 
 	try {
-		await video.save()
+		await registrant.save()
 	} catch (err) {
 		const error = new HttpError(
 			//'Something went wrong with saving the updated league.',
@@ -10514,7 +10534,7 @@ const editRegistrant = async (req, res, next) => {
 	}
 
 	//set it to 200 instead of 201 because we're not creating anything new
-	res.status(200).json({ video: video.toObject({ getters: true }) })
+	res.status(200).json({ registrant: registrant.toObject({ getters: true }) })
 }
 //
 //
