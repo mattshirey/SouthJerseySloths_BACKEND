@@ -52,7 +52,7 @@ router.get('/players/:playerId', adminControllers.getPlayerData)
 //
 //
 router.get(
-	'/players/rosterPlayer/:rosterPlayerId',
+	'/rosterPlayer/:rosterPlayerId',
 	adminControllers.getPlayerDataByRosterId
 )
 //
