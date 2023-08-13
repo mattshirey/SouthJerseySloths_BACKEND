@@ -463,6 +463,7 @@ const getEventData = async (req, res, next) => {
 const getRegistrantData = async (req, res, next) => {
 	console.log('inside getRegistrantData')
 	const registrantId = req.params.registrantId
+	console.log('registrantId: ' + registrantId)
 	let registrant
 
 	try {
