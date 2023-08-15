@@ -37,19 +37,19 @@ const getPlayerHistoryByPlayerId = async (req, res, next) => {
 //
 const uploadPhoto = async (req, res, next) => {
 	console.log('inside uploadPhoto:')
-	const playerId = req.params.playerId
+	//const playerId = req.params.playerId
 	const photo = req.file
-	const newUserData = photo
+	//const newUserData = photo
 
-	console.log('playerId: ' + playerId)
+	//console.log('playerId: ' + playerId)
 	console.log('photo: ' + photo)
 
-	const newPhoto = new Photo(newUserData)
+	/* 	const newPhoto = new Photo(newUserData)
 
 	newPhoto
 		.save()
 		.then(() => res.json('Photo added'))
-		.catch((err) => res.status(400).json('Error: ' + err))
+		.catch((err) => res.status(400).json('Error: ' + err)) */
 
 	res.json({ message: 'photo has been uploaded' })
 }
