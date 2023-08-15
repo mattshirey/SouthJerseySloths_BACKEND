@@ -49,4 +49,4 @@ const fileUpload = multer({
 	},
 })
 
-export default fileUpload
+module.exports = fileUpload
