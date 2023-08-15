@@ -30,7 +30,7 @@ const MIME_TYPE_MAP = {
 //if the extension can be found in our mime type map above.
 const fileUpload = multer({
 	//limits: 50000000,
-	storage: diskStorage({
+	storage: multer.diskStorage({
 		destination: (req, file, cb) => {
 			cb(null, 'upload/images')
 		},
