@@ -36,6 +36,7 @@ const fileUpload = multer({
 		},
 		filename: (req, file, cb) => {
 			console.log('file: ' + file)
+			console.log('file: ' + file.length)
 			console.log('file: ' + file.originalname)
 			console.log('file: ' + file.destination)
 			console.log('file: ' + file.fieldname)
