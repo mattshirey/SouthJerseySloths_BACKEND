@@ -48,10 +48,12 @@ const uploadPhoto = async (req, res, next) => {
 		photo: photo,
 	})
 
-	newPhoto
-		.save()
-		.then(() => res.json('Photo added'))
-		.catch((err) => res.status(400).json('Error: ' + err))
+	try {
+		await newPhoto.save()
+	} catch (err) {
+		const error = new HttpError('Could not create new Photo: ' + err, 500)
+		return next(error)
+	}
 
 	console.log('photo has been saved')
 
