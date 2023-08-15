@@ -53,6 +53,8 @@ const uploadPhoto = async (req, res, next) => {
 		.then(() => res.json('Photo added'))
 		.catch((err) => res.status(400).json('Error: ' + err))
 
+	console.log('photo has been saved')
+
 	res.json({ message: 'photo has been uploaded' })
 }
 //
