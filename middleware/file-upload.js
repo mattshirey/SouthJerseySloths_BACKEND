@@ -32,7 +32,7 @@ const fileUpload = multer({
 	//limits: 50000000,
 	storage: multer.diskStorage({
 		destination: (req, file, cb) => {
-			console.log('file 1: ' + file.path)
+			console.log('file 1: ' + file)
 			cb(null, 'uploads/images')
 		},
 		filename: (req, file, cb) => {
