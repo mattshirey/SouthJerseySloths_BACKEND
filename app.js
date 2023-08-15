@@ -54,6 +54,12 @@ app.use((req, res, next) => {
 //Watch video 93: Handling Errors.
 //If we have an error, throw it.  If not, just throw a 500
 app.use((error, req, res, next) => {
+	console.log('ERROR RESPONSE: ' + error.message)
+	if (req.file) {
+		fs.unlink(req.file.path, (err) => {
+			console.log(err)
+		})
+	}
 	if (res.headersSent) {
 		return next(error)
 	}
