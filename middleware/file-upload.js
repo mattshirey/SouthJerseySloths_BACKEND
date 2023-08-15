@@ -3,8 +3,8 @@ const { v4: uuidv4 } = require('uuid')
 
 const MIME_TYPE_MAP = {
 	'image/png': 'png',
-	'image/jpeg': 'jpeg',
 	'image/jpg': 'jpg',
+	'image/jpeg': 'jpeg',
 }
 
 //We configure this function to tell it where to store
