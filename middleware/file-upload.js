@@ -1,5 +1,8 @@
-const multer = require('multer')
-const { v4: uuidv4 } = require('uuid')
+import multer, { diskStorage } from 'multer'
+import { v4 as uuidv4 } from 'uuid'
+
+/* const multer = require('multer')
+const { v4: uuidv4 } = require('uuid') */
 
 const MIME_TYPE_MAP = {
 	'image/png': 'png',
@@ -30,7 +33,7 @@ const MIME_TYPE_MAP = {
 //if the extension can be found in our mime type map above.
 const fileUpload = multer({
 	//limits: 50000000,
-	storage: multer.diskStorage({
+	storage: diskStorage({
 		destination: (req, file, cb) => {
 			cb(null, 'upload/images')
 		},
@@ -49,4 +52,4 @@ const fileUpload = multer({
 	},
 })
 
-module.exports = fileUpload
+export default fileUpload

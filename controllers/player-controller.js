@@ -5,7 +5,7 @@ const Roster = require('../models/roster')
 const Player = require('../models/player')
 const RosterPlayer = require('../models/rosterPlayer')
 const RosterPlayerStatsPerGame = require('../models/rosterPlayerStatsPerGame')
-const fileUpload = require('../middleware/file-upload')
+const fileUpload = require('../middleware/file-upload').default
 const Photo = require('../models/photo')
 
 const getPlayerHistoryByPlayerId = async (req, res, next) => {
