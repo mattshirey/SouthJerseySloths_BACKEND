@@ -32,11 +32,11 @@ const fileUpload = multer({
 	//limits: 50000000,
 	storage: multer.diskStorage({
 		destination: (req, file, cb) => {
-			console.log('file 1: ' + JSON.stringify(file))
-			console.dir(file)
+			console.log('file: ' + JSON.stringify(file))
 			cb(null, 'uploads/images')
 		},
 		filename: (req, file, cb) => {
+			/* 
 			console.log('file: ' + file)
 			console.log('file: ' + file)
 			console.log('file: ' + file.originalname)
@@ -44,7 +44,7 @@ const fileUpload = multer({
 			console.log('file: ' + file.fieldname)
 			console.log('file: ' + file.filename)
 			console.log('file: ' + file.path)
-			console.log('file: ' + file.size)
+			console.log('file: ' + file.size) */
 			const ext = MIME_TYPE_MAP[file.mimetype]
 			console.log('ext: ' + ext)
 			cb(null, uuidv4() + '.' + ext)
