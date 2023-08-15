@@ -36,6 +36,7 @@ const fileUpload = multer({
 		},
 		filename: (req, file, cb) => {
 			const ext = MIME_TYPE_MAP[file.mimetype]
+			console.log('ext: ' + ext)
 			cb(null, uuidv4() + '.' + ext)
 		},
 	}),
