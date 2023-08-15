@@ -44,7 +44,9 @@ const uploadPhoto = async (req, res, next) => {
 	//console.log('playerId: ' + playerId)
 	console.log('photo: ' + photo)
 
-	const newPhoto = new Photo(photo)
+	const newPhoto = new Photo({
+		photo: photo,
+	})
 
 	newPhoto
 		.save()
