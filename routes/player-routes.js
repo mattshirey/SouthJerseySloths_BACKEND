@@ -1,7 +1,7 @@
 const express = require('express')
 const playerControllers = require('../controllers/player-controller')
 const router = express.Router()
-const fileUpload = require('../middleware/file-upload').default
+const fileUpload = require('../middleware/file-upload')
 
 router.get('/:playerId/history', playerControllers.getPlayerHistoryByPlayerId)
 //
