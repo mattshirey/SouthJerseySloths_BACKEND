@@ -299,6 +299,7 @@ const getPlayerDataByRosterId = async (req, res, next) => {
 		)
 		return next(error)
 	}
+	console.log('foundPlayer: ' + foundPlayer)
 	firstName = foundPlayer.firstName
 	middleInitial = foundPlayer.middleInitial
 	lastName = foundPlayer.lastName

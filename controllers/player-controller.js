@@ -35,7 +35,7 @@ const getPlayerHistoryByPlayerId = async (req, res, next) => {
 //
 //
 //
-/* const uploadPhoto = async (req, res, next) => {
+const uploadPhoto = async (req, res, next) => {
 	console.log('inside uploadPhoto:')
 	const playerId = req.params.playerId
 	const photo = req.file
@@ -52,9 +52,9 @@ const getPlayerHistoryByPlayerId = async (req, res, next) => {
 		.catch((err) => res.status(400).json('Error: ' + err))
 
 	res.json({ message: 'photo has been uploaded' })
-} */
+}
 //
 //
 //
 exports.getPlayerHistoryByPlayerId = getPlayerHistoryByPlayerId
-//exports.uploadPhoto = uploadPhoto
+exports.uploadPhoto = uploadPhoto
