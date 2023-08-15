@@ -44,12 +44,12 @@ const uploadPhoto = async (req, res, next) => {
 	//console.log('playerId: ' + playerId)
 	console.log('photo: ' + photo)
 
-	/* 	const newPhoto = new Photo(newUserData)
+	const newPhoto = new Photo(photo)
 
 	newPhoto
 		.save()
 		.then(() => res.json('Photo added'))
-		.catch((err) => res.status(400).json('Error: ' + err)) */
+		.catch((err) => res.status(400).json('Error: ' + err))
 
 	res.json({ message: 'photo has been uploaded' })
 }
