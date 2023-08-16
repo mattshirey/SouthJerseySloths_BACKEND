@@ -47,8 +47,8 @@ const fileUpload = multer({
 			console.log('file: ' + file.size) */
 			const ext = MIME_TYPE_MAP[file.mimetype]
 			console.log('ext: ' + ext)
-			cb(null, uuidv4() + '.' + ext)
-			//cb(null, file + '.' + ext)
+			//cb(null, uuidv4() + '.' + ext)
+			cb(null, file.originalname)
 		},
 	}),
 	//here's where we validate so that we dont get an INVALID file
