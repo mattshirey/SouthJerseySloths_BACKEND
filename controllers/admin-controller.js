@@ -241,7 +241,7 @@ const getNewsData = async (req, res, next) => {
 	let newsSubheading
 	let newsDate
 	let newsContent
-	let newsCaption
+	//let newsCaption
 
 	try {
 		foundNews = await News.findById(newsId)
@@ -256,7 +256,7 @@ const getNewsData = async (req, res, next) => {
 	newsSubheading = foundNews.newsSubheading
 	newsDate = foundNews.newsDate
 	newsContent = foundNews.newsContent
-	newsCaption = foundNews.newsCaption
+	//newsCaption = foundNews.newsCaption
 
 	res.json({ news: foundNews.toObject({ getters: true }) })
 }
@@ -1366,8 +1366,7 @@ const createNewNews = async (req, res, next) => {
 		)
 	}
 
-	const { newsHeading, newsSubheading, newsDate, newsContent, newsCaption } =
-		req.body
+	const { newsHeading, newsSubheading, newsDate, newsContent } = req.body
 
 	//First, let's check to see if the venue already exists...
 	const newsExists = await News.findOne({
@@ -1388,7 +1387,7 @@ const createNewNews = async (req, res, next) => {
 			newsSubheading: newsSubheading.trim(),
 			newsDate: newsDate.trim(),
 			newsContent: newsContent.trim(),
-			newsCaption: newsCaption.trim(),
+			//newsCaption: newsCaption.trim(),
 		})
 	}
 
@@ -10588,8 +10587,7 @@ const editNews = async (req, res, next) => {
 
 	console.log('inside editNews')
 
-	const { newsHeading, newsSubheading, newsDate, newsContent, newsCaption } =
-		req.body
+	const { newsHeading, newsSubheading, newsDate, newsContent } = req.body
 
 	const newsId = req.params.newsId
 
@@ -10605,7 +10603,7 @@ const editNews = async (req, res, next) => {
 	news.newsSubheading = newsSubheading
 	news.newsDate = newsDate
 	news.newsContent = newsContent
-	news.newsCaption = newsCaption
+	//news.newsCaption = newsCaption
 
 	try {
 		await news.save()
