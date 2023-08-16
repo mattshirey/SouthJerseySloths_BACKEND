@@ -6,8 +6,8 @@ const newsSchema = new Schema({
 	newsHeading: { type: String, required: true },
 	newsSubheading: { type: String, required: false },
 	newsDate: { type: String, required: false },
-	newsContent: { type: Date, required: false },
-	newsCaption: { type: Date, required: false },
+	newsContent: { type: String, required: false },
+	newsCaption: { type: String, required: false },
 })
 
 module.exports = mongoose.model('News', newsSchema)
