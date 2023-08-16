@@ -11074,7 +11074,7 @@ const removeVideo = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const removeNews = async (req, res, next) => {
-	const deletedVideoId = req.params.deletedNewsId
+	const deletedNewsId = req.params.deletedNewsId
 	//actually, this is the ROSTERPLAYER id, not the playerId
 
 	//First, we need to get the roster player id from RosterPlayers
