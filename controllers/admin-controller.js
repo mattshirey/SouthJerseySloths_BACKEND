@@ -15,6 +15,7 @@ const PlayoffGameStats = require('../models/playoffGameStats')
 const RosterPlayerStatsPerGame = require('../models/rosterPlayerStatsPerGame')
 const rosterPlayerStatsPerGame = require('../models/rosterPlayerStatsPerGame')
 const Video = require('../models/video')
+const News = require('../models/news')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const RegisteredPlayer = require('../models/registeredPlayer')
@@ -106,7 +107,7 @@ const getVenues = async (req, res, next) => {
 //
 //****************************************************************************************** */
 const getVideos = async (req, res, next) => {
-	console.log('inside getAllVideos')
+	console.log('inside getVideos')
 	let allVideos
 	try {
 		const filter = {}
@@ -115,6 +116,24 @@ const getVideos = async (req, res, next) => {
 		res.json({ allVideos })
 	} catch (err) {
 		const error = new HttpError('Cannot find any videos.  getVideos', 404)
+		return next(error)
+	}
+}
+//****************************************************************************************** */
+//
+// Get all News
+//
+//****************************************************************************************** */
+const getNews = async (req, res, next) => {
+	console.log('inside getNews')
+	let allNews
+	try {
+		const filter = {}
+		allNews = await News.find(filter)
+		//allVideos.sort((a, b) => a.videoTitle.localeCompare(b.videoTitle))
+		res.json({ allNews })
+	} catch (err) {
+		const error = new HttpError('Cannot find any news.  getNews', 404)
 		return next(error)
 	}
 }
@@ -208,6 +227,38 @@ const getVideoData = async (req, res, next) => {
 	videoCaption = foundVideo.videoCaption
 
 	res.json({ video: foundVideo.toObject({ getters: true }) })
+}
+//****************************************************************************************** */
+//
+// Get News data (newsHeading, newsSubheading, newsDate, newsContent, newsCaption).
+// I'll use this for when/if I need to edit any of this stuff
+//
+//****************************************************************************************** */
+const getNewsData = async (req, res, next) => {
+	console.log('inside getNewsData')
+	const newsId = req.params.newsId
+	let newsHeading
+	let newsSubheading
+	let newsDate
+	let newsContent
+	let newsCaption
+
+	try {
+		foundNews = await News.findById(newsId)
+	} catch (err) {
+		const error = new HttpError(
+			'Could not find news to obtain news data.  getNewsData',
+			404
+		)
+		return next(error)
+	}
+	newsHeading = foundNews.newsHeading
+	newsSubheading = foundNews.newsSubheading
+	newsDate = foundNews.newsDate
+	newsContent = foundNews.newsContent
+	newsCaption = foundNews.newsCaption
+
+	res.json({ news: foundNews.toObject({ getters: true }) })
 }
 //
 //
@@ -1296,6 +1347,59 @@ const createNewVideo = async (req, res, next) => {
 
 	//we created something new so conventionally, that'll be a 201
 	res.status(201).json({ video: createdVideo })
+}
+//
+//
+//
+//****************************************************************************************** */
+//
+//POST request to create a new News article
+//
+//****************************************************************************************** */
+const createNewNews = async (req, res, next) => {
+	console.log('inside createNewNews')
+	const errors = validationResult(req)
+	if (!errors.isEmpty()) {
+		throw new HttpError(
+			'Invalid inputs - something is empty.  createNewNews',
+			422
+		)
+	}
+
+	const { newsHeading, newsSubheading, newsDate, newsContent, newsCaption } =
+		req.body
+
+	//First, let's check to see if the venue already exists...
+	const newsExists = await News.findOne({
+		newsHeading: newsHeading.trim(),
+		newsContent: newsContent.trim(),
+	})
+
+	let createdNews
+	if (newsExists) {
+		console.log('news already exists')
+		const error = new HttpError('News already exists', 409)
+		return next(error)
+	} else {
+		createdNews = new Video({
+			//id: uuidv4(),
+			newsHeading: newsHeading.trim(),
+			newsSubheading: newsSubheading.trim(),
+			newsDate: newsDate.trim(),
+			newsContent: newsContent.trim(),
+			newsCaption: newsCaption.trim(),
+		})
+	}
+
+	try {
+		await createdNews.save()
+	} catch (err) {
+		const error = new HttpError('Could not create new News ' + err, 500)
+		return next(error)
+	}
+
+	//we created something new so conventionally, that'll be a 201
+	res.status(201).json({ news: createdNews })
 }
 //
 //
@@ -10470,6 +10574,52 @@ const editVideo = async (req, res, next) => {
 	//set it to 200 instead of 201 because we're not creating anything new
 	res.status(200).json({ video: video.toObject({ getters: true }) })
 }
+//****************************************************************************************** */
+//
+//PATCH request where we can edit the News heading, subheading, date, content, or caption
+//
+//******************************************************************************************* */
+const editNews = async (req, res, next) => {
+	const errors = validationResult(req)
+	if (!errors.isEmpty()) {
+		throw new HttpError('Invalid inputs - something is empty.   editNews', 422)
+	}
+
+	console.log('inside editNews')
+
+	const { newsHeading, newsSubheading, newsDate, newsContent, newsCaption } =
+		req.body
+
+	const newsId = req.params.newsId
+
+	let news
+	try {
+		news = await News.findById(newsId)
+	} catch (err) {
+		const error = new HttpError(err, 500)
+		return next(error)
+	}
+
+	news.newsHeading = newsHeading
+	news.newsSubheading = newsSubheading
+	news.newsDate = newsDate
+	news.newsContent = newsContent
+	news.newsCaption = newsCaption
+
+	try {
+		await news.save()
+	} catch (err) {
+		const error = new HttpError(
+			//'Something went wrong with saving the updated league.',
+			err,
+			500
+		)
+		return next(error)
+	}
+
+	//set it to 200 instead of 201 because we're not creating anything new
+	res.status(200).json({ news: news.toObject({ getters: true }) })
+}
 //
 //****************************************************************************************** */
 //
@@ -10911,6 +11061,41 @@ const removeVideo = async (req, res, next) => {
 	//
 	res.status(200).json({
 		message: 'Video has been deleted',
+	})
+}
+//
+//
+//
+//****************************************************************************************** */
+//
+//  Remove a News article
+//
+//
+//****************************************************************************************** */
+const removeNews = async (req, res, next) => {
+	const deletedVideoId = req.params.deletedNewsId
+	//actually, this is the ROSTERPLAYER id, not the playerId
+
+	//First, we need to get the roster player id from RosterPlayers
+	console.log('inside removeNews')
+	let newsToDelete
+	try {
+		newsToDelete = await News.findById(deletedNewsId)
+	} catch (err) {
+		const error = new HttpError('Could not find news article to delete it', 404)
+		return next(error)
+	}
+	//
+	//
+	try {
+		await newsToDelete.deleteOne()
+	} catch (err) {
+		const error = new HttpError(err, 404)
+		return next(error)
+	}
+	//
+	res.status(200).json({
+		message: 'News article has been deleted',
 	})
 }
 //
@@ -12063,9 +12248,11 @@ exports.getArchivedTeams = getArchivedTeams
 exports.getCurrentTeam = getCurrentTeam
 exports.getVenues = getVenues
 exports.getVideos = getVideos
+exports.getNews = getNews
 exports.getTeamData = getTeamData
 exports.getVenueData = getVenueData
 exports.getVideoData = getVideoData
+exports.getNewsData = getNewsData
 exports.getPlayerNumber = getPlayerNumber
 exports.getPlayerData = getPlayerData
 exports.getPlayerDataByRosterId = getPlayerDataByRosterId //< - - - used for testing
@@ -12081,6 +12268,7 @@ exports.createNewTeam = createNewTeam
 exports.copyLeague = copyLeague
 exports.createNewVenue = createNewVenue
 exports.createNewVideo = createNewVideo
+exports.createNewNews = createNewNews
 exports.createNewPlayer = createNewPlayer
 //exports.newPlayerOnTeam = newPlayerOnTeam
 exports.createGames = createGames
@@ -12095,12 +12283,14 @@ exports.editTeam = editTeam
 exports.archiveCurrentToggleTeam = archiveCurrentToggleTeam
 exports.editVenue = editVenue
 exports.editVideo = editVideo
+exports.editNews = editNews
 exports.editRegistrant = editRegistrant
 exports.editPlayerName = editPlayerName
 exports.editGame = editGame
 exports.editEvent = editEvent
 exports.removeTeam = removeTeam
 exports.removeVideo = removeVideo
+exports.removeNews = removeNews
 exports.removePlayer = removePlayer
 exports.removeEvent = removeEvent
 exports.removeRegistrant = removeRegistrant

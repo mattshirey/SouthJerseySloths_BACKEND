@@ -22,6 +22,9 @@ router.get('/venues', adminControllers.getVenues)
 router.get('/videos', adminControllers.getVideos)
 //
 //
+router.get('/news', adminControllers.getNews)
+//
+//
 router.get('/:teamName/:year/roster', adminControllers.getPlayersOnTeam)
 //
 //
@@ -43,6 +46,7 @@ router.get('/venues/:venueId', adminControllers.getVenueData)
 router.get('/videos/:videoId', adminControllers.getVideoData)
 //
 //
+router.get('/news/:newsId', adminControllers.getNewsData)
 //
 //
 router.get('/:teamName/:year/:playerId', adminControllers.getPlayerNumber)
@@ -113,6 +117,13 @@ router.post(
 		check('videoCaption').not().isEmpty(),
 	],
 	adminControllers.createNewVideo
+)
+//
+//
+router.post(
+	'/news/new',
+	[check('newsHeading').not().isEmpty()],
+	adminControllers.createNewNews
 )
 //
 //
@@ -256,12 +267,14 @@ router.patch(
 //
 //
 router.patch(
+	'/updateNews/:newsId',
+	[check('newsHeading').not().isEmpty()],
+	adminControllers.editNews
+)
+//
+//
+router.patch(
 	'/updateRegistrant/:modalFor/:registrantId',
-	/* [
-		check('videoURL').not().isEmpty(),
-		check('videoTitle').not().isEmpty(),
-		check('videoCaption').not().isEmpty(),
-	], */
 	adminControllers.editRegistrant
 )
 //
@@ -289,6 +302,8 @@ router.patch(
 router.delete('/:playerId/removePlayer', adminControllers.removePlayer)
 
 router.delete('/:deletedVideoId/removeVideo', adminControllers.removeVideo)
+
+router.delete('/:deletedNewsId/removeNews', adminControllers.removeNews)
 
 router.delete('/:teamId/removeTeam', adminControllers.removeTeam)
 
