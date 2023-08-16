@@ -1381,7 +1381,8 @@ const createNewNews = async (req, res, next) => {
 		const error = new HttpError('News already exists', 409)
 		return next(error)
 	} else {
-		createdNews = new Video({
+		console.log('lets create some news...')
+		createdNews = new News({
 			//id: uuidv4(),
 			newsHeading: newsHeading.trim(),
 			newsSubheading: newsSubheading.trim(),
