@@ -61,6 +61,7 @@ const fileUpload = multer({
 	},
 })
 
-console.log('fileUpload: ' + fileUpload)
+console.log('fileUpload: ')
+console.dir(fileUpload)
 
 module.exports = fileUpload
