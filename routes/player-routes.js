@@ -9,7 +9,7 @@ router.get('/:playerId/history', playerControllers.getPlayerHistoryByPlayerId)
 console.log('inside player-routes...')
 router.post(
 	'/:rosterPlayerId/photo',
-	fileUpload.single(fieldname),
+	fileUpload.single('fieldname'),
 	playerControllers.uploadPhoto
 )
 //
