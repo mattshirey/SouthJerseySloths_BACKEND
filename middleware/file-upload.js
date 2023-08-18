@@ -31,12 +31,11 @@ const MIME_TYPE_MAP = {
 const fileUpload = multer({
 	//limits: 50000000,
 	storage: multer.diskStorage({
-		/* destination: (req, file, cb) => {
+		destination: (req, file, cb) => {
 			console.log('inside file-upload.js')
 			console.log('file: ' + JSON.stringify(file))
 			cb(null, 'uploads/images')
-		}, */
-		destination: 'uploads/images',
+		},
 		filename: (req, file, cb) => {
 			/* 
 			console.log('file: ' + file)
