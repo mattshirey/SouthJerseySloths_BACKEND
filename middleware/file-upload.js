@@ -32,7 +32,7 @@ const MIME_TYPE_MAP = {
 //
 //
 //C:\Users\matts\OneDrive\Desktop\South Jersey Sloths\BACKEND\uploads\images
-const fileUpload = multer({
+const fileUpload = multer(console.log('you are here ONE'), {
 	//limits: 50000000,
 	storage: multer.diskStorage({
 		destination: (req, file, cb) => {

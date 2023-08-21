@@ -36,6 +36,7 @@ const getPlayerHistoryByPlayerId = async (req, res, next) => {
 //
 //
 const uploadPhoto = async (req, res, next) => {
+	console.log('you are here TWO')
 	console.log('inside uploadPhoto: ' + req.file)
 	console.dir(req.file)
 	//const playerId = req.params.playerId

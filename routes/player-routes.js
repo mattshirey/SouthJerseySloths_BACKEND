@@ -6,7 +6,7 @@ const fileUpload = require('../middleware/file-upload')
 router.get('/:playerId/history', playerControllers.getPlayerHistoryByPlayerId)
 //
 //
-console.log('inside player-routes...')
+console.log('you are here THREE')
 router.post(
 	'/:rosterPlayerId/photo',
 	fileUpload.single('image'),
