@@ -1,12 +1,15 @@
 const path = require('path')
 const multer = require('multer')
 const { v4: uuidv4 } = require('uuid')
+const pics = require('../uploads/images')
 
 const MIME_TYPE_MAP = {
 	'image/png': 'png',
 	'image/jpg': 'jpg',
 	'image/jpeg': 'jpeg',
 }
+
+console.log('pics: ' + pics)
 
 //We configure this function to tell it where to store
 //something and what types of files to accept.
@@ -38,7 +41,7 @@ const fileUpload = multer({
 		destination: (req, file, cb) => {
 			console.log('inside file-upload.js')
 			console.log('file: ' + JSON.stringify(file))
-			cb(null, '../BACKEND')
+			cb(null, 'uploads/')
 		},
 		filename: (req, file, cb) => {
 			const ext = MIME_TYPE_MAP[file.mimetype]
