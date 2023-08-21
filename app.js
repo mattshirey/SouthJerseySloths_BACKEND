@@ -43,6 +43,11 @@ app.get('/', (req, res) => {
 })
 //
 //
+//This was done to make the /uploads folder static
+const folder = path.resolve()
+app.use('/uploads', express.static(path.join(folder, '/uploads/images')))
+//
+//
 app.use((req, res, next) => {
 	const error = new HttpError('Could not find this route. ', 404)
 	throw error
