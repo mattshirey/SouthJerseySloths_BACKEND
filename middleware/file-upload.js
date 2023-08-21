@@ -31,13 +31,14 @@ const MIME_TYPE_MAP = {
 //if the extension can be found in our mime type map above.
 //
 //
+//C:\Users\matts\OneDrive\Desktop\South Jersey Sloths\BACKEND\uploads\images
 const fileUpload = multer({
 	//limits: 50000000,
 	storage: multer.diskStorage({
 		destination: (req, file, cb) => {
 			console.log('inside file-upload.js')
 			console.log('file: ' + JSON.stringify(file))
-			cb(null, 'uploads/images')
+			cb(null, 'BACKEND/uploads/images')
 		},
 		filename: (req, file, cb) => {
 			const ext = MIME_TYPE_MAP[file.mimetype]
