@@ -28,14 +28,16 @@ const MIME_TYPE_MAP = {
 //fileFilter will validate that our file is of type jpg, jpeg, or png.
 //Know that the !! converts undefined or null into 'false', because we're trying to see
 //if the extension can be found in our mime type map above.
-
 const fileUpload = multer({
 	//limits: 50000000,
 	storage: multer.diskStorage({
 		destination: (req, file, cb) => {
 			console.log('inside file-upload.js')
 			console.log('file: ' + JSON.stringify(file))
-			cb(null, 'uploads/images')
+			cb(
+				null,
+				'C:/Users/matts/OneDrive/Desktop/South Jersey Sloths/BACKEND/uploads/images'
+			)
 		},
 		filename: (req, file, cb) => {
 			/* 
