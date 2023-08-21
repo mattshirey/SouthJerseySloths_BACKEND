@@ -28,29 +28,20 @@ const MIME_TYPE_MAP = {
 //fileFilter will validate that our file is of type jpg, jpeg, or png.
 //Know that the !! converts undefined or null into 'false', because we're trying to see
 //if the extension can be found in our mime type map above.
-const fileUpload = multer({
+//
+//
+/* const fileUpload = multer({
 	//limits: 50000000,
 	storage: multer.diskStorage({
 		destination: (req, file, cb) => {
 			console.log('inside file-upload.js')
 			console.log('file: ' + JSON.stringify(file))
-			cb(null, './uploads/images/')
+			cb(null, 'uploads/images')
 		},
 		filename: (req, file, cb) => {
-			/* 
-			console.log('file: ' + file)
-			console.log('file: ' + file)
-			console.log('file: ' + file.originalname)
-			console.log('file: ' + file.destination)
-			console.log('file: ' + file.fieldname)
-			console.log('file: ' + file.filename)
-			console.log('file: ' + file.path)
-			console.log('file: ' + file.size) */
 			const ext = MIME_TYPE_MAP[file.mimetype]
 			console.log('ext: ' + ext)
-			//console.dir(req)
 			cb(null, uuidv4() + '.' + ext)
-			//cb(null, file.originalname)
 		},
 	}),
 	//here's where we validate so that we dont get an INVALID file
@@ -59,6 +50,25 @@ const fileUpload = multer({
 		let error = isValid ? null : new Error('Invalid mime type')
 		cb(error, isValid)
 	},
+}) */
+
+const storage = multer.diskStorage({
+	destination(req, file, cb) {
+		cb(null, 'uploads/images')
+	},
+	filename(req, file, cb) {
+		cb(
+			null,
+			`${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
+		)
+	},
+})
+
+const fileUpload = multer({
+	storage,
+	/* fileFilter: function (req, file, cb) {
+		checkFileType(file, cb)
+	}, */
 })
 
 console.log('fileUpload: ')
