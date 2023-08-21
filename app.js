@@ -1,3 +1,4 @@
+import path from 'path'
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
