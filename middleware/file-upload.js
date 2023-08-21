@@ -34,7 +34,7 @@ const fileUpload = multer({
 		destination: (req, file, cb) => {
 			console.log('inside file-upload.js')
 			console.log('file: ' + JSON.stringify(file))
-			cb(null, './uploads/images')
+			cb(null, './uploads/images/')
 		},
 		filename: (req, file, cb) => {
 			/* 
