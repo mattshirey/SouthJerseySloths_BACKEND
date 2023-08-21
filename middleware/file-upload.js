@@ -34,10 +34,7 @@ const fileUpload = multer({
 		destination: (req, file, cb) => {
 			console.log('inside file-upload.js')
 			console.log('file: ' + JSON.stringify(file))
-			cb(
-				null,
-				'C:/Users/matts/OneDrive/Desktop/South Jersey Sloths/BACKEND/uploads/images'
-			)
+			cb(null, './uploads/images')
 		},
 		filename: (req, file, cb) => {
 			/* 
