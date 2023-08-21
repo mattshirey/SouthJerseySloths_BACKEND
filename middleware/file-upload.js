@@ -31,7 +31,7 @@ const MIME_TYPE_MAP = {
 //if the extension can be found in our mime type map above.
 //
 //
-/* const fileUpload = multer({
+const fileUpload = multer({
 	//limits: 50000000,
 	storage: multer.diskStorage({
 		destination: (req, file, cb) => {
@@ -51,25 +51,6 @@ const MIME_TYPE_MAP = {
 		let error = isValid ? null : new Error('Invalid mime type')
 		cb(error, isValid)
 	},
-}) */
-
-const storage = multer.diskStorage({
-	destination(req, file, cb) {
-		cb(null, 'uploads/images')
-	},
-	filename(req, file, cb) {
-		cb(
-			null,
-			`${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
-		)
-	},
-})
-
-const fileUpload = multer({
-	storage,
-	/* fileFilter: function (req, file, cb) {
-		checkFileType(file, cb)
-	}, */
 })
 
 console.log('fileUpload: ')
