@@ -54,6 +54,10 @@ const fileUpload = multer({
 	},
 })
 
+if (err instanceof multer.MulterError) {
+	console.log('multer error: ' + err)
+}
+
 console.log('fileUpload: ')
 console.dir(fileUpload)
 
